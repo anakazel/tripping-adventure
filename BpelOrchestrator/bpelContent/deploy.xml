@@ -3,6 +3,7 @@
   xmlns="http://www.apache.org/ode/schemas/dd/2007/03" 
   xmlns:dir="http://www.wscomposition.org/Directions/"
   xmlns:pla="http://www.wscomposition.org/Places/" 
+  xmlns:you="http://www.wscomposition.org/Youtube/"
   xmlns:composer="http://composer">
 
   <process name="composer:Composer">
@@ -17,6 +18,9 @@
     </invoke>
     <invoke partnerLink="PlacesPL">
       <service name="pla:Places" port="PlacesHTTP"/>
+    </invoke>
+    <invoke partnerLink="YoutubePL">
+      <service name="you:Youtube" port="YoutubeHTTP"/>
     </invoke>
   </process>
 </deploy>

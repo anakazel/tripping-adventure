@@ -7,6 +7,8 @@
 	xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop"
 	xmlns:dirwsdl="http://www.wscomposition.org/Directions/" 
 	xmlns:plawsdl="http://www.wscomposition.org/Places/"
+	xmlns:youwsdl="http://www.wscomposition.org/Youtube/"
+	xmlns:types="http://ode/bpel/types"
 	name="Composer"
 	targetNamespace="http://composer" 
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -21,8 +23,13 @@
 		<plnk:role name="PlacesRole" portType="plawsdl:Places" />
 	</plnk:partnerLinkType>
 
+	<plnk:partnerLinkType name="YoutubePLT">
+		<plnk:role name="YoutubeRole" portType="youwsdl:Youtube" />
+	</plnk:partnerLinkType>
+
 	<import location="Directions.wsdl" namespace="http://www.wscomposition.org/Directions/" />
 	<import location="Places.wsdl" namespace="http://www.wscomposition.org/Places/" />
+	<import location="Youtube.wsdl" namespace="http://www.wscomposition.org/Youtube/" />
 
 	<message name="ComposerRequestMessage">
 		<part name="origin" type="xsd:string"/>

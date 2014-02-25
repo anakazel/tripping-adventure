@@ -2,11 +2,11 @@
 <wsdl:definitions 
 	xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
 	xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" 
-	xmlns:tns="http://www.example.org/Youtube/"
+	xmlns:tns="http://www.wscomposition.org/Youtube/"
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 	name="Youtube" 
-	targetNamespace="http://www.example.org/Youtube/">
+	targetNamespace="http://www.wscomposition.org/Youtube/">
 	<wsdl:documentation>WSDL for Google Youtube web service</wsdl:documentation>
 	
 	<wsdl:message name="Request">
