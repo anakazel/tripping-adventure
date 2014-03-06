@@ -1,19 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<process name="Composer" 
-   targetNamespace="http://composer" 
-   xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
-   xmlns:ode="http://www.apache.org/ode/type/extension"
-   xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
-   xmlns:dir="http://www.wscomposition.org/Directions/" 
-   xmlns:pla="http://www.wscomposition.org/Places/" 
-   xmlns:tns="http://composer" 
-   xmlns:you="http://www.wscomposition.org/Youtube/"
-   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-   xmlns:types="http://ode/bpel/types"
-   xmlns:fn="http://www.w3.org/2005/xpath-functions"
-   suppressJoinFailure="yes" 
-   queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0" 
-   expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0">
+<process xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:dir="http://www.wscomposition.org/Directions/" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:ode="http://www.apache.org/ode/type/extension" xmlns:pla="http://www.wscomposition.org/Places/" xmlns:tns="http://composer" xmlns:types="http://ode/bpel/types" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:you="http://www.wscomposition.org/Youtube/" name="Composer" targetNamespace="http://composer" suppressJoinFailure="yes" queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0">
    <!-- Import the client WSDL -->
    <import location="ComposerArtifacts.wsdl" namespace="http://composer" importType="http://schemas.xmlsoap.org/wsdl/" />
    <!-- ================================================================= -->
@@ -33,9 +19,9 @@
    <!-- ================================================================= -->
    <variables>
       <variable name="ComposerInput" messageType="tns:ComposerRequestMessage" />
-      <variable name="ComposerOutput" messageType="tns:ComposerResponseMessage"/>
-      <variable name="ComposerOutput2" messageType="tns:ComposerResponseMessage"/>
-      <variable name="ComposerOutput3" messageType="tns:ComposerResponseMessage"/>
+      <variable name="ComposerOutput" messageType="tns:ComposerResponseMessage">
+         <from>1</from>
+      </variable>
       <variable name="DirectionsRequest" messageType="dir:Request" />
       <variable name="DirectionsResponse" messageType="dir:Response" />
       <variable name="PlacesRequest" messageType="pla:Request" />
@@ -80,11 +66,7 @@
             <assign validate="no" name="AssignOutputToInputPlaces">
                <copy>
                   <!-- Will retrieve the destination location coordinates in lang/lat needed for Places WS as input -->
-                  <from>
-                     concat($DirectionsResponse//leg/end_location/lat, ',', $DirectionsResponse//leg/end_location/lng)
-                     <!-- string($DirectionsPLResponse)  string representation -->
-                     <!-- string($DirectionsPLResponse.response) string representation but no http headers -->
-                  </from>
+                  <from>concat($DirectionsResponse//leg/end_location/lat, ',', $DirectionsResponse//leg/end_location/lng)</from>
                   <to>$PlacesRequest.location</to>
                </copy>
                <copy>
@@ -112,58 +94,38 @@
             <invoke name="InvokeYoutube" partnerLink="YoutubePL" operation="videos" portType="you:Youtube" inputVariable="YoutubeRequest" outputVariable="YoutubeResponse" />
          </sequence>
       </flow>
-
       <!-- ================================================================= -->
       <!-- RESPONSES CONCATENATION -->
       <!-- ================================================================= -->
       <sequence name="MessageCompositionSequence">
          <assign validate="no" name="ComposeMessages">
-             <copy>
+            <copy>
                <from>
-                  <literal>
-                     <!-- 'Response is OK!' -->
-                  </literal>
+                  <!-- Initialization so the insert-after will not fail -->
+                  <literal>'Response is OK!'</literal>
                </from>
-               <to>
-                  $ComposerOutput.response
-               </to>
+               <to>$ComposerOutput.response</to>
             </copy>
-             <copy>
-               <from>
-ode:insert-after($ComposerOutput/response,$DirectionsResponse/dir_response)
-               </from>
-               <to>
-                  $ComposerOutput.response
-               </to>
+            <copy>
+               <from>ode:insert-after($ComposerOutput/response,$DirectionsResponse/dir_response)</from>
+               <to>$ComposerOutput.response</to>
             </copy>
-                         <copy>
-               <from>
-ode:insert-after($ComposerOutput//dir_response,$PlacesResponse/pla_response)
-               </from>
-               <to>
-                  $ComposerOutput.response
-               </to>
+            <copy>
+               <from>ode:insert-after($ComposerOutput//dir_response,$PlacesResponse/pla_response)</from>
+               <to>$ComposerOutput.response</to>
             </copy>
- 
-                         <copy>
-               <from>
-ode:insert-after($ComposerOutput/pla_response,$YoutubeResponse/you_response)
-               </from>
-               <to>
-                  $ComposerOutput.response
-               </to>
+            <copy>
+               <from>ode:insert-after($ComposerOutput//pla_response,$YoutubeResponse/you_response)</from>
+               <to>$ComposerOutput.response</to>
             </copy>
-                  
-            </assign>
+            cleanup the initialization
+            <copy>
+               <from>ode:delete($ComposerOutput/response/response)</from>
+               <to>$ComposerOutput.response</to>
+            </copy>
+         </assign>
       </sequence>
-      
       <!-- Final bpel process reply -->
       <reply name="replyOutput" partnerLink="ComposerClient" portType="tns:Composer" operation="process" variable="ComposerOutput" />
    </sequence>
 </process>
-       <!-- <![CDATA[concat('<DirectionsResponse>',$DirectionsResponse, '</DirectionsResponse>')]]> -->
-                  <!-- string($DirectionsResponse//response) -->
-                     <!-- concat($DirectionsResponse//response, $PlacesResponse//response) -->
-                  <!--    <![CDATA[concat('<DirectionsResponse>', ode:dom-to-string($DirectionsResponse//response), '</DirectionsResponse>',
-                     '<PlacesResponse>', ode:dom-to-string($PlacesResponse//response), '</PlacesResponse>', '<YoutubeResponse>', ode:dom-to-string($YoutubeResponse//response), '</YoutubeResponse>')]]>  -->
-                  <!-- <![CDATA[concat('<DirectionsResponse>',$DirectionsResponse//response, '</DirectionsResponse>')]]> -->
