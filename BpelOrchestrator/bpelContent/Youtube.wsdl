@@ -15,7 +15,7 @@
 	</wsdl:message>
 	
 	<wsdl:message name="Response">
-		<wsdl:part name="response" type="xsd:string" />
+		<wsdl:part name="you_response" type="xsd:string" />
 	</wsdl:message>
 	
 	<wsdl:portType name="Youtube">
@@ -35,7 +35,7 @@
 				<http:urlEncoded />
 			</wsdl:input>
 			<wsdl:output name="simpleResponse">
-				<mime:content type="text/xml" part="response" />
+				<mime:content type="text/xml" part="you_response" />
 			</wsdl:output>
 		</wsdl:operation>
 	</wsdl:binding>

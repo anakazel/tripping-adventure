@@ -19,7 +19,7 @@
 	</wsdl:message>
 	
 	<wsdl:message name="Response">
-		<wsdl:part name="response" type="xsd:string" />
+		<wsdl:part name="pla_response" type="xsd:string" />
 	</wsdl:message>
 
 	<wsdl:portType name="Places">
@@ -43,7 +43,7 @@
 				<http:urlEncoded />
 			</wsdl:input>
 			<wsdl:output name="xmlResponse">
-				<mime:content type="text/xml" part="response" />
+				<mime:content type="text/xml" part="pla_response" />
 			</wsdl:output>
 		</wsdl:operation>
 		
@@ -54,7 +54,7 @@
 			</wsdl:input>
 			<wsdl:output name="jsonResponse">
 				<!-- if this part is missing, the call will fail -->
-				<mime:content type="application/json" part="response" />
+				<mime:content type="application/json" part="pla_response" />
 			</wsdl:output>
 		</wsdl:operation>
 	</wsdl:binding>

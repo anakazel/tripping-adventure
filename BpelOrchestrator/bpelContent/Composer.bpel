@@ -1,138 +1,169 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpel:process 
-   xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+<process name="Composer" 
+   targetNamespace="http://composer" 
    xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+   xmlns:ode="http://www.apache.org/ode/type/extension"
+   xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
    xmlns:dir="http://www.wscomposition.org/Directions/" 
    xmlns:pla="http://www.wscomposition.org/Places/" 
    xmlns:tns="http://composer" 
    xmlns:you="http://www.wscomposition.org/Youtube/"
    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
    xmlns:types="http://ode/bpel/types"
-   xmlns:ode="http://www.apache.org/ode/type/extension"
-   name="Composer" 
-   targetNamespace="http://composer" 
+   xmlns:fn="http://www.w3.org/2005/xpath-functions"
    suppressJoinFailure="yes" 
    queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0" 
    expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0">
    <!-- Import the client WSDL -->
-   <bpel:import location="ComposerArtifacts.wsdl" namespace="http://composer" importType="http://schemas.xmlsoap.org/wsdl/" />
+   <import location="ComposerArtifacts.wsdl" namespace="http://composer" importType="http://schemas.xmlsoap.org/wsdl/" />
    <!-- ================================================================= -->
    <!-- PARTNERLINKS -->
    <!-- List of services participating in this BPEL process -->
    <!-- ================================================================= -->
-   <bpel:partnerLinks>
+   <partnerLinks>
       <!-- The 'client' role represents the requester of this service. -->
-      <bpel:partnerLink name="ComposerClient" partnerLinkType="tns:Composer" myRole="ComposerProvider" />
-      <bpel:partnerLink name="DirectionsPL" partnerLinkType="tns:DirectionsPLT" partnerRole="DirectionsRole" />
-      <bpel:partnerLink name="PlacesPL" partnerLinkType="tns:PlacesPLT" partnerRole="PlacesRole" />
-      <bpel:partnerLink name="YoutubePL" partnerLinkType="tns:YoutubePLT" partnerRole="YoutubeRole" />
-   </bpel:partnerLinks>
+      <partnerLink name="ComposerClient" partnerLinkType="tns:Composer" myRole="ComposerProvider" />
+      <partnerLink name="DirectionsPL" partnerLinkType="tns:DirectionsPLT" partnerRole="DirectionsRole" />
+      <partnerLink name="PlacesPL" partnerLinkType="tns:PlacesPLT" partnerRole="PlacesRole" />
+      <partnerLink name="YoutubePL" partnerLinkType="tns:YoutubePLT" partnerRole="YoutubeRole" />
+   </partnerLinks>
    <!-- ================================================================= -->
    <!-- VARIABLES -->
    <!-- List of messages and XML documents used within this BPEL process -->
    <!-- ================================================================= -->
-   <bpel:variables>
-      <bpel:variable name="ComposerInput" messageType="tns:ComposerRequestMessage" />
-      <bpel:variable name="ComposerOutput" messageType="tns:ComposerResponseMessage" />
-      <bpel:variable name="DirectionsRequest" messageType="dir:Request" />
-      <bpel:variable name="DirectionsResponse" messageType="dir:Response" />
-      <bpel:variable name="PlacesRequest" messageType="pla:Request" />
-      <bpel:variable name="PlacesResponse" messageType="pla:Response" />
-      <bpel:variable name="YoutubeRequest" messageType="you:Request" />
-      <bpel:variable name="YoutubeResponse" messageType="you:Response" />
-   </bpel:variables>
+   <variables>
+      <variable name="ComposerInput" messageType="tns:ComposerRequestMessage" />
+      <variable name="ComposerOutput" messageType="tns:ComposerResponseMessage"/>
+      <variable name="ComposerOutput2" messageType="tns:ComposerResponseMessage"/>
+      <variable name="ComposerOutput3" messageType="tns:ComposerResponseMessage"/>
+      <variable name="DirectionsRequest" messageType="dir:Request" />
+      <variable name="DirectionsResponse" messageType="dir:Response" />
+      <variable name="PlacesRequest" messageType="pla:Request" />
+      <variable name="PlacesResponse" messageType="pla:Response" />
+      <variable name="YoutubeRequest" messageType="you:Request" />
+      <variable name="YoutubeResponse" messageType="you:Response" />
+   </variables>
    <!-- ================================================================= -->
    <!-- ORCHESTRATION LOGIC -->
    <!-- Set of activities coordinating the flow of messages across the -->
    <!-- services integrated within this business process -->
    <!-- ================================================================= -->
-   <bpel:sequence name="main">
+   <sequence name="main">
       <!-- 1. Get the response from directions service -->
       <!-- Receive input from requester. Note: This maps to operation directionsefined 
          in Composer.wsdl -->
       <!-- Generate reply to synchronous request -->
-      <bpel:receive name="receiveInput" partnerLink="ComposerClient" portType="tns:Composer" operation="process" variable="ComposerInput" createInstance="yes" />
-      <bpel:assign validate="no" name="AssignInputToDirections">
-         <bpel:copy>
-            <bpel:from part="origin" variable="ComposerInput" />
-            <bpel:to part="origin" variable="DirectionsRequest" />
-         </bpel:copy>
-         <bpel:copy>
-            <bpel:from part="sensor" variable="ComposerInput" />
-            <bpel:to part="sensor" variable="DirectionsRequest" />
-         </bpel:copy>
-         <bpel:copy>
-            <bpel:from part="destination" variable="ComposerInput" />
-            <bpel:to part="destination" variable="DirectionsRequest" />
-         </bpel:copy>
+      <receive name="receiveInput" partnerLink="ComposerClient" portType="tns:Composer" operation="process" variable="ComposerInput" createInstance="yes" />
+      <assign validate="no" name="AssignInputToDirections">
+         <copy>
+            <from part="origin" variable="ComposerInput" />
+            <to part="origin" variable="DirectionsRequest" />
+         </copy>
+         <copy>
+            <from part="sensor" variable="ComposerInput" />
+            <to part="sensor" variable="DirectionsRequest" />
+         </copy>
+         <copy>
+            <from part="destination" variable="ComposerInput" />
+            <to part="destination" variable="DirectionsRequest" />
+         </copy>
          <!-- also assign youtube thingie -->
-         <bpel:copy>
-            <bpel:from part="destination" variable="ComposerInput" />
-            <bpel:to part="q" variable="YoutubeRequest" />
-         </bpel:copy>
-      </bpel:assign>
-      <bpel:flow name="leFLow">
-         <bpel:sequence name="DirectionsAndPlacesSequence">
+         <copy>
+            <from part="destination" variable="ComposerInput" />
+            <to part="q" variable="YoutubeRequest" />
+         </copy>
+      </assign>
+      <flow name="leFLow">
+         <sequence name="DirectionsAndPlacesSequence">
             <!-- Invocation of Directions ws-->
-            <bpel:invoke name="InvokeDirections" partnerLink="DirectionsPL" operation="xml" portType="dir:Directions" inputVariable="DirectionsRequest" outputVariable="DirectionsResponse" />
-            <bpel:assign validate="no" name="AssignOutputToInputPlaces">
-               <bpel:copy>
+            <invoke name="InvokeDirections" partnerLink="DirectionsPL" operation="xml" portType="dir:Directions" inputVariable="DirectionsRequest" outputVariable="DirectionsResponse" />
+            <assign validate="no" name="AssignOutputToInputPlaces">
+               <copy>
                   <!-- Will retrieve the destination location coordinates in lang/lat needed for Places WS as input -->
-                  <bpel:from>
+                  <from>
                      concat($DirectionsResponse//leg/end_location/lat, ',', $DirectionsResponse//leg/end_location/lng)
                      <!-- string($DirectionsPLResponse)  string representation -->
                      <!-- string($DirectionsPLResponse.response) string representation but no http headers -->
-                  </bpel:from>
-                  <bpel:to>$PlacesRequest.location</bpel:to>
-               </bpel:copy>
-               <bpel:copy>
-                  <bpel:from part="sensor" variable="ComposerInput" />
-                  <bpel:to part="sensor" variable="PlacesRequest" />
-               </bpel:copy>
-               <bpel:copy>
-                  <bpel:from part="types" variable="ComposerInput" />
-                  <bpel:to part="types" variable="PlacesRequest" />
-               </bpel:copy>
-               <bpel:copy>
-                  <bpel:from part="key" variable="ComposerInput" />
-                  <bpel:to part="key" variable="PlacesRequest" />
-               </bpel:copy>
-               <bpel:copy>
-                  <bpel:from part="radius" variable="ComposerInput" />
-                  <bpel:to part="radius" variable="PlacesRequest" />
-               </bpel:copy>
-            </bpel:assign>
+                  </from>
+                  <to>$PlacesRequest.location</to>
+               </copy>
+               <copy>
+                  <from part="sensor" variable="ComposerInput" />
+                  <to part="sensor" variable="PlacesRequest" />
+               </copy>
+               <copy>
+                  <from part="types" variable="ComposerInput" />
+                  <to part="types" variable="PlacesRequest" />
+               </copy>
+               <copy>
+                  <from part="key" variable="ComposerInput" />
+                  <to part="key" variable="PlacesRequest" />
+               </copy>
+               <copy>
+                  <from part="radius" variable="ComposerInput" />
+                  <to part="radius" variable="PlacesRequest" />
+               </copy>
+            </assign>
             <!-- Invocation of Places ws -->
-            <bpel:invoke name="InvokePlaces" partnerLink="PlacesPL" operation="xml" portType="pla:Places" inputVariable="PlacesRequest" outputVariable="PlacesResponse" />
-         </bpel:sequence>
+            <invoke name="InvokePlaces" partnerLink="PlacesPL" operation="xml" portType="pla:Places" inputVariable="PlacesRequest" outputVariable="PlacesResponse" />
+         </sequence>
          <!-- Invocation of Youtube ws -->
-         <bpel:sequence name="YoutubeSequence">
-            <bpel:invoke name="InvokeYoutube" partnerLink="YoutubePL" operation="videos" portType="you:Youtube" inputVariable="YoutubeRequest" outputVariable="YoutubeResponse" />
-         </bpel:sequence>
-      </bpel:flow>
+         <sequence name="YoutubeSequence">
+            <invoke name="InvokeYoutube" partnerLink="YoutubePL" operation="videos" portType="you:Youtube" inputVariable="YoutubeRequest" outputVariable="YoutubeResponse" />
+         </sequence>
+      </flow>
 
       <!-- ================================================================= -->
       <!-- RESPONSES CONCATENATION -->
       <!-- ================================================================= -->
-      <bpel:sequence name="MessageCompositionSequence">
-         <bpel:assign validate="no" name="ComposeMessages">
-            <bpel:copy>
-               <bpel:from>
-                  <!-- <![CDATA[concat('<DirectionsResponse>',$DirectionsResponse, '</DirectionsResponse>')]]> -->
+      <sequence name="MessageCompositionSequence">
+         <assign validate="no" name="ComposeMessages">
+             <copy>
+               <from>
+                  <literal>
+                     <!-- 'Response is OK!' -->
+                  </literal>
+               </from>
+               <to>
+                  $ComposerOutput.response
+               </to>
+            </copy>
+             <copy>
+               <from>
+ode:insert-after($ComposerOutput/response,$DirectionsResponse/dir_response)
+               </from>
+               <to>
+                  $ComposerOutput.response
+               </to>
+            </copy>
+                         <copy>
+               <from>
+ode:insert-after($ComposerOutput//dir_response,$PlacesResponse/pla_response)
+               </from>
+               <to>
+                  $ComposerOutput.response
+               </to>
+            </copy>
+ 
+                         <copy>
+               <from>
+ode:insert-after($ComposerOutput/pla_response,$YoutubeResponse/you_response)
+               </from>
+               <to>
+                  $ComposerOutput.response
+               </to>
+            </copy>
+                  
+            </assign>
+      </sequence>
+      
+      <!-- Final bpel process reply -->
+      <reply name="replyOutput" partnerLink="ComposerClient" portType="tns:Composer" operation="process" variable="ComposerOutput" />
+   </sequence>
+</process>
+       <!-- <![CDATA[concat('<DirectionsResponse>',$DirectionsResponse, '</DirectionsResponse>')]]> -->
                   <!-- string($DirectionsResponse//response) -->
                      <!-- concat($DirectionsResponse//response, $PlacesResponse//response) -->
                   <!--    <![CDATA[concat('<DirectionsResponse>', ode:dom-to-string($DirectionsResponse//response), '</DirectionsResponse>',
                      '<PlacesResponse>', ode:dom-to-string($PlacesResponse//response), '</PlacesResponse>', '<YoutubeResponse>', ode:dom-to-string($YoutubeResponse//response), '</YoutubeResponse>')]]>  -->
                   <!-- <![CDATA[concat('<DirectionsResponse>',$DirectionsResponse//response, '</DirectionsResponse>')]]> -->
-                  bpws:doXslTransform("/bpelContent/Composer.xsl", $PlacesResponse//response)
-
-               </bpel:from>
-               <bpel:to>$ComposerOutput.response</bpel:to>
-            </bpel:copy>
-         </bpel:assign>
-      </bpel:sequence>
-      
-      <!-- Final bpel process reply -->
-      <bpel:reply name="replyOutput" partnerLink="ComposerClient" portType="tns:Composer" operation="process" variable="ComposerOutput" />
-   </bpel:sequence>
-</bpel:process>
