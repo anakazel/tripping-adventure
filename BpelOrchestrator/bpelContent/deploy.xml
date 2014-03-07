@@ -1,26 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<deploy 
-  xmlns="http://www.apache.org/ode/schemas/dd/2007/03" 
-  xmlns:dir="http://www.wscomposition.org/Directions/"
-  xmlns:pla="http://www.wscomposition.org/Places/" 
-  xmlns:you="http://www.wscomposition.org/Youtube/"
-  xmlns:composer="http://composer">
-
-  <process name="composer:Composer">
-    <active>true</active>
-    <retired>false</retired>
-    <process-events generate="all"/>
-    <provide partnerLink="ComposerClient">
-      <service name="composer:ComposerService" port="ComposerPort"/>
-    </provide>
-    <invoke partnerLink="DirectionsPL">
-      <service name="dir:Directions" port="DirectionsHTTP"/>
-    </invoke>
-    <invoke partnerLink="PlacesPL">
-      <service name="pla:Places" port="PlacesHTTP"/>
-    </invoke>
-    <invoke partnerLink="YoutubePL">
-      <service name="you:Youtube" port="YoutubeHTTP"/>
-    </invoke>
-  </process>
+<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03" xmlns:composer="http://composer" xmlns:dir="http://www.wscomposition.org/Directions/" xmlns:for="http://www.wscomposition.org/Forecast/" xmlns:pla="http://www.wscomposition.org/Places/" xmlns:you="http://www.wscomposition.org/Youtube/">
+   <process name="composer:Composer">
+      <active>true</active>
+      <retired>false</retired>
+      <process-events generate="all" />
+      <provide partnerLink="ComposerClient">
+         <service name="composer:ComposerService" port="ComposerPort" />
+      </provide>
+      <invoke partnerLink="DirectionsPL">
+         <service name="dir:Directions" port="DirectionsHTTP" />
+      </invoke>
+      <invoke partnerLink="PlacesPL">
+         <service name="pla:Places" port="PlacesHTTP" />
+      </invoke>
+      <invoke partnerLink="YoutubePL">
+         <service name="you:Youtube" port="YoutubeHTTP" />
+      </invoke>
+      <invoke partnerLink="ForecastPL">
+         <service name="for:Forecast" port="ForecastHTTP" />
+      </invoke>
+   </process>
 </deploy>

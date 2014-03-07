@@ -1,48 +1,35 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<wsdl:definitions 
-	xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
-	xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" 
-	xmlns:tns="http://www.wscomposition.org/Youtube/"
-	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
-	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-	name="Youtube" 
-	targetNamespace="http://www.wscomposition.org/Youtube/">
-	<wsdl:documentation>WSDL for Google Youtube web service</wsdl:documentation>
-	
-	<wsdl:message name="Request">
-		<!-- this one will be the destination, q = query -->
-		<wsdl:part name="q" type="xsd:string" />
-	</wsdl:message>
-	
-	<wsdl:message name="Response">
-		<wsdl:part name="you_response" type="xsd:string" />
-	</wsdl:message>
-	
-	<wsdl:portType name="Youtube">
-	
-	<wsdl:documentation>Interface for the single operation, videos</wsdl:documentation>
-		<wsdl:operation name="videos">
-			<wsdl:input message="tns:Request" name="simpleRequest" />
-			<wsdl:output message="tns:Response" name="simpleResponse" />
-		</wsdl:operation>
-	</wsdl:portType>
-	
-	<wsdl:binding name="YoutubeHTTP" type="tns:Youtube">
-		<http:binding verb="GET" />
-		<wsdl:operation name="videos">
-			<http:operation location="videos" />
-			<wsdl:input name="simpleRequest">
-				<http:urlEncoded />
-			</wsdl:input>
-			<wsdl:output name="simpleResponse">
-				<mime:content type="text/xml" part="you_response" />
-			</wsdl:output>
-		</wsdl:operation>
-	</wsdl:binding>
-	
-	<wsdl:service name="Youtube">
-		<wsdl:port binding="tns:YoutubeHTTP" name="YoutubeHTTP">
-			<http:address location="http://gdata.youtube.com/feeds/api" />
-		</wsdl:port>
-	</wsdl:service>
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.wscomposition.org/Youtube/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Youtube" targetNamespace="http://www.wscomposition.org/Youtube/">
+   <wsdl:documentation>WSDL for Google Youtube web service</wsdl:documentation>
+   <wsdl:message name="Request">
+      <!-- this one will be the destination, q = query -->
+      <wsdl:part name="q" type="xsd:string" />
+   </wsdl:message>
+   <wsdl:message name="Response">
+      <wsdl:part name="you_response" type="xsd:string" />
+   </wsdl:message>
+   <wsdl:portType name="Youtube">
+      <wsdl:documentation>Interface for the single operation, videos</wsdl:documentation>
+      <wsdl:operation name="videos">
+         <wsdl:input message="tns:Request" name="simpleRequest" />
+         <wsdl:output message="tns:Response" name="simpleResponse" />
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="YoutubeHTTP" type="tns:Youtube">
+      <http:binding verb="GET" />
+      <wsdl:operation name="videos">
+         <http:operation location="videos" />
+         <wsdl:input name="simpleRequest">
+            <http:urlEncoded />
+         </wsdl:input>
+         <wsdl:output name="simpleResponse">
+            <mime:content type="text/xml" part="you_response" />
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="Youtube">
+      <wsdl:port binding="tns:YoutubeHTTP" name="YoutubeHTTP">
+         <http:address location="http://gdata.youtube.com/feeds/api" />
+      </wsdl:port>
+   </wsdl:service>
 </wsdl:definitions>

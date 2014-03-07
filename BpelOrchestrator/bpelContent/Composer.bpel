@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<process xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:dir="http://www.wscomposition.org/Directions/" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:ode="http://www.apache.org/ode/type/extension" xmlns:pla="http://www.wscomposition.org/Places/" xmlns:tns="http://composer" xmlns:types="http://ode/bpel/types" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:you="http://www.wscomposition.org/Youtube/" name="Composer" targetNamespace="http://composer" suppressJoinFailure="yes" queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0">
+<process xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:dir="http://www.wscomposition.org/Directions/" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:for="http://www.wscomposition.org/Forecast/" xmlns:ode="http://www.apache.org/ode/type/extension" xmlns:pla="http://www.wscomposition.org/Places/" xmlns:tns="http://composer" xmlns:types="http://ode/bpel/types" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:you="http://www.wscomposition.org/Youtube/" name="Composer" targetNamespace="http://composer" suppressJoinFailure="yes" queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0" expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0">
    <!-- Import the client WSDL -->
    <import location="ComposerArtifacts.wsdl" namespace="http://composer" importType="http://schemas.xmlsoap.org/wsdl/" />
    <!-- ================================================================= -->
@@ -12,6 +12,7 @@
       <partnerLink name="DirectionsPL" partnerLinkType="tns:DirectionsPLT" partnerRole="DirectionsRole" />
       <partnerLink name="PlacesPL" partnerLinkType="tns:PlacesPLT" partnerRole="PlacesRole" />
       <partnerLink name="YoutubePL" partnerLinkType="tns:YoutubePLT" partnerRole="YoutubeRole" />
+      <partnerLink name="ForecastPL" partnerLinkType="tns:ForecastPLT" partnerRole="ForecastRole" />
    </partnerLinks>
    <!-- ================================================================= -->
    <!-- VARIABLES -->
@@ -19,15 +20,15 @@
    <!-- ================================================================= -->
    <variables>
       <variable name="ComposerInput" messageType="tns:ComposerRequestMessage" />
-      <variable name="ComposerOutput" messageType="tns:ComposerResponseMessage">
-         <from>1</from>
-      </variable>
+      <variable name="ComposerOutput" messageType="tns:ComposerResponseMessage" />
       <variable name="DirectionsRequest" messageType="dir:Request" />
       <variable name="DirectionsResponse" messageType="dir:Response" />
       <variable name="PlacesRequest" messageType="pla:Request" />
       <variable name="PlacesResponse" messageType="pla:Response" />
       <variable name="YoutubeRequest" messageType="you:Request" />
       <variable name="YoutubeResponse" messageType="you:Response" />
+      <variable name="ForecastRequest" messageType="for:Request" />
+      <variable name="ForecastResponse" messageType="for:Response" />
    </variables>
    <!-- ================================================================= -->
    <!-- ORCHESTRATION LOGIC -->
@@ -53,10 +54,19 @@
             <from part="destination" variable="ComposerInput" />
             <to part="destination" variable="DirectionsRequest" />
          </copy>
-         <!-- also assign youtube thingie -->
+         <!-- assign youtube request -->
          <copy>
             <from part="destination" variable="ComposerInput" />
             <to part="q" variable="YoutubeRequest" />
+         </copy>
+         <!-- assign forecast request -->
+         <copy>
+            <from part="destination" variable="ComposerInput" />
+            <to part="q" variable="ForecastRequest" />
+         </copy>
+         <copy>
+            <from part="mode" variable="ComposerInput" />
+            <to part="mode" variable="ForecastRequest" />
          </copy>
       </assign>
       <flow name="leFLow">
@@ -93,6 +103,10 @@
          <sequence name="YoutubeSequence">
             <invoke name="InvokeYoutube" partnerLink="YoutubePL" operation="videos" portType="you:Youtube" inputVariable="YoutubeRequest" outputVariable="YoutubeResponse" />
          </sequence>
+         <!-- Invocation of Forecast ws -->
+         <sequence name="ForecastSequence">
+            <invoke name="InvokeForecast" partnerLink="ForecastPL" operation="forecast" portType="for:Forecast" inputVariable="ForecastRequest" outputVariable="ForecastResponse" />
+         </sequence>
       </flow>
       <!-- ================================================================= -->
       <!-- RESPONSES CONCATENATION -->
@@ -118,7 +132,11 @@
                <from>ode:insert-after($ComposerOutput//pla_response,$YoutubeResponse/you_response)</from>
                <to>$ComposerOutput.response</to>
             </copy>
-            cleanup the initialization
+            <copy>
+               <from>ode:insert-after($ComposerOutput//you_response,$ForecastResponse/for_response)</from>
+               <to>$ComposerOutput.response</to>
+            </copy>
+            <!-- cleanup the initialization -->
             <copy>
                <from>ode:delete($ComposerOutput/response/response)</from>
                <to>$ComposerOutput.response</to>
