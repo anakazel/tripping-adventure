@@ -3,7 +3,7 @@ tripping-adventure
 
 Web services composition techniques - PoC
 
-BpelRest usage:
+BpelREST usage:
 
 1.Deploy the BPEL project to Apache Ode
 ```
