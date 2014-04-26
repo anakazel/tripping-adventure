@@ -19,4 +19,6 @@ curl -X POST -d @request.xml http://localhost:8080/ode/processes/Travel?wsdl --h
 
 1. Deploy the project using MuleStudio
 2. Create a GET request: 
-```http://localhost:8084/?origin=Iasi&destination=Bacau&travelMode=DRIVING&objectiveRadius=1000&objectiveTypes=food&forecastUnits=metric&forecastDays=3&images=3```
+```
+http://localhost:8084/?origin=Iasi&destination=Bacau&travelMode=DRIVING&objectiveRadius=1000&objectiveTypes=food&forecastUnits=metric&forecastDays=3&images=3
+```
