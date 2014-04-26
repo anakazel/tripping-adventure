@@ -15,3 +15,7 @@ cp -r $WORKSPACE/tripping-adventure/BpelREST/bpelContent/. $ODE_HOME/WEB-INF/pro
 ```
 curl -X POST -d @request.xml http://localhost:8080/ode/processes/Travel?wsdl --header "Content-Type:text/xml"
 ```
+EsbREST usage:
+
+1. Deploy the project using MuleStudio
+2. Create a GET request: http://localhost:8084/?origin=Iasi&destination=Bacau&travelMode=DRIVING&objectiveRadius=1000&objectiveTypes=food&forecastUnits=metric&forecastDays=3&images=3
