@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mule-configuration xmlns="http://www.mulesoft.com/tooling/messageflow" name="main">
+    <flow SubFlow="false" name="restcomposerFlow1" type="http://www.mulesoft.org/schema/mule/core/flow" entity-id="fe67b84c-cfab-423f-b8e0-79c08e2a595b">
+        <properties>
+            <property name="initialState"/>
+            <property name="processingStrategy2"/>
+            <property name="processingStrategy"/>
+            <property name="bussinessEventsLabel"/>
+            <property name="tracking:enable-default-events"/>
+            <property name="auxiliary;index" value="1"/>
+        </properties>
+        <lane hadOnlyOneElement="false" index="0" isChoiceOtherwiseLane="false" entity-id="compartment-lane#1">
+            <endpoint direction="Inbound" message-exchange-pattern="RequestResponse" name="HTTP" type="http://www.mulesoft.org/schema/mule/http/endpoint" entity-id="HTTP#1">
+                <properties>
+                    <property name="exchange-pattern" value="request-response"/>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/http/endpoint"/>
+                    <property name="httpLabel"/>
+                    <property name="host" value="localhost"/>
+                    <property name="port" value="8084"/>
+                    <property name="path"/>
+                    <property name="method"/>
+                    <property name="businessEventsLabel"/>
+                    <property name="tracking:enable-default-events"/>
+                    <property name="address"/>
+                    <property name="encoding"/>
+                    <property name="disableTransportTransformer"/>
+                    <property name="mimeType"/>
+                    <property name="responseTimeout"/>
+                    <property name="followRedirects"/>
+                    <property name="connector-ref"/>
+                    <property name="ref"/>
+                    <property name="transformer-refs"/>
+                    <property name="responseTransformer-refs"/>
+                    <property name="user"/>
+                    <property name="password"/>
+                    <property name="contentType"/>
+                    <property name="keep-alive"/>
+                    <property name="auxiliary;index" value="2"/>
+                </properties>
+            </endpoint>
+            <pattern name="Set Query" type="http://www.mulesoft.org/schema/mule/core/variable-transformer" entity-id="Variable#1">
+                <properties>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/core/set-variable"/>
+                    <property name="variableName" value="q"/>
+                    <property name="value" value="#[message.inboundProperties['q']]"/>
+                    <property name="auxiliary;index" value="3"/>
+                </properties>
+            </pattern>
+            <pattern name="Set Origin" type="http://www.mulesoft.org/schema/mule/core/variable-transformer" entity-id="Variable#2">
+                <properties>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/core/set-variable"/>
+                    <property name="variableName" value="origin"/>
+                    <property name="value" value="#[message.inboundProperties['origin']]"/>
+                    <property name="auxiliary;index" value="4"/>
+                </properties>
+            </pattern>
+            <pattern name="Set Destination" type="http://www.mulesoft.org/schema/mule/core/variable-transformer" entity-id="Variable#3">
+                <properties>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/core/set-variable"/>
+                    <property name="variableName" value="destination"/>
+                    <property name="value" value="#[message.inboundProperties['destination']]"/>
+                    <property name="auxiliary;index" value="5"/>
+                </properties>
+            </pattern>
+            <pattern name="Set number of images to search" type="http://www.mulesoft.org/schema/mule/core/variable-transformer" entity-id="Variable#4">
+                <properties>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/core/set-variable"/>
+                    <property name="variableName" value="num"/>
+                    <property name="value" value="#[message.inboundProperties['num']]"/>
+                    <property name="auxiliary;index" value="6"/>
+                </properties>
+            </pattern>
+            <pattern name="Google Api Key" type="http://www.mulesoft.org/schema/mule/core/variable-transformer" entity-id="Variable#5">
+                <properties>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/core/set-variable"/>
+                    <property name="variableName" value="key"/>
+                    <property name="value" value="AIzaSyDtfFjvrCJqIThah6qy_TxmljHfChEzHpQ"/>
+                    <property name="auxiliary;index" value="7"/>
+                </properties>
+            </pattern>
+            <pattern name="Sensor Value" type="http://www.mulesoft.org/schema/mule/core/variable-transformer" entity-id="Variable#6">
+                <properties>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/core/set-variable"/>
+                    <property name="variableName" value="sensor"/>
+                    <property name="value" value="false"/>
+                    <property name="auxiliary;index" value="8"/>
+                </properties>
+            </pattern>
+            <pattern name="Custom Search Engine Key" type="http://www.mulesoft.org/schema/mule/core/variable-transformer" entity-id="Variable#7">
+                <properties>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/core/set-variable"/>
+                    <property name="variableName" value="customSearchEngineKey"/>
+                    <property name="value" value="000550344702812047067:mqkgkrhdnii"/>
+                    <property name="auxiliary;index" value="9"/>
+                </properties>
+            </pattern>
+            <pattern name="Search Engine Type" type="http://www.mulesoft.org/schema/mule/core/variable-transformer" entity-id="Variable#8">
+                <properties>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/core/set-variable"/>
+                    <property name="variableName" value="searchType"/>
+                    <property name="value" value="image"/>
+                    <property name="auxiliary;index" value="10"/>
+                </properties>
+            </pattern>
+            <pattern name="Used for XML response" type="http://www.mulesoft.org/schema/mule/core/variable-transformer" entity-id="Variable#9">
+                <properties>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/core/set-variable"/>
+                    <property name="variableName" value="alt"/>
+                    <property name="value" value="Atom"/>
+                    <property name="auxiliary;index" value="11"/>
+                </properties>
+            </pattern>
+            <pattern name="Used for XML response" type="http://www.mulesoft.org/schema/mule/core/variable-transformer" entity-id="Variable#10">
+                <properties>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/core/set-variable"/>
+                    <property name="variableName" value="mode"/>
+                    <property name="value" value="xml"/>
+                    <property name="auxiliary;index" value="12"/>
+                </properties>
+            </pattern>
+            <pattern name="Flow Reference" type="http://www.mulesoft.org/schema/mule/core/flow-ref" entity-id="Flow Reference#1">
+                <properties>
+                    <property name="name" value="weatherFlow"/>
+                    <property name="auxiliary;index" value="13"/>
+                </properties>
+            </pattern>
+            <pattern name="Flow Directions" type="http://www.mulesoft.org/schema/mule/core/flow-ref" entity-id="Flow Reference#2">
+                <properties>
+                    <property name="name" value="directionsFlow"/>
+                    <property name="auxiliary;index" value="14"/>
+                </properties>
+            </pattern>
+            <pattern name="Image Search Flow" type="http://www.mulesoft.org/schema/mule/core/flow-ref" entity-id="Flow Reference#3">
+                <properties>
+                    <property name="name" value="imageSearchFlow"/>
+                    <property name="auxiliary;index" value="15"/>
+                </properties>
+            </pattern>
+            <pattern name="MuleXmlResponseComponent" type="http://www.mulesoft.org/schema/mule/core/component" entity-id="Java#1">
+                <properties>
+                    <property name="class" value="MuleXmlResponseComponent"/>
+                    <property name="auxiliary;index" value="16"/>
+                </properties>
+            </pattern>
+        </lane>
+    </flow>
+    <flow SubFlow="true" name="weatherFlow" type="http://www.mulesoft.org/schema/mule/core/subflow" entity-id="13aaa11f-0fe7-4ca3-b699-478862e2aa26">
+        <properties>
+            <property name="initialState"/>
+            <property name="processingStrategy2"/>
+            <property name="processingStrategy"/>
+            <property name="bussinessEventsLabel"/>
+            <property name="tracking:enable-default-events"/>
+            <property name="auxiliary;index" value="17"/>
+        </properties>
+        <lane hadOnlyOneElement="false" index="0" isChoiceOtherwiseLane="false" entity-id="compartment-lane#2">
+            <endpoint direction="Outbound" message-exchange-pattern="RequestResponse" name="HTTP" type="http://www.mulesoft.org/schema/mule/http/endpoint" entity-id="HTTP#2">
+                <properties>
+                    <property name="exchange-pattern" value="request-response"/>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/http/endpoint"/>
+                    <property name="httpLabel"/>
+                    <property name="host"/>
+                    <property name="port"/>
+                    <property name="path"/>
+                    <property name="method" value="GET"/>
+                    <property name="businessEventsLabel"/>
+                    <property name="tracking:enable-default-events"/>
+                    <property name="address" value="http://api.openweathermap.org/data/2.5/weather?q=#[flowVars['q']]&amp;mode=#[flowVars['mode']]"/>
+                    <property name="encoding"/>
+                    <property name="disableTransportTransformer"/>
+                    <property name="mimeType"/>
+                    <property name="responseTimeout"/>
+                    <property name="followRedirects"/>
+                    <property name="connector-ref"/>
+                    <property name="ref"/>
+                    <property name="transformer-refs"/>
+                    <property name="responseTransformer-refs"/>
+                    <property name="user"/>
+                    <property name="password"/>
+                    <property name="contentType"/>
+                    <property name="keep-alive"/>
+                    <property name="auxiliary;index" value="18"/>
+                </properties>
+            </endpoint>
+            <pattern name="Object to Byte Array" type="http://www.mulesoft.org/schema/mule/core/object-to-byte-array-transformer" entity-id="Object to Byte Array#1">
+                <properties>
+                    <property name="returnClass"/>
+                    <property name="ignoreBadInput"/>
+                    <property name="encoding"/>
+                    <property name="mimeType"/>
+                    <property name="auxiliary;index" value="19"/>
+                </properties>
+            </pattern>
+            <pattern name="Byte Array to Object" type="http://www.mulesoft.org/schema/mule/core/byte-array-to-object-transformer" entity-id="Byte Array to Object#1">
+                <properties>
+                    <property name="returnClass"/>
+                    <property name="ignoreBadInput"/>
+                    <property name="encoding"/>
+                    <property name="mimeType"/>
+                    <property name="auxiliary;index" value="20"/>
+                </properties>
+            </pattern>
+            <pattern name="Variable" type="http://www.mulesoft.org/schema/mule/core/variable-transformer" entity-id="Variable#11">
+                <properties>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/core/set-variable"/>
+                    <property name="variableName" value="weatherResponse"/>
+                    <property name="value" value="#[message.payload]"/>
+                    <property name="auxiliary;index" value="21"/>
+                </properties>
+            </pattern>
+        </lane>
+    </flow>
+    <flow SubFlow="true" name="directionsFlow" type="http://www.mulesoft.org/schema/mule/core/subflow" entity-id="9cb745c0-087a-410f-a7f1-6dec34c95d04">
+        <properties>
+            <property name="initialState"/>
+            <property name="processingStrategy2"/>
+            <property name="processingStrategy"/>
+            <property name="bussinessEventsLabel"/>
+            <property name="tracking:enable-default-events"/>
+            <property name="auxiliary;index" value="22"/>
+        </properties>
+        <lane hadOnlyOneElement="false" index="0" isChoiceOtherwiseLane="false" entity-id="compartment-lane#3">
+            <endpoint direction="Outbound" message-exchange-pattern="RequestResponse" name="HTTP" type="http://www.mulesoft.org/schema/mule/http/endpoint" entity-id="HTTP#3">
+                <properties>
+                    <property name="exchange-pattern" value="request-response"/>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/http/endpoint"/>
+                    <property name="httpLabel"/>
+                    <property name="host"/>
+                    <property name="port"/>
+                    <property name="path"/>
+                    <property name="method" value="GET"/>
+                    <property name="businessEventsLabel"/>
+                    <property name="tracking:enable-default-events"/>
+                    <property name="address" value="http://maps.googleapis.com/maps/api/directions/xml?origin=#[flowVars['origin']]&amp;destination=#[flowVars['destination']]&amp;sensor=#[flowVars['sensor']]"/>
+                    <property name="encoding"/>
+                    <property name="disableTransportTransformer"/>
+                    <property name="mimeType"/>
+                    <property name="responseTimeout"/>
+                    <property name="followRedirects"/>
+                    <property name="connector-ref"/>
+                    <property name="ref"/>
+                    <property name="transformer-refs"/>
+                    <property name="responseTransformer-refs"/>
+                    <property name="user"/>
+                    <property name="password"/>
+                    <property name="contentType"/>
+                    <property name="keep-alive"/>
+                    <property name="auxiliary;index" value="23"/>
+                </properties>
+            </endpoint>
+            <pattern name="Object to Byte Array" type="http://www.mulesoft.org/schema/mule/core/object-to-byte-array-transformer" entity-id="Object to Byte Array#2">
+                <properties>
+                    <property name="returnClass"/>
+                    <property name="ignoreBadInput"/>
+                    <property name="encoding"/>
+                    <property name="mimeType"/>
+                    <property name="auxiliary;index" value="24"/>
+                </properties>
+            </pattern>
+            <pattern name="Byte Array to Object" type="http://www.mulesoft.org/schema/mule/core/byte-array-to-object-transformer" entity-id="Byte Array to Object#2">
+                <properties>
+                    <property name="returnClass"/>
+                    <property name="ignoreBadInput"/>
+                    <property name="encoding"/>
+                    <property name="mimeType"/>
+                    <property name="auxiliary;index" value="25"/>
+                </properties>
+            </pattern>
+            <pattern name="Variable" type="http://www.mulesoft.org/schema/mule/core/variable-transformer" entity-id="Variable#12">
+                <properties>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/core/set-variable"/>
+                    <property name="variableName" value="directionsResponse"/>
+                    <property name="value" value="#[message.payload]"/>
+                    <property name="auxiliary;index" value="26"/>
+                </properties>
+            </pattern>
+            <pattern name="Variable" type="http://www.mulesoft.org/schema/mule/core/variable-transformer" entity-id="Variable#13">
+                <properties>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/core/set-variable"/>
+                    <property name="variableName" value="latitude"/>
+                    <property name="value" value="#[xpath('string(//leg/end_location/lat)')]"/>
+                    <property name="auxiliary;index" value="27"/>
+                </properties>
+            </pattern>
+            <pattern name="Variable" type="http://www.mulesoft.org/schema/mule/core/variable-transformer" entity-id="Variable#14">
+                <properties>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/core/set-variable"/>
+                    <property name="variableName" value="longitude"/>
+                    <property name="value" value="#[xpath('string(//leg/end_location/lng)')]"/>
+                    <property name="auxiliary;index" value="28"/>
+                </properties>
+            </pattern>
+            <endpoint direction="Outbound" message-exchange-pattern="RequestResponse" name="HTTP" type="http://www.mulesoft.org/schema/mule/http/endpoint" entity-id="HTTP#4">
+                <properties>
+                    <property name="exchange-pattern" value="request-response"/>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/https/endpoint"/>
+                    <property name="connector-ref-outbound"/>
+                    <property name="httpLabel"/>
+                    <property name="host"/>
+                    <property name="port"/>
+                    <property name="path"/>
+                    <property name="method" value="GET"/>
+                    <property name="businessEventsLabel"/>
+                    <property name="tracking:enable-default-events"/>
+                    <property name="address" value="https://maps.googleapis.com/maps/api/place/nearbysearch/xml?location=#[flowVars['latitude']],#[flowVars['longitude']]&amp;radius=1000&amp;types=food&amp;key=AIzaSyDtfFjvrCJqIThah6qy_TxmljHfChEzHpQ&amp;sensor=false"/>
+                    <property name="encoding"/>
+                    <property name="disableTransportTransformer"/>
+                    <property name="mimeType"/>
+                    <property name="responseTimeout"/>
+                    <property name="followRedirects"/>
+                    <property name="connector-ref"/>
+                    <property name="ref"/>
+                    <property name="transformer-refs"/>
+                    <property name="responseTransformer-refs"/>
+                    <property name="user"/>
+                    <property name="password"/>
+                    <property name="contentType"/>
+                    <property name="keep-alive"/>
+                    <property name="auxiliary;index" value="29"/>
+                </properties>
+            </endpoint>
+            <pattern name="Object to Byte Array" type="http://www.mulesoft.org/schema/mule/core/object-to-byte-array-transformer" entity-id="Object to Byte Array#3">
+                <properties>
+                    <property name="returnClass"/>
+                    <property name="ignoreBadInput"/>
+                    <property name="encoding"/>
+                    <property name="mimeType"/>
+                    <property name="auxiliary;index" value="30"/>
+                </properties>
+            </pattern>
+            <pattern name="Byte Array to Object" type="http://www.mulesoft.org/schema/mule/core/byte-array-to-object-transformer" entity-id="Byte Array to Object#3">
+                <properties>
+                    <property name="returnClass"/>
+                    <property name="ignoreBadInput"/>
+                    <property name="encoding"/>
+                    <property name="mimeType"/>
+                    <property name="auxiliary;index" value="31"/>
+                </properties>
+            </pattern>
+            <pattern name="Variable" type="http://www.mulesoft.org/schema/mule/core/variable-transformer" entity-id="Variable#15">
+                <properties>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/core/set-variable"/>
+                    <property name="variableName" value="placesResponse"/>
+                    <property name="value" value="#[message.payload]"/>
+                    <property name="auxiliary;index" value="32"/>
+                </properties>
+            </pattern>
+        </lane>
+    </flow>
+    <flow SubFlow="true" name="imageSearchFlow" type="http://www.mulesoft.org/schema/mule/core/subflow" entity-id="175e6815-e8fa-4dab-8ed5-de32dbbcf148">
+        <properties>
+            <property name="initialState"/>
+            <property name="processingStrategy2"/>
+            <property name="processingStrategy"/>
+            <property name="bussinessEventsLabel"/>
+            <property name="tracking:enable-default-events"/>
+            <property name="auxiliary;index" value="33"/>
+        </properties>
+        <lane hadOnlyOneElement="false" index="0" isChoiceOtherwiseLane="false" entity-id="compartment-lane#4">
+            <endpoint direction="Outbound" message-exchange-pattern="RequestResponse" name="HTTP" type="http://www.mulesoft.org/schema/mule/http/endpoint" entity-id="HTTP#5">
+                <properties>
+                    <property name="exchange-pattern" value="request-response"/>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/https/endpoint"/>
+                    <property name="connector-ref-outbound"/>
+                    <property name="httpLabel"/>
+                    <property name="host"/>
+                    <property name="port"/>
+                    <property name="path"/>
+                    <property name="method" value="GET"/>
+                    <property name="businessEventsLabel"/>
+                    <property name="tracking:enable-default-events"/>
+                    <property name="address" value="https://www.googleapis.com/customsearch/v1?q=#[flowVars['q']]&amp;cx=#[flowVars['customSearchEngineKey']]&amp;searchType=#[flowVars['searchType']]&amp;alt=#[flowVars['alt']]&amp;key=#[flowVars['key']]&amp;num=#[flowVars['num']]"/>
+                    <property name="encoding"/>
+                    <property name="disableTransportTransformer"/>
+                    <property name="mimeType"/>
+                    <property name="responseTimeout"/>
+                    <property name="followRedirects"/>
+                    <property name="connector-ref"/>
+                    <property name="ref"/>
+                    <property name="transformer-refs"/>
+                    <property name="responseTransformer-refs"/>
+                    <property name="user"/>
+                    <property name="password"/>
+                    <property name="contentType"/>
+                    <property name="keep-alive"/>
+                    <property name="auxiliary;index" value="34"/>
+                </properties>
+            </endpoint>
+            <pattern name="Object to Byte Array" type="http://www.mulesoft.org/schema/mule/core/object-to-byte-array-transformer" entity-id="Object to Byte Array#4">
+                <properties>
+                    <property name="returnClass"/>
+                    <property name="ignoreBadInput"/>
+                    <property name="encoding"/>
+                    <property name="mimeType"/>
+                    <property name="auxiliary;index" value="35"/>
+                </properties>
+            </pattern>
+            <pattern name="Byte Array to Object" type="http://www.mulesoft.org/schema/mule/core/byte-array-to-object-transformer" entity-id="Byte Array to Object#4">
+                <properties>
+                    <property name="returnClass"/>
+                    <property name="ignoreBadInput"/>
+                    <property name="encoding"/>
+                    <property name="mimeType"/>
+                    <property name="auxiliary;index" value="36"/>
+                </properties>
+            </pattern>
+            <pattern name="Variable" type="http://www.mulesoft.org/schema/mule/core/variable-transformer" entity-id="Variable#16">
+                <properties>
+                    <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/core/set-variable"/>
+                    <property name="variableName" value="searchResponse"/>
+                    <property name="value" value="#[message.payload]"/>
+                    <property name="auxiliary;index" value="37"/>
+                </properties>
+            </pattern>
+        </lane>
+    </flow>
+</mule-configuration>
