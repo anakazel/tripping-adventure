@@ -18,8 +18,20 @@ import org.xml.sax.InputSource;
 
 public final class MuleXmlResponseComponent implements Callable {
 	final static TransformerFactory tf = TransformerFactory.newInstance();
+		
+	final static String XML_DECLARATION = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+	final static String TRAVEL_RESPONSE_START = "<TravelResponse>";
+	final static String TRAVEL_RESPONSE_END = "</TravelResponse>";
+	final static String FORECAST_RESPONSE_START = "<ForecastResponse>";
+	final static String FORECAST_RESPONSE_END = "</ForecastResponse>";
+	final static String DIRECTIONS_RESPONSE_START = "<DirectionsResponse>";
+	final static String DIRECTIONS_RESPONSE_END = "</DirectionsResponse>";
+	final static String PLACES_RESPONSE_START = "<PlacesResponse>";
+	final static String PLACES_RESPONSE_END = "</PlacesResponse>";
+	final static String SEARCH_RESPONSE_START = "<SearchResponse>";
+	final static String SEARCH_RESPONSE_END = "</SearchResponse>";
+	
 	static Transformer transformer;
-	int x = 1;
 	
 	static{
 		try {
@@ -32,50 +44,50 @@ public final class MuleXmlResponseComponent implements Callable {
 	
 	@Override
 	public Object onCall(MuleEventContext eventContext) throws ParserConfigurationException {
-		final StringBuilder muleResponse = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><MuleResponse>");
+		final StringBuilder muleResponse = new StringBuilder(XML_DECLARATION + TRAVEL_RESPONSE_START);
 		String weatherResponse = "", directionsResponse = "", searchResponse = "", placesResponse = "";
 		
 		final DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 		final DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 		final Document weatherDocument, directionsDocument, searchDocument, placesDocument;
-		
-		try {
-			weatherResponse = eventContext.getMessage().getInvocationProperty("weatherResponse");
-			weatherDocument = docBuilder.parse(new InputSource(new StringReader(weatherResponse)));
-			muleResponse.append("<Weather>").append(documentToXMLString(weatherDocument)).append("</Weather>");
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			muleResponse.append("<Weather>").append(weatherResponse).append("</Weather>");
-		}
-		
+
 		try{
 			directionsResponse = eventContext.getMessage().getInvocationProperty("directionsResponse");
 			directionsDocument = docBuilder.parse(new InputSource(new StringReader(directionsResponse)));	
-			muleResponse.append("<Directions>").append(documentToXMLString(directionsDocument)).append("</Directions>");
+			muleResponse.append(DIRECTIONS_RESPONSE_START).append(documentToXMLString(directionsDocument)).append(DIRECTIONS_RESPONSE_END);
 		}catch(Exception ex){
 			ex.printStackTrace();
-			muleResponse.append("<Directions>").append(directionsResponse).append("</Directions>");
-		}
-		
-		try{
-			searchResponse = eventContext.getMessage().getInvocationProperty("searchResponse");
-			searchDocument = docBuilder.parse(new InputSource(new StringReader(searchResponse)));
-			muleResponse.append("<Search>").append(documentToXMLString(searchDocument)).append("</Search>");
-		}catch(Exception ex){
-			ex.printStackTrace();
-			muleResponse.append("<Search>").append(searchResponse).append("</Search>");
+			muleResponse.append(DIRECTIONS_RESPONSE_START).append(directionsResponse).append(DIRECTIONS_RESPONSE_END);
 		}
 		
 		try{
 			placesResponse = eventContext.getMessage().getInvocationProperty("placesResponse");
 			placesDocument = docBuilder.parse(new InputSource(new StringReader(placesResponse)));
-			muleResponse.append("<Places>").append(documentToXMLString(placesDocument)).append("</Places>");
+			muleResponse.append(PLACES_RESPONSE_START).append(documentToXMLString(placesDocument)).append(PLACES_RESPONSE_END);
 		}catch(Exception ex){
 			ex.printStackTrace();
-			muleResponse.append("<Places>").append(placesResponse).append("</Places>");
+			muleResponse.append(PLACES_RESPONSE_START).append(placesResponse).append(PLACES_RESPONSE_END);
 		}
 		
-		muleResponse.append("</MuleResponse>");
+		try{
+			searchResponse = eventContext.getMessage().getInvocationProperty("searchResponse");
+			searchDocument = docBuilder.parse(new InputSource(new StringReader(searchResponse)));
+			muleResponse.append(SEARCH_RESPONSE_START).append(documentToXMLString(searchDocument)).append(SEARCH_RESPONSE_END);
+		}catch(Exception ex){
+			ex.printStackTrace();
+			muleResponse.append(SEARCH_RESPONSE_START).append(searchResponse).append(SEARCH_RESPONSE_END);
+		}
+		
+		try {
+			weatherResponse = eventContext.getMessage().getInvocationProperty("weatherResponse");
+			weatherDocument = docBuilder.parse(new InputSource(new StringReader(weatherResponse)));
+			muleResponse.append(FORECAST_RESPONSE_START).append(documentToXMLString(weatherDocument)).append(FORECAST_RESPONSE_END);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			muleResponse.append(FORECAST_RESPONSE_START).append(weatherResponse).append(FORECAST_RESPONSE_END);
+		}
+		
+		muleResponse.append(TRAVEL_RESPONSE_END);
 		return muleResponse.toString();
 	}
 
