@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.wscomposition.org/Forecast/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Forecast" targetNamespace="http://www.wscomposition.org/Forecast/">
-   <wsdl:documentation>WSDL for weather forecast web service</wsdl:documentation>
+   <wsdl:documentation>WSDL 1.1 Wrapper for the weather forecast web service provided by OpenWeatherMap</wsdl:documentation>
    <wsdl:message name="Request">
       <wsdl:part name="q" type="xsd:string" />
       <wsdl:part name="mode" type="xsd:string" />
+      <wsdl:part name="cnt" type="xsd:integer"/>
+      <wsdl:part name="units" type="xsd:string"/>
    </wsdl:message>
    <wsdl:message name="Response">
-      <wsdl:part name="for_response" type="xsd:string" />
+      <wsdl:part name="ForecastResponse" type="xsd:string" />
    </wsdl:message>
    <wsdl:portType name="Forecast">
-      <wsdl:documentation>Interface for forecast operation</wsdl:documentation>
-      <wsdl:operation name="forecast">
+      <wsdl:documentation>Interface for the daily forecast operation</wsdl:documentation>
+      <wsdl:operation name="daily">
          <wsdl:input message="tns:Request" name="xmlRequest" />
          <wsdl:output message="tns:Response" name="xmlResponse" />
       </wsdl:operation>
    </wsdl:portType>
    <wsdl:binding name="ForecastHTTP" type="tns:Forecast">
       <http:binding verb="GET" />
-      <wsdl:operation name="forecast">
-         <http:operation location="forecast" />
+      <wsdl:operation name="daily">
+         <http:operation location="daily" />
          <wsdl:input name="xmlRequest">
             <http:urlEncoded />
          </wsdl:input>
          <wsdl:output name="xmlResponse">
-            <mime:content type="text/xml" part="for_response" />
+            <mime:content type="text/xml" part="ForecastResponse" />
          </wsdl:output>
       </wsdl:operation>
    </wsdl:binding>
    <wsdl:service name="Forecast">
       <wsdl:port binding="tns:ForecastHTTP" name="ForecastHTTP">
-         <http:address location="http://api.openweathermap.org/data/2.5" />
+         <http:address location="http://api.openweathermap.org/data/2.5/forecast" />
       </wsdl:port>
    </wsdl:service>
 </wsdl:definitions>

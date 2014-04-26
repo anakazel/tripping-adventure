@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03" xmlns:composer="http://composer" xmlns:dir="http://www.wscomposition.org/Directions/" xmlns:for="http://www.wscomposition.org/Forecast/" xmlns:pla="http://www.wscomposition.org/Places/" xmlns:you="http://www.wscomposition.org/Youtube/">
-   <process name="composer:Composer">
+<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03" xmlns:travel="http://travel" xmlns:dir="http://www.wscomposition.org/Directions/" xmlns:for="http://www.wscomposition.org/Forecast/" xmlns:pla="http://www.wscomposition.org/Places/" xmlns:sea="http://www.wscomposition.org/Search/">
+   <process name="travel:Travel">
       <active>true</active>
       <retired>false</retired>
       <process-events generate="all" />
-      <provide partnerLink="ComposerClient">
-         <service name="composer:ComposerService" port="ComposerPort" />
+      <provide partnerLink="TravelClient">
+         <service name="travel:TravelService" port="TravelPort" />
       </provide>
       <invoke partnerLink="DirectionsPL">
          <service name="dir:Directions" port="DirectionsHTTP" />
@@ -13,11 +13,11 @@
       <invoke partnerLink="PlacesPL">
          <service name="pla:Places" port="PlacesHTTP" />
       </invoke>
-      <invoke partnerLink="YoutubePL">
-         <service name="you:Youtube" port="YoutubeHTTP" />
-      </invoke>
       <invoke partnerLink="ForecastPL">
          <service name="for:Forecast" port="ForecastHTTP" />
+      </invoke>
+       <invoke partnerLink="SearchPL">
+         <service name="sea:Search" port="SearchHTTP" />
       </invoke>
    </process>
 </deploy>

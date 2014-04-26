@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.wscomposition.org/Directions/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Directions" targetNamespace="http://www.wscomposition.org/Directions/">
-   <wsdl:documentation>WSDL for Google Directions web service</wsdl:documentation>
+   <wsdl:documentation>WSDL 1.1 Wrapper for Google Directions REST web service</wsdl:documentation>
    <wsdl:message name="Request">
       <wsdl:part name="origin" type="xsd:string" />
       <wsdl:part name="destination" type="xsd:string" />
+      <wsdl:part name="mode" type="xsd:string" />
       <wsdl:part name="sensor" type="xsd:string" />
    </wsdl:message>
    <wsdl:message name="Response">
-      <wsdl:part name="dir_response" type="xsd:string" />
+      <wsdl:part name="DirectionsResponse" type="xsd:string" />
    </wsdl:message>
    <wsdl:portType name="Directions">
       <wsdl:documentation>Interface for the 2 operations: xml and json</wsdl:documentation>
@@ -29,7 +30,7 @@
             <!-- or replacement -->
          </wsdl:input>
          <wsdl:output name="xmlResponse">
-            <mime:content type="text/xml" part="dir_response" />
+            <mime:content type="text/xml" part="DirectionsResponse" />
          </wsdl:output>
       </wsdl:operation>
       <wsdl:operation name="json">
@@ -39,7 +40,7 @@
          </wsdl:input>
          <wsdl:output name="jsonResponse">
             <!-- if this part is missing, the call will fail -->
-            <mime:content type="application/json" part="dir_response" />
+            <mime:content type="application/json" part="DirectionsResponse" />
          </wsdl:output>
       </wsdl:operation>
    </wsdl:binding>
