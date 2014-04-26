@@ -12,5 +12,6 @@ sleep 3;
 cp -r $WORKSPACE/tripping-adventure/BpelREST/bpelContent/. $ODE_HOME/WEB-INF/processes/BpelREST
 ```
 2.Create a request against the webservice
-
+```
 curl -X POST -d @request.xml http://localhost:8080/ode/processes/Travel?wsdl --header "Content-Type:text/xml"
+```
