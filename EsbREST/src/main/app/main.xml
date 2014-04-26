@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:https="http://www.mulesoft.org/schema/mule/https" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:spring="http://www.springframework.org/schema/beans" xmlns:core="http://www.mulesoft.org/schema/mule/core" xmlns:mulexml="http://www.mulesoft.org/schema/mule/xml" xmlns:jdbc-ee="http://www.mulesoft.org/schema/mule/ee/jdbc" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns:json="http://www.mulesoft.org/schema/mule/json" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="EE-3.4.1" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/current/mule-xml.xsd
+http://www.mulesoft.org/schema/mule/ee/jdbc http://www.mulesoft.org/schema/mule/ee/jdbc/current/mule-jdbc-ee.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd
+http://www.mulesoft.org/schema/mule/https http://www.mulesoft.org/schema/mule/https/current/mule-https.xsd">
+    <flow name="restcomposerFlow1" doc:name="restcomposerFlow1">
+        <http:inbound-endpoint xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" exchange-pattern="request-response" host="localhost" port="8084" doc:name="HTTP"></http:inbound-endpoint>
+        
+        <set-variable xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" variableName="q" value="#[message.inboundProperties['q']]" doc:name="Set Query"></set-variable>
+        <set-variable xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" variableName="origin" value="#[message.inboundProperties['origin']]" doc:name="Set Origin"></set-variable>
+        <set-variable xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" variableName="destination" value="#[message.inboundProperties['destination']]" doc:name="Set Destination"></set-variable>
+        <set-variable xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" variableName="num" value="#[message.inboundProperties['num']]" doc:name="Set number of images to search"></set-variable>
+        
+        <set-variable variableName="key" value="AIzaSyDtfFjvrCJqIThah6qy_TxmljHfChEzHpQ" doc:name="Google Api Key" />
+        <set-variable variableName="sensor" value="false" doc:name="Sensor Value"/>
+        <set-variable variableName="customSearchEngineKey" value="000550344702812047067:mqkgkrhdnii" doc:name="Custom Search Engine Key"/>
+        <set-variable variableName="searchType" value="image" doc:name="Search Engine Type"/>
+        <set-variable variableName="alt" value="Atom" doc:name="Used for XML response"/>
+        <set-variable variableName="mode" value="xml" doc:name="Used for XML response"/>
+        
+        <flow-ref xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" name="weatherFlow" doc:name="Flow Reference"></flow-ref>
+        <flow-ref xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" name="directionsFlow" doc:name="Flow Directions"></flow-ref>
+        <flow-ref xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" name="imageSearchFlow" doc:name="Image Search Flow"></flow-ref>
+        <component xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" class="MuleXmlResponseComponent" doc:name="MuleXmlResponseComponent"></component>
+    </flow>
+    <sub-flow name="weatherFlow" doc:name="weatherFlow">
+        <http:outbound-endpoint xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" exchange-pattern="request-response" method="GET" 
+        	address="http://api.openweathermap.org/data/2.5/weather?q=#[flowVars['q']]&amp;mode=#[flowVars['mode']]" doc:name="HTTP"></http:outbound-endpoint>
+        <object-to-byte-array-transformer xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" doc:name="Object to Byte Array"></object-to-byte-array-transformer>
+        <byte-array-to-object-transformer xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" doc:name="Byte Array to Object"></byte-array-to-object-transformer>
+        <set-variable xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" variableName="weatherResponse" value="#[message.payload]" doc:name="Variable"></set-variable>
+    </sub-flow>
+    <sub-flow name="directionsFlow" doc:name="directionsFlow">
+        <http:outbound-endpoint xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" exchange-pattern="request-response" method="GET" 
+        	address="http://maps.googleapis.com/maps/api/directions/xml?origin=#[flowVars['origin']]&amp;destination=#[flowVars['destination']]&amp;sensor=#[flowVars['sensor']]" doc:name="HTTP"></http:outbound-endpoint>
+        <object-to-byte-array-transformer xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" doc:name="Object to Byte Array"></object-to-byte-array-transformer>
+        <byte-array-to-object-transformer xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" doc:name="Byte Array to Object"></byte-array-to-object-transformer>
+        <set-variable xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" variableName="directionsResponse" value="#[message.payload]" doc:name="Variable"></set-variable>
+        <set-variable xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" variableName="latitude" value="#[xpath('string(//leg/end_location/lat)')]" doc:name="Variable"></set-variable>
+        <set-variable xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" variableName="longitude" value="#[xpath('string(//leg/end_location/lng)')]" doc:name="Variable"></set-variable>
+         
+        <https:outbound-endpoint xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" exchange-pattern="request-response" method="GET" 
+        	address="https://maps.googleapis.com/maps/api/place/nearbysearch/xml?location=#[flowVars['latitude']],#[flowVars['longitude']]&amp;radius=1000&amp;types=food&amp;key=AIzaSyDtfFjvrCJqIThah6qy_TxmljHfChEzHpQ&amp;sensor=false" doc:name="HTTP"></https:outbound-endpoint>
+        <object-to-byte-array-transformer doc:name="Object to Byte Array"/>
+        <byte-array-to-object-transformer doc:name="Byte Array to Object"/>
+        <set-variable xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" variableName="placesResponse" value="#[message.payload]" doc:name="Variable"></set-variable>
+    </sub-flow>
+    <sub-flow name="imageSearchFlow" doc:name="imageSearchFlow">
+        <https:outbound-endpoint xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" exchange-pattern="request-response" method="GET" 
+        	address="https://www.googleapis.com/customsearch/v1?q=#[flowVars['q']]&amp;cx=#[flowVars['customSearchEngineKey']]&amp;searchType=#[flowVars['searchType']]&amp;alt=#[flowVars['alt']]&amp;key=#[flowVars['key']]&amp;num=#[flowVars['num']]" doc:name="HTTP"></https:outbound-endpoint>
+        <object-to-byte-array-transformer xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" doc:name="Object to Byte Array"></object-to-byte-array-transformer>
+        <byte-array-to-object-transformer xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" doc:name="Byte Array to Object"></byte-array-to-object-transformer>
+        <set-variable xmlns:jdbc="http://www.mulesoft.org/schema/mule/jdbc" variableName="searchResponse" value="#[message.payload]" doc:name="Variable"></set-variable>
+    </sub-flow>
+</mule>
