@@ -1,0 +1,20 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+   <soapenv:Body>
+      <odens:getInfoResponse xmlns:odens="http://travel">
+         <TravelResponse>
+            <DirectionsResponse>
+              ...
+            </DirectionsResponse>
+            <PlacesResponse>
+              ...
+            </PlacesResponse>
+            <ForecastResponse>
+             ...
+            </ForecastResponse>
+            <SearchResponse>
+              ...
+            </SearchResponse>
+         </TravelResponse>
+      </odens:getInfoResponse>
+   </soapenv:Body>
+</soapenv:Envelope>

@@ -1,0 +1,15 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:trav="http://travel">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <trav:getInfo>
+         <origin>Iasi</origin>
+         <destination>Bacau</destination>
+         <travelMode>DRIVING</travelMode>
+         <objectiveRadius>1000</objectiveRadius>
+         <objectiveTypes>food</objectiveTypes>
+         <forecastUnits>imperial</forecastUnits>
+         <forecastDays>3</forecastDays>
+         <images>3</images>
+      </trav:getInfo>
+   </soapenv:Body>
+</soapenv:Envelope>
