@@ -1,5 +1,6 @@
 package soapwrapper.util;
 
+import com.sun.xml.internal.messaging.saaj.soap.impl.ElementImpl;
 import com.sun.xml.internal.messaging.saaj.soap.ver1_1.BodyElement1_1Impl;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -18,19 +19,15 @@ import java.util.Iterator;
  */
 public enum SOAPUtils {
     ;
-    private static MessageFactory messageFactory;
+    private static MessageFactory messageFactory = null;
     private static DocumentBuilderFactory docFactory;
-    private static DocumentBuilder docBuilder;
 
     // factory objects
     static{
         try {
             messageFactory = MessageFactory.newInstance();
             docFactory = DocumentBuilderFactory.newInstance();
-            docBuilder = docFactory.newDocumentBuilder();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SOAPException e) {
+        }catch (SOAPException e) {
             e.printStackTrace();
         }
     }
@@ -79,15 +76,19 @@ public enum SOAPUtils {
      * Remove the default return element and add a SOAPElement in the SOAPBody
      * @param soapBody
      */
-    public static final void transformSOAPBody(final SOAPBody soapBody, final SOAPElement soapElement) throws SOAPException {
+    public static final void transformSOAPBody(final SOAPBody soapBody, final SOAPElement soapElement, final String nodeName) throws SOAPException {
         // remove return element
+        /*
         final Iterator<Node> it = soapBody.getChildElements();
         final Node node = it.next();
         final org.w3c.dom.Node returnNode = node.getChildNodes().item(0);
         node.removeChild(returnNode);
+        */
 
         // add the XML payload as an element
-        final BodyElement1_1Impl response = (BodyElement1_1Impl) soapBody.getChildElements().next();
-        response.addChildElement(soapElement);
+        // default behaviour
+//        final ElementImpl element = (ElementImpl) soapBody.getElementsByTagName("return").item(0);
+        final ElementImpl element = (ElementImpl) soapBody.getElementsByTagName(nodeName).item(0);
+        element.addChildElement(soapElement);
     }
 }

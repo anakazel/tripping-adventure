@@ -9,11 +9,11 @@ import javax.jws.WebService;
 /**
  * Created by AlexG on 4/27/14.
  */
-@WebService(portName = "PlacesPort", serviceName = "Places", endpointInterface = "soapwrapper.Places", targetNamespace = "http://wscomposition.org/")
-@HandlerChain(file = "placesHandler.xml")
-public class PlacesImpl implements Places {
+@WebService(portName = "PlacesSOAP", serviceName = "Places", endpointInterface = "soapwrapper.Places", targetNamespace = "http://www.wscomposition.org/Places/")
+@HandlerChain(file = "/config/placesHandler.xml")
+public final class PlacesImpl implements Places {
     @Override
-    public String getPlaces(String location, String radius, String types) {
+    public String getPlaces(String location, Integer radius, String types) {
         return "";
     }
 }

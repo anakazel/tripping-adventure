@@ -19,7 +19,6 @@ public class Publisher {
     public static String FORECAST_URL;
     public static String CUSTOMSEARCH_URL;
     public static String PLACES_URL;
-
     public static String API_KEY;
     public static String DIRECTIONS_SENSOR;
     public static String FORECAST_MODE;
@@ -58,7 +57,7 @@ public class Publisher {
                     "\nDIRECTIONS_SENSOR=" + DIRECTIONS_SENSOR +
                     "\nFORECAST_MODE=" + FORECAST_MODE +
                     "\nCUSTOMSEARCH_CX=" + CUSTOMSEARCH_CX +
-                    "\nCUSTOMSEARCH_SEARCH_TYPE="+CUSTOMSEARCH_SEARCH_TYPE +
+                    "\nCUSTOMSEARCH_SEARCH_TYPE=" + CUSTOMSEARCH_SEARCH_TYPE +
                     "\nCUSTOMSEARCH_ALT=" + CUSTOMSEARCH_ALT);
 
             publishServices();
@@ -70,7 +69,9 @@ public class Publisher {
     }
 
     private static final void publishServices(){
-        Endpoint.publish("http://localhost:" + DIRECTIONS_PORT + "/soapwrapper/Directions", new DirectionsImpl());
+//        ExecutorService pool = Executors.newFixedThreadPool(10);
+        Endpoint endpoint = Endpoint.publish("http://localhost:" + DIRECTIONS_PORT + "/soapwrapper/Directions", new DirectionsImpl());
+//        endpoint.setExecutor(pool);
         Endpoint.publish("http://localhost:" + FORECAST_PORT + "/soapwrapper/Forecast", new ForecastImpl());
         Endpoint.publish("http://localhost:" + PLACES_PORT + "/soapwrapper/Places", new PlacesImpl());
         Endpoint.publish("http://localhost:" + CUSTOMSEARCH_PORT + "/soapwrapper/Search", new SearchImpl());

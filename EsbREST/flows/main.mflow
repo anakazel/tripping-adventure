@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mule-configuration xmlns="http://www.mulesoft.com/tooling/messageflow" name="main">
-    <flow SubFlow="false" name="restcomposerFlow1" type="http://www.mulesoft.org/schema/mule/core/flow" entity-id="1e52e0c8-5e9b-4509-827c-5ce4c7acfba3">
+    <flow SubFlow="false" name="restcomposerFlow1" type="http://www.mulesoft.org/schema/mule/core/flow" entity-id="a51154c9-0c92-4ae5-95c7-5223fa76470b">
         <properties>
             <property name="initialState"/>
             <property name="processingStrategy2"/>
@@ -205,7 +205,7 @@
             </pattern>
         </lane>
     </flow>
-    <flow SubFlow="true" name="weatherFlow" type="http://www.mulesoft.org/schema/mule/core/subflow" entity-id="b4d01162-2f61-4237-82f4-092b912ececa">
+    <flow SubFlow="true" name="weatherFlow" type="http://www.mulesoft.org/schema/mule/core/subflow" entity-id="b03a502e-e08e-4f01-8ab5-ffe1445323aa">
         <properties>
             <property name="initialState"/>
             <property name="processingStrategy2"/>
@@ -276,7 +276,7 @@
             </pattern>
         </lane>
     </flow>
-    <flow SubFlow="true" name="directionsFlow" type="http://www.mulesoft.org/schema/mule/core/subflow" entity-id="feda13cd-afab-4be5-8313-36535391d070">
+    <flow SubFlow="true" name="directionsFlow" type="http://www.mulesoft.org/schema/mule/core/subflow" entity-id="da905974-fbba-46fa-a1f7-274948aa91ea">
         <properties>
             <property name="initialState"/>
             <property name="processingStrategy2"/>
@@ -424,7 +424,7 @@
             </pattern>
         </lane>
     </flow>
-    <flow SubFlow="true" name="imageSearchFlow" type="http://www.mulesoft.org/schema/mule/core/subflow" entity-id="bd7f6ca7-0339-49aa-8667-d46520a372ce">
+    <flow SubFlow="true" name="imageSearchFlow" type="http://www.mulesoft.org/schema/mule/core/subflow" entity-id="e1fd2455-aa06-4426-805d-1e6410846c31">
         <properties>
             <property name="initialState"/>
             <property name="processingStrategy2"/>

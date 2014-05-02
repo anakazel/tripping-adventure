@@ -11,15 +11,15 @@ import java.util.*;
 /**
  * Created by AlexG on 4/26/14.
  */
-public class RestHttpClient {
+public final class RestHttpClient {
 
-    private String baseUrl;
+    private final String baseUrl;
 
-    public RestHttpClient(String baseUrl){
+    public RestHttpClient(final String baseUrl){
         this.baseUrl = baseUrl;
     }
 
-    public String sendRequest(Map<String, String> params){
+    public final String sendRequest(final Map<String, String> params){
             String response = null;
             if(params == null || params.size() == 0){
                 return response;
