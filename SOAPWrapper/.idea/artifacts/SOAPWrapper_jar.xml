@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="SOAPWrapper:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/SOAPWrapper_jar</output-path>
-    <root id="archive" name="SOAPWrapper.jar">
-      <element id="module-output" name="SOAPWrapper" />
-    </root>
-  </artifact>
-</component>
