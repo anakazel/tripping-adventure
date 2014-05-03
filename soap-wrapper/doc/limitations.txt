@@ -1,0 +1,6 @@
+1. For CSE users, the API provides 100 search queries per day for free.
+2. Googleplaces: Applications that submit requests with an API key are allowed 1000 requests per 24 hour period.
+3. Directions: 2,500 directions requests per 24 hour period.
+4. Openweather
+Calls per minute 	From 1 to 30.000
+Calls per day 	    From 1 to 40 mil

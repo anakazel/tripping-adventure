@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:for="http://www.wscomposition.org/Forecast/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <for:ForecastRequest>
+         <q></q>
+         <cnt></cnt>
+         <units></units>
+      </for:ForecastRequest>
+   </soapenv:Body>
+</soapenv:Envelope>

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="SOAPWrapper">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/out/artifacts/SOAPWrapper_jar/SOAPWrapper.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

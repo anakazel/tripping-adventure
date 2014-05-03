@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.wscomposition.org/Places/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Places" targetNamespace="http://www.wscomposition.org/Places/">
+   <wsdl:documentation>WSDL 1.1 Wrapper for the Google Places web service</wsdl:documentation>
+   <wsdl:message name="Request">
+      <wsdl:part name="location" type="xsd:string" />
+      <wsdl:part name="radius" type="xsd:integer" />
+      <wsdl:part name="types" type="xsd:string" />
+      <wsdl:part name="sensor" type="xsd:string" />
+      <wsdl:part name="key" type="xsd:string" />
+      <!-- a developer's key that can be used: AIzaSyDtfFjvrCJqIThah6qy_TxmljHfChEzHpQ -->
+   </wsdl:message>
+   <wsdl:message name="Response">
+      <wsdl:part name="PlacesResponse" type="xsd:string" />
+   </wsdl:message>
+   <wsdl:portType name="Places">
+      <wsdl:documentation>Interface for the 2 operations: xml and json</wsdl:documentation>
+      <wsdl:operation name="xml">
+         <wsdl:input message="tns:Request" name="xmlRequest" />
+         <wsdl:output message="tns:Response" name="xmlResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="json">
+         <wsdl:input message="tns:Request" name="jsonRequest" />
+         <wsdl:output message="tns:Response" name="jsonResponse" />
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="PlacesHTTP" type="tns:Places">
+      <http:binding verb="GET" />
+      <wsdl:operation name="xml">
+         <http:operation location="xml" />
+         <wsdl:input name="xmlRequest">
+            <http:urlEncoded />
+         </wsdl:input>
+         <wsdl:output name="xmlResponse">
+            <mime:content type="text/xml" part="PlacesResponse" />
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="json">
+         <http:operation location="json" />
+         <wsdl:input name="jsonRequest">
+            <http:urlEncoded />
+         </wsdl:input>
+         <wsdl:output name="jsonResponse">
+            <!-- if this part is missing, the call will fail -->
+            <mime:content type="application/json" part="PlacesResponse" />
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="Places">
+      <wsdl:port binding="tns:PlacesHTTP" name="PlacesHTTP">
+         <http:address location="https://maps.googleapis.com/maps/api/place/nearbysearch" />
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:dir="http://www.wscomposition.org/Directions/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <dir:DirectionsRequest>
+         <origin></origin>
+         <destination></destination>
+         <mode></mode>
+      </dir:DirectionsRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
