@@ -7,9 +7,9 @@ Web services composition techniques - PoC
 
 1.Deploy the BPEL project to Apache Ode
 ```
-rm -rf $ODE_HOME/WEB-INF/processes/BpelREST/;
+rm -rf $ODE_HOME/WEB-INF/processes/ode-bpel-rest/;
 sleep 3; 
-cp -r $WORKSPACE/tripping-adventure/BpelREST/bpelContent/. $ODE_HOME/WEB-INF/processes/BpelREST
+cp -r $WORKSPACE/tripping-adventure/ode-bpel-rest/bpelContent/. $ODE_HOME/WEB-INF/processes/ode-bpel-rest
 ```
 2.Create a POST request against the webservice
 ```
