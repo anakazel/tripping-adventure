@@ -3,7 +3,7 @@ tripping-adventure
 
 Web services composition techniques - PoC
 
-#####BpelREST usage:
+#####ode-bpel-rest usage:
 
 1.Deploy the BPEL project to Apache Ode
 ```
@@ -15,7 +15,7 @@ cp -r $WORKSPACE/tripping-adventure/BpelREST/bpelContent/. $ODE_HOME/WEB-INF/pro
 ```
 curl -X POST -d @request.xml http://localhost:8080/ode/processes/Travel?wsdl --header "Content-Type:text/xml"
 ```
-#####EsbREST usage:
+#####mule-esb-rest usage:
 
 1. Deploy the project using MuleStudio
 2. Create a GET request: 
