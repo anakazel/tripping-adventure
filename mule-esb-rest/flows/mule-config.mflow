@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mule-configuration xmlns="http://www.mulesoft.com/tooling/messageflow" name="mule-config">
-    <flow SubFlow="false" name="restcomposerFlow1" type="http://www.mulesoft.org/schema/mule/core/flow" entity-id="a51154c9-0c92-4ae5-95c7-5223fa76470b">
+    <flow SubFlow="false" name="restcomposerFlow1" type="http://www.mulesoft.org/schema/mule/core/flow" entity-id="67880c36-bc95-45fb-9555-47dda971aafc">
         <properties>
             <property name="initialState"/>
             <property name="processingStrategy2"/>
@@ -178,7 +178,7 @@
             <pattern name="Flow Reference" type="http://www.mulesoft.org/schema/mule/core/flow-ref" entity-id="Flow Reference#1">
                 <graphicalData x="0" y="0" width="0" height="0"/>
                 <properties>
-                    <property name="name" value="weatherFlow"/>
+                    <property name="name" value="forecastFlow"/>
                     <property name="auxiliary;index" value="18"/>
                 </properties>
             </pattern>
@@ -196,16 +196,17 @@
                     <property name="auxiliary;index" value="20"/>
                 </properties>
             </pattern>
-            <pattern name="MuleXmlResponseComponent" type="http://www.mulesoft.org/schema/mule/core/component" entity-id="Java#1">
+            <pattern name="Set Payload" type="http://www.mulesoft.org/schema/mule/core/set-payload" entity-id="Set Payload#1">
                 <graphicalData x="0" y="0" width="0" height="0"/>
                 <properties>
-                    <property name="class" value="MuleXmlResponseComponent"/>
+                    <property name="value" value="&lt;TravelResponse&gt;&#xA;        &#x9;&#x9;&lt;DirectionsResponse&gt;#[flowVars['directionsResponse']]&lt;/DirectionsResponse&gt;&#xA;        &#x9;&#x9;&lt;PlacesResponse&gt;#[flowVars['placesResponse']]&lt;/PlacesResponse&gt;&#xA;        &#x9;&#x9;&lt;SearchResponse&gt;#[flowVars['searchResponse']]&lt;/SearchResponse&gt;&#xA;            &#x9;&lt;ForecastResponse&gt;#[flowVars['forecastResponse']]&lt;/ForecastResponse&gt;&#xA;            &lt;/TravelResponse&gt;"/>
                     <property name="auxiliary;index" value="21"/>
+                    <property name="mimeType" value="text/xml"/>
                 </properties>
             </pattern>
         </lane>
     </flow>
-    <flow SubFlow="true" name="weatherFlow" type="http://www.mulesoft.org/schema/mule/core/subflow" entity-id="b03a502e-e08e-4f01-8ab5-ffe1445323aa">
+    <flow SubFlow="true" name="forecastFlow" type="http://www.mulesoft.org/schema/mule/core/subflow" entity-id="532a35c4-ae07-425c-9927-c1507b2fc30b">
         <properties>
             <property name="initialState"/>
             <property name="processingStrategy2"/>
@@ -268,15 +269,15 @@
             <pattern name="Variable" type="http://www.mulesoft.org/schema/mule/core/variable-transformer" entity-id="Variable#16">
                 <graphicalData x="0" y="0" width="0" height="0"/>
                 <properties>
-                    <property name="variableName" value="weatherResponse"/>
-                    <property name="value" value="#[message.payload]"/>
+                    <property name="variableName" value="forecastResponse"/>
+                    <property name="value" value="#[message.payload.substring(message.payload.indexOf('\n') + 1)]"/>
                     <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/core/set-variable"/>
                     <property name="auxiliary;index" value="26"/>
                 </properties>
             </pattern>
         </lane>
     </flow>
-    <flow SubFlow="true" name="directionsFlow" type="http://www.mulesoft.org/schema/mule/core/subflow" entity-id="da905974-fbba-46fa-a1f7-274948aa91ea">
+    <flow SubFlow="true" name="directionsFlow" type="http://www.mulesoft.org/schema/mule/core/subflow" entity-id="954e1f3d-e9dc-4dbc-afbf-fafa86966b2c">
         <properties>
             <property name="initialState"/>
             <property name="processingStrategy2"/>
@@ -340,7 +341,7 @@
                 <graphicalData x="0" y="0" width="0" height="0"/>
                 <properties>
                     <property name="variableName" value="directionsResponse"/>
-                    <property name="value" value="#[message.payload]"/>
+                    <property name="value" value="#[message.payload.substring(message.payload.indexOf('\n') + 1)]"/>
                     <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/core/set-variable"/>
                     <property name="auxiliary;index" value="31"/>
                 </properties>
@@ -374,10 +375,10 @@
                     <property name="encoding"/>
                     <property name="path"/>
                     <property name="responseTransformer-refs"/>
+                    <property name="auxiliary;index" value="34"/>
                     <property name="connector-ref-outbound"/>
                     <property name="mimeType"/>
                     <property name="responseTimeout"/>
-                    <property name="auxiliary;index" value="34"/>
                     <property name="host"/>
                     <property name="businessEventsLabel"/>
                     <property name="followRedirects"/>
@@ -417,14 +418,14 @@
                 <graphicalData x="0" y="0" width="0" height="0"/>
                 <properties>
                     <property name="variableName" value="placesResponse"/>
-                    <property name="value" value="#[message.payload]"/>
+                    <property name="value" value="#[message.payload.substring(message.payload.indexOf('\n') + 1)]"/>
                     <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/core/set-variable"/>
                     <property name="auxiliary;index" value="37"/>
                 </properties>
             </pattern>
         </lane>
     </flow>
-    <flow SubFlow="true" name="imageSearchFlow" type="http://www.mulesoft.org/schema/mule/core/subflow" entity-id="e1fd2455-aa06-4426-805d-1e6410846c31">
+    <flow SubFlow="true" name="imageSearchFlow" type="http://www.mulesoft.org/schema/mule/core/subflow" entity-id="eb6a8f60-bcdd-487c-a9e2-99877b743d16">
         <properties>
             <property name="initialState"/>
             <property name="processingStrategy2"/>
@@ -446,10 +447,10 @@
                     <property name="encoding"/>
                     <property name="path"/>
                     <property name="responseTransformer-refs"/>
+                    <property name="auxiliary;index" value="39"/>
                     <property name="connector-ref-outbound"/>
                     <property name="mimeType"/>
                     <property name="responseTimeout"/>
-                    <property name="auxiliary;index" value="39"/>
                     <property name="host"/>
                     <property name="businessEventsLabel"/>
                     <property name="followRedirects"/>
@@ -489,7 +490,7 @@
                 <graphicalData x="0" y="0" width="0" height="0"/>
                 <properties>
                     <property name="variableName" value="searchResponse"/>
-                    <property name="value" value="#[message.payload]"/>
+                    <property name="value" value="#[message.payload.substring(message.payload.indexOf('\n') + 1)]"/>
                     <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/core/set-variable"/>
                     <property name="auxiliary;index" value="42"/>
                 </properties>
