@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable" 
+   xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable" 
+   xmlns:add="http://www.wscomposition.org/Addition/" 
+   xmlns:fn="http://www.w3.org/2005/xpath-functions" 
+   xmlns:ode="http://www.apache.org/ode/type/extension" 
+   xmlns:tns="http://expression" 
+   xmlns:types="http://ode/bpel/types" 
+   xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+   name="Expression" 
+   targetNamespace="http://expression" 
+   suppressJoinFailure="yes" 
+   queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0" 
+   expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0">
+   <!-- Import the client WSDL -->
+   <import location="ExpressionArtifacts.wsdl" namespace="http://expression" importType="http://schemas.xmlsoap.org/wsdl/" />
+   <!-- ================================================================= -->
+   <!-- PARTNERLINKS -->
+   <!-- List of services participating in this BPEL process -->
+   <!-- ================================================================= -->
+   <partnerLinks>
+      <!-- The 'client' role represents the requester of this service. -->
+      <partnerLink name="ExpressionClient" partnerLinkType="tns:Expression" myRole="ExpressionProvider" />
+      <partnerLink name="AdditionPL" partnerLinkType="tns:AdditionPLT" partnerRole="AdditionRole" />
+   </partnerLinks>
+   <!-- ================================================================= -->
+   <!-- VARIABLES -->
+   <!-- List of messages and XML documents used within this BPEL process -->
+   <!-- ================================================================= -->
+   <variables>
+      <variable name="ExpressionInput" messageType="tns:ExpressionRequestMessage" />
+      <variable name="ExpressionOutput" messageType="tns:ExpressionResponseMessage" />
+      <variable name="AdditionRequest" messageType="add:AddRequest" />
+      <variable name="AdditionResponse" messageType="add:AddRequestResponse" />
+   </variables>
+   <!-- ================================================================= -->
+   <!-- ORCHESTRATION LOGIC -->
+   <!-- Set of activities coordinating the flow of messages across the -->
+   <!-- services integrated within this business process -->
+   <!-- ================================================================= -->
+   <sequence name="MainSequence">
+      <!-- 1. Get the response from directions service -->
+      <!-- Receive input from requester. Note: This maps to operation directionsefined 
+         in Travel.wsdl -->
+      <!-- Generate reply to synchronous request -->
+      <receive name="InputReceive" partnerLink="ExpressionClient" portType="tns:Expression" operation="getResult" variable="ExpressionInput" createInstance="yes" />
+      <assign validate="no" name="InitialAssign">
+         <copy>
+            <from part="n" variable="ExpressionInput" />
+            <to part="firstParam" variable="AdditionRequest" />
+         </copy>
+         <copy>
+            <from part="m" variable="ExpressionInput" />
+            <to part="secondParam" variable="AdditionRequest" />
+         </copy>
+      </assign>
+
+      <invoke name="InvokeAddition" partnerLink="AdditionPL" operation="AddRequest" portType="add:AdditionServiceImpl" inputVariable="AdditionRequest" outputVariable="AdditionResponse" />
+
+      <!-- ================================================================= -->
+      <!-- RESPONSES CONCATENATION -->
+      <!-- ================================================================= -->
+      <sequence name="MessageCompositionSequence">
+         <assign validate="no" name="FinalAssign">
+            <copy>
+               <from>
+                  <!-- Initialization so the insert-after will not fail -->
+                  <literal>'2.14'</literal>
+               </from>
+               <to>$ExpressionOutput.ExpressionResponse</to>
+            </copy>
+         </assign>
+      </sequence>
+      <!-- Final bpel process reply -->
+      <reply name="ReplyOutput" partnerLink="ExpressionClient" portType="tns:Expression" operation="getResult" variable="ExpressionOutput" />
+   </sequence>
+</process>

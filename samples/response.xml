@@ -1,0 +1,11 @@
+<S:Envelope xmlns:S="http://schemas.xmlsoap.org/soap/envelope/">
+   <S:Body>
+      <ns2:AddRequestResponse xmlns:ns2="http://www.wscomposition.org/AdditionService/">
+         <return>
+            <elapsedTime>2541</elapsedTime>
+            <operationId>21718098673289</operationId>
+            <result>2.0</result>
+         </return>
+      </ns2:AddRequestResponse>
+   </S:Body>
+</S:Envelope>

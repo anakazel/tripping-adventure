@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="geometric-progression-service:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/geometric_progression_service_jar</output-path>
+    <root id="archive" name="geometric-progression-service.jar">
+      <element id="module-output" name="geometric-progression-service" />
+    </root>
+  </artifact>
+</component>

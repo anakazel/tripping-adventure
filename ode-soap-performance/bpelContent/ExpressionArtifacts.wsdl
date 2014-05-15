@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" 
+   xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" 
+   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+   xmlns:tns="http://expression" 
+   xmlns:types="http://ode/bpel/types" 
+   xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" 
+   xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+   xmlns:addwsdl="http://www.wscomposition.org/Addition/" 
+   name="Expression" 
+   targetNamespace="http://expression">
+   <documentation>Expression web service</documentation>
+   <plnk:partnerLinkType name="AdditionPLT">
+      <plnk:role name="AdditionRole" portType="addwsdl:AdditionServiceImpl" />
+   </plnk:partnerLinkType>
+
+   <import location="Addition.wsdl" namespace="http://www.wscomposition.org/Addition/" />
+
+   <message name="ExpressionRequestMessage">
+      <part name="m" type="xsd:double" />
+      <part name="n" type="xsd:double" />
+      <part name="p" type="xsd:double" />
+   </message>
+   <message name="ExpressionResponseMessage">
+      <part name="ExpressionResponse" type="xsd:double" />
+   </message>
+   <portType name="Expression">
+      <operation name="getResult">
+         <input message="tns:ExpressionRequestMessage" />
+         <output message="tns:ExpressionResponseMessage" />
+      </operation>
+   </portType>
+   <plnk:partnerLinkType name="Expression">
+      <plnk:role name="ExpressionProvider" portType="tns:Expression" />
+   </plnk:partnerLinkType>
+   <!-- maybe switch to document literal -->
+   <binding name="ExpressionBinding" type="tns:Expression">
+      <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+      <operation name="getResult">
+         <soap:operation soapAction="http://expression/getResult" />
+         <input>
+            <soap:body use="literal" namespace="http://expression" />
+         </input>
+         <output>
+            <soap:body use="literal" namespace="http://expression" />
+         </output>
+      </operation>
+   </binding>
+   <service name="ExpressionService">
+      <port binding="tns:ExpressionBinding" name="ExpressionPort">
+         <soap:address location="http://localhost:8080/ode/processes/Expression" />
+      </port>
+   </service>
+</definitions>
