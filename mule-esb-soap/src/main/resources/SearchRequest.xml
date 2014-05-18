@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:sear="http://www.wscomposition.org/Search/">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <sear:SearchRequest>
+            <q></q>
+            <num></num>
+        </sear:SearchRequest>
+    </soapenv:Body>
+</soapenv:Envelope>

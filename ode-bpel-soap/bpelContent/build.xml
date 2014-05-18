@@ -1,0 +1,11 @@
+<project name="ode-bpel-soap" basedir=".">
+    <!-- set global properties for this build -->
+    <property name="ODE_HOME" value="/home/alexg/Tools/TomcatOde/webapps/ode"/>
+    <target name="deploy" description="Deploy to ODE">
+        <delete dir="${ODE_HOME}/WEB-INF/processes/ode-bpel-soap"/>
+        <sleep seconds="3"/>
+        <copy todir="${ODE_HOME}/WEB-INF/processes/ode-bpel-soap">
+            <fileset dir="." includes="**"/>
+        </copy>
+    </target>
+</project>

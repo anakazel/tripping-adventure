@@ -1,54 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://schemas.xmlsoap.org/wsdl/" 
-   xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype" 
-   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
-   xmlns:tns="http://expression" 
-   xmlns:types="http://ode/bpel/types" 
-   xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop" 
-   xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-   xmlns:addwsdl="http://www.wscomposition.org/Addition/" 
-   name="Expression" 
-   targetNamespace="http://expression">
-   <documentation>Expression web service</documentation>
-   <plnk:partnerLinkType name="AdditionPLT">
-      <plnk:role name="AdditionRole" portType="addwsdl:AdditionServiceImpl" />
-   </plnk:partnerLinkType>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:tns="http://expression"
+             xmlns:types="http://ode/bpel/types"
+             xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:addwsdl="http://www.wscomposition.org/Addition/"
+             xmlns:ariwsdl="http://www.wscomposition.org/ArithmeticProgression/"
+             xmlns:csvwsdl="http://www.wscomposition.org/CSVFile/"
+             xmlns:expwsdl="http://www.wscomposition.org/Exponential/"
+             xmlns:geowsdl="http://www.wscomposition.org/GeometricProgression/"
+             xmlns:mulwsdl="http://www.wscomposition.org/Multiplication/"
+             xmlns:triwsdl="http://www.wscomposition.org/Trigonometrical/"
+             name="Expression"
+             targetNamespace="http://expression">
+    <documentation>Expression web service</documentation>
 
-   <import location="Addition.wsdl" namespace="http://www.wscomposition.org/Addition/" />
+    <plnk:partnerLinkType name="AdditionPLT">
+        <plnk:role name="AdditionRole" portType="addwsdl:AdditionServiceImpl" />
+    </plnk:partnerLinkType>
+    <plnk:partnerLinkType name="ArithmeticProgressionPLT">
+        <plnk:role name="ArithmeticProgressionRole" portType="ariwsdl:ArithmeticProgressionServiceImpl" />
+    </plnk:partnerLinkType>
+    <plnk:partnerLinkType name="CSVFilePLT">
+        <plnk:role name="CSVFileRole" portType="csvwsdl:CSVFileServiceImpl" />
+    </plnk:partnerLinkType>
+    <plnk:partnerLinkType name="ExponentialPLT">
+        <plnk:role name="ExponentialRole" portType="expwsdl:ExponentialServiceImpl" />
+    </plnk:partnerLinkType>
+    <plnk:partnerLinkType name="GeometricProgressionPLT">
+        <plnk:role name="GeometricProgressionRole" portType="geowsdl:GeometricProgressionServiceImpl" />
+    </plnk:partnerLinkType>
+    <plnk:partnerLinkType name="MultiplicationPLT">
+        <plnk:role name="MultiplicationRole" portType="mulwsdl:MultiplicationServiceImpl" />
+    </plnk:partnerLinkType>
+    <plnk:partnerLinkType name="TrigonometricalPLT">
+        <plnk:role name="TrigonometricalRole" portType="triwsdl:TrigonometricalServiceImpl" />
+    </plnk:partnerLinkType>
 
-   <message name="ExpressionRequestMessage">
-      <part name="m" type="xsd:double" />
-      <part name="n" type="xsd:double" />
-      <part name="p" type="xsd:double" />
-   </message>
-   <message name="ExpressionResponseMessage">
-      <part name="ExpressionResponse" type="xsd:double" />
-   </message>
-   <portType name="Expression">
-      <operation name="getResult">
-         <input message="tns:ExpressionRequestMessage" />
-         <output message="tns:ExpressionResponseMessage" />
-      </operation>
-   </portType>
-   <plnk:partnerLinkType name="Expression">
-      <plnk:role name="ExpressionProvider" portType="tns:Expression" />
-   </plnk:partnerLinkType>
-   <!-- maybe switch to document literal -->
-   <binding name="ExpressionBinding" type="tns:Expression">
-      <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
-      <operation name="getResult">
-         <soap:operation soapAction="http://expression/getResult" />
-         <input>
-            <soap:body use="literal" namespace="http://expression" />
-         </input>
-         <output>
-            <soap:body use="literal" namespace="http://expression" />
-         </output>
-      </operation>
-   </binding>
-   <service name="ExpressionService">
-      <port binding="tns:ExpressionBinding" name="ExpressionPort">
-         <soap:address location="http://localhost:8080/ode/processes/Expression" />
-      </port>
-   </service>
+    <import location="Addition.wsdl" namespace="http://www.wscomposition.org/Addition/" />
+    <import location="ArithmeticProgression.wsdl" namespace="http://www.wscomposition.org/ArithmeticProgression/" />
+    <import location="CSVFile.wsdl" namespace="http://www.wscomposition.org/CSVFile/" />
+    <import location="Exponential.wsdl" namespace="http://www.wscomposition.org/Exponential/" />
+    <import location="GeometricProgression.wsdl" namespace="http://www.wscomposition.org/GeometricProgression/" />
+    <import location="Multiplication.wsdl" namespace="http://www.wscomposition.org/Multiplication/" />
+    <import location="Trigonometrical.wsdl" namespace="http://www.wscomposition.org/Trigonometrical/" />
+
+    <message name="ExpressionRequestMessage">
+        <part name="m" type="xsd:double" />
+        <part name="n" type="xsd:double" />
+        <part name="p" type="xsd:double" />
+    </message>
+    <message name="ExpressionResponseMessage">
+        <part name="ExpressionResponse" type="xsd:double" />
+    </message>
+    <portType name="Expression">
+        <operation name="getResult">
+            <input message="tns:ExpressionRequestMessage" />
+            <output message="tns:ExpressionResponseMessage" />
+        </operation>
+    </portType>
+    <plnk:partnerLinkType name="Expression">
+        <plnk:role name="ExpressionProvider" portType="tns:Expression" />
+    </plnk:partnerLinkType>
+    <!-- maybe switch to document literal -->
+    <binding name="ExpressionBinding" type="tns:Expression">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+        <operation name="getResult">
+            <soap:operation soapAction="http://expression/getResult" />
+            <input>
+                <soap:body use="literal" namespace="http://expression" />
+            </input>
+            <output>
+                <soap:body use="literal" namespace="http://expression" />
+            </output>
+        </operation>
+    </binding>
+    <service name="ExpressionService">
+        <port binding="tns:ExpressionBinding" name="ExpressionPort">
+            <soap:address location="http://localhost:8080/ode/processes/Expression" />
+        </port>
+    </service>
 </definitions>

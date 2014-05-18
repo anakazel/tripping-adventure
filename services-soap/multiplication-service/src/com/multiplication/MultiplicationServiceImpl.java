@@ -9,7 +9,7 @@ import javax.jws.soap.SOAPBinding;
 /**
  * Created by alexg on 10.05.2014.
  */
-@WebService(name = "MultiplicationSOAP", serviceName = "Multiplication", targetNamespace = "http://wwww.wscomposition.org/Multiplication/")
+@WebService(portName = "MultiplicationSOAP", serviceName = "Multiplication", targetNamespace = "http://www.wscomposition.org/Multiplication/")
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public final class MultiplicationServiceImpl {
     @WebMethod(operationName = "MultiplyRequest")

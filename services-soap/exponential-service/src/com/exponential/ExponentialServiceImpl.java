@@ -24,4 +24,17 @@ public final class ExponentialServiceImpl {
         response.setResult(result);
         return response;
     }
+
+    @WebMethod(operationName = "PowRequest")
+    @WebResult
+    public ExponentialResponse pow(@WebParam(name = "firstParam", partName = "firstParam") Double firstParam, @WebParam(name = "secondParam", partName = "secondParam") Double secondParam){
+        final long start = System.nanoTime();
+        final Double result = Math.pow(firstParam, secondParam);
+        final String elapsedTime = System.nanoTime() - start + "";
+        final ExponentialResponse response = new ExponentialResponse();
+        response.setElapsedTime(elapsedTime);
+        response.setOperationId(String.valueOf(start));
+        response.setResult(result);
+        return response;
+    }
 }

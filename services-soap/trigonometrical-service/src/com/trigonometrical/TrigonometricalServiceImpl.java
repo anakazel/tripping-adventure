@@ -9,7 +9,7 @@ import javax.jws.soap.SOAPBinding;
 /**
  * Created by alexg on 10.05.2014.
  */
-@WebService(portName = "TrigonometricalSOAP", serviceName = "Trigonometrical", targetNamespace = "http://wwww.wscomposition.org/Trigonometrical/")
+@WebService(portName = "TrigonometricalSOAP", serviceName = "Trigonometrical", targetNamespace = "http://www.wscomposition.org/Trigonometrical/")
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public final class TrigonometricalServiceImpl {
     @WebMethod(operationName = "SinRequest")

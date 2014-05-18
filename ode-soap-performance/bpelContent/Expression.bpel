@@ -1,77 +1,298 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<process xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable" 
-   xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable" 
-   xmlns:add="http://www.wscomposition.org/Addition/" 
-   xmlns:fn="http://www.w3.org/2005/xpath-functions" 
-   xmlns:ode="http://www.apache.org/ode/type/extension" 
-   xmlns:tns="http://expression" 
-   xmlns:types="http://ode/bpel/types" 
-   xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
-   name="Expression" 
-   targetNamespace="http://expression" 
-   suppressJoinFailure="yes" 
-   queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0" 
-   expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0">
-   <!-- Import the client WSDL -->
-   <import location="ExpressionArtifacts.wsdl" namespace="http://expression" importType="http://schemas.xmlsoap.org/wsdl/" />
-   <!-- ================================================================= -->
-   <!-- PARTNERLINKS -->
-   <!-- List of services participating in this BPEL process -->
-   <!-- ================================================================= -->
-   <partnerLinks>
-      <!-- The 'client' role represents the requester of this service. -->
-      <partnerLink name="ExpressionClient" partnerLinkType="tns:Expression" myRole="ExpressionProvider" />
-      <partnerLink name="AdditionPL" partnerLinkType="tns:AdditionPLT" partnerRole="AdditionRole" />
-   </partnerLinks>
-   <!-- ================================================================= -->
-   <!-- VARIABLES -->
-   <!-- List of messages and XML documents used within this BPEL process -->
-   <!-- ================================================================= -->
-   <variables>
-      <variable name="ExpressionInput" messageType="tns:ExpressionRequestMessage" />
-      <variable name="ExpressionOutput" messageType="tns:ExpressionResponseMessage" />
-      <variable name="AdditionRequest" messageType="add:AddRequest" />
-      <variable name="AdditionResponse" messageType="add:AddRequestResponse" />
-   </variables>
-   <!-- ================================================================= -->
-   <!-- ORCHESTRATION LOGIC -->
-   <!-- Set of activities coordinating the flow of messages across the -->
-   <!-- services integrated within this business process -->
-   <!-- ================================================================= -->
-   <sequence name="MainSequence">
-      <!-- 1. Get the response from directions service -->
-      <!-- Receive input from requester. Note: This maps to operation directionsefined 
-         in Travel.wsdl -->
-      <!-- Generate reply to synchronous request -->
-      <receive name="InputReceive" partnerLink="ExpressionClient" portType="tns:Expression" operation="getResult" variable="ExpressionInput" createInstance="yes" />
-      <assign validate="no" name="InitialAssign">
-         <copy>
-            <from part="n" variable="ExpressionInput" />
-            <to part="firstParam" variable="AdditionRequest" />
-         </copy>
-         <copy>
-            <from part="m" variable="ExpressionInput" />
-            <to part="secondParam" variable="AdditionRequest" />
-         </copy>
-      </assign>
-
-      <invoke name="InvokeAddition" partnerLink="AdditionPL" operation="AddRequest" portType="add:AdditionServiceImpl" inputVariable="AdditionRequest" outputVariable="AdditionResponse" />
-
-      <!-- ================================================================= -->
-      <!-- RESPONSES CONCATENATION -->
-      <!-- ================================================================= -->
-      <sequence name="MessageCompositionSequence">
-         <assign validate="no" name="FinalAssign">
+<process xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:add="http://www.wscomposition.org/Addition/"
+         xmlns:ari="http://www.wscomposition.org/ArithmeticProgression/"
+         xmlns:csv="http://www.wscomposition.org/CSVFile/"
+         xmlns:exp="http://www.wscomposition.org/Exponential/"
+         xmlns:geo="http://www.wscomposition.org/GeometricProgression/"
+         xmlns:mul="http://www.wscomposition.org/Multiplication/"
+         xmlns:tri="http://www.wscomposition.org/Trigonometrical/"
+         xmlns:fn="http://www.w3.org/2005/xpath-functions"
+         xmlns:ode="http://www.apache.org/ode/type/extension"
+         xmlns:tns="http://expression"
+         xmlns:types="http://ode/bpel/types"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         name="Expression"
+         targetNamespace="http://expression"
+         suppressJoinFailure="yes"
+         queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"
+         expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0">
+    <!-- Import the client WSDL -->
+    <import location="ExpressionArtifacts.wsdl" namespace="http://expression" importType="http://schemas.xmlsoap.org/wsdl/" />
+    <!-- ================================================================= -->
+    <!-- PARTNERLINKS -->
+    <!-- List of services participating in this BPEL process -->
+    <!-- ================================================================= -->
+    <partnerLinks>
+        <!-- The 'client' role represents the requester of this service. -->
+        <partnerLink name="ExpressionClient" partnerLinkType="tns:Expression" myRole="ExpressionProvider" />
+        <partnerLink name="AdditionPL" partnerLinkType="tns:AdditionPLT" partnerRole="AdditionRole" />
+        <partnerLink name="ArithmeticProgressionPL" partnerLinkType="tns:ArithmeticProgressionPLT" partnerRole="ArithmeticProgressionRole" />
+        <partnerLink name="CSVFilePL" partnerLinkType="tns:CSVFilePLT" partnerRole="CSVFileRole" />
+        <partnerLink name="ExponentialPL" partnerLinkType="tns:ExponentialPLT" partnerRole="ExponentialRole" />
+        <partnerLink name="GeometricProgressionPL" partnerLinkType="tns:GeometricProgressionPLT" partnerRole="GeometricProgressionRole" />
+        <partnerLink name="MultiplicationPL" partnerLinkType="tns:MultiplicationPLT" partnerRole="MultiplicationRole" />
+        <partnerLink name="TrigonometricalPL" partnerLinkType="tns:TrigonometricalPLT" partnerRole="TrigonometricalRole" />
+    </partnerLinks>
+    <!-- ================================================================= -->
+    <!-- VARIABLES -->
+    <!-- List of messages and XML documents used within this BPEL process -->
+    <!-- ================================================================= -->
+    <variables>
+        <variable name="ExpressionInput" messageType="tns:ExpressionRequestMessage" />
+        <variable name="ExpressionOutput" messageType="tns:ExpressionResponseMessage" />
+        <variable name="AdditionRequest" messageType="add:AddRequest" />
+        <variable name="AdditionResponse" messageType="add:AddRequestResponse" />
+        <variable name="SubstractRequest" messageType="add:SubstractRequest" />
+        <variable name="SubstractResponse" messageType="add:SubstractRequestResponse" />
+        <variable name="ArithmeticProgressionRequest" messageType="ari:ArithmeticProgressionRequest" />
+        <variable name="ArithmeticProgressionResponse" messageType="ari:ArithmeticProgressionRequestResponse" />
+        <variable name="PowRequest" messageType="exp:PowRequest" />
+        <variable name="PowResponse" messageType="exp:PowRequestResponse" />
+        <variable name="MultiplyRequest" messageType="mul:MultiplyRequest" />
+        <variable name="MultiplyResponse" messageType="mul:MultiplyRequestResponse" />
+        <variable name="MultiplyRequest2" messageType="mul:MultiplyRequest" />
+        <variable name="MultiplyResponse2" messageType="mul:MultiplyRequestResponse" />
+        <variable name="MultiplyRequest3" messageType="mul:MultiplyRequest" />
+        <variable name="MultiplyResponse3" messageType="mul:MultiplyRequestResponse" />
+        <variable name="PowRequest2" messageType="exp:PowRequest" />
+        <variable name="PowResponse2" messageType="exp:PowRequestResponse" />
+        <variable name="DivideRequest" messageType="mul:DivideRequest" />
+        <variable name="DivideResponse" messageType="mul:DivideRequestResponse" />
+        <variable name="SinRequest" messageType="tri:SinRequest" />
+        <variable name="SinResponse" messageType="tri:SinRequestResponse" />
+        <variable name="CosRequest" messageType="tri:CosRequest" />
+        <variable name="CosResponse" messageType="tri:CosRequestResponse" />
+        <variable name="GeometricProgressionRequest" messageType="geo:GeometricProgressionRequest" />
+        <variable name="GeometricProgressionResponse" messageType="geo:GeometricProgressionRequestResponse" />
+        <variable name="LogRequest" messageType="exp:LogRequest" />
+        <variable name="LogResponse" messageType="exp:LogRequestResponse" />
+        <variable name="AddEntryRequest" messageType="csv:AddEntryRequest" />
+        <variable name="AddEntryResponse" messageType="csv:AddEntryRequestResponse" />
+        <variable name="CleanupRequest" messageType="csv:CleanupRequest" />
+        <variable name="CleanupResponse" messageType="csv:CleanupRequestResponse" />
+        <variable name="SequenceAResult" type="xsd:double" />
+        <variable name="SequenceBResult" type="xsd:double" />
+        <variable name="SequenceCResult" type="xsd:double" />
+    </variables>
+    <!-- ================================================================= -->
+    <!-- ORCHESTRATION LOGIC -->
+    <!-- Set of activities coordinating the flow of messages across the -->
+    <!-- services integrated within this business process -->
+    <!-- ================================================================= -->
+    <sequence name="MainSequence">
+        <!-- 1. Get the response from directions service -->
+        <!-- Receive input from requester. Note: This maps to operation directionsefined
+           in Travel.wsdl -->
+        <!-- Generate reply to synchronous request -->
+        <receive name="InputReceive" partnerLink="ExpressionClient" portType="tns:Expression" operation="getResult" variable="ExpressionInput" createInstance="yes" />
+        <assign validate="no" name="InitialAssign">
             <copy>
-               <from>
-                  <!-- Initialization so the insert-after will not fail -->
-                  <literal>'2.14'</literal>
-               </from>
-               <to>$ExpressionOutput.ExpressionResponse</to>
+                <from part="n" variable="ExpressionInput" />
+                <to part="n" variable="ArithmeticProgressionRequest" />
             </copy>
-         </assign>
-      </sequence>
-      <!-- Final bpel process reply -->
-      <reply name="ReplyOutput" partnerLink="ExpressionClient" portType="tns:Expression" operation="getResult" variable="ExpressionOutput" />
-   </sequence>
+            <copy>
+                <from>1</from>
+                <to part="a" variable="ArithmeticProgressionRequest" />
+            </copy>
+            <copy>
+                <from>1</from>
+                <to part="d" variable="ArithmeticProgressionRequest" />
+            </copy>
+            <copy>
+                <from>30</from>
+                <to part="angle" variable="SinRequest" />
+            </copy>
+            <copy>
+                <from>30</from>
+                <to part="angle" variable="CosRequest" />
+            </copy>
+            <copy>
+                <from>1</from>
+                <to part="a" variable="GeometricProgressionRequest" />
+            </copy>
+            <copy>
+                <from part="m" variable="ExpressionInput" />
+                <to part="n" variable="GeometricProgressionRequest" />
+            </copy>
+            <copy>
+                <from>2</from>
+                <to part="r" variable="GeometricProgressionRequest" />
+            </copy>
+            <copy>
+                <from>3</from>
+                <to part="firstParam" variable="PowRequest2" />
+            </copy>
+            <copy>
+                <from>0.5</from>
+                <to part="secondParam" variable="PowRequest2" />
+            </copy>
+            <copy>
+                <from>10</from>
+                <to part="param" variable="LogRequest" />
+            </copy>
+            <copy>
+                <from part="p" variable="ExpressionInput" />
+                <to part="secondParam" variable="MultiplyRequest3" />
+            </copy>
+            <copy>
+                <from>'/tmp/csv.log'</from>
+                <to part="path" variable="AddEntryRequest" />
+            </copy>
+            <copy>
+                <from>'/tmp/csv.log'</from>
+                <to part="path" variable="CleanupRequest" />
+            </copy>
+        </assign>
+
+        <flow name="SequencesFlow">
+            <sequence name="SequenceA">
+                <invoke name="InvokeTrigonometrical1" partnerLink="TrigonometricalPL" operation="SinRequest" portType="tri:TrigonometricalServiceImpl" inputVariable="SinRequest" outputVariable="SinResponse" />
+                <invoke name="InvokeTrigonometrical2" partnerLink="TrigonometricalPL" operation="CosRequest" portType="tri:TrigonometricalServiceImpl" inputVariable="CosRequest" outputVariable="CosResponse" />
+
+                <assign validate="no" name="AssignOutputToInputMultiplication">
+                    <copy>
+                        <from>$SinResponse//result</from>
+                        <to>$DivideRequest.firstParam</to>
+                    </copy>
+                    <copy>
+                        <from>$CosResponse//result</from>
+                        <to>$DivideRequest.secondParam</to>
+                    </copy>
+                </assign>
+
+                <invoke name="InvokeMultiplication" partnerLink="MultiplicationPL" operation="DivideRequest" portType="mul:MultiplicationServiceImpl" inputVariable="DivideRequest" outputVariable="DivideResponse" />
+
+                <invoke name="InvokeArithmeticProgression" partnerLink="ArithmeticProgressionPL" operation="ArithmeticProgressionRequest" portType="ari:ArithmeticProgressionServiceImpl" inputVariable="ArithmeticProgressionRequest" outputVariable="ArithmeticProgressionResponse" />
+                <assign validate="no" name="AssignOutputToInputExponential">
+                    <copy>
+                        <from>$ArithmeticProgressionResponse//result</from>
+                        <to>$PowRequest.firstParam</to>
+                    </copy>
+                    <copy>
+                        <from>3</from>
+                        <to>$PowRequest.secondParam</to>
+                    </copy>
+                </assign>
+                <invoke name="InvokeExponential" partnerLink="ExponentialPL" operation="PowRequest" portType="exp:ExponentialServiceImpl" inputVariable="PowRequest" outputVariable="PowResponse" />
+                <assign validate="no" name="AssignOutputToInputMultiplication">
+                    <copy>
+                        <from>$DivideResponse//result</from>
+                        <to>$MultiplyRequest.firstParam</to>
+                    </copy>
+                    <copy>
+                        <from>$PowResponse//result</from>
+                        <to>$MultiplyRequest.secondParam</to>
+                    </copy>
+                </assign>
+
+                <invoke name="InvokeMultiplication" partnerLink="MultiplicationPL" operation="MultiplyRequest" portType="mul:MultiplicationServiceImpl" inputVariable="MultiplyRequest" outputVariable="MultiplyResponse" />
+                <assign validate="no" name="AssignOutputToSequenceResult">
+                    <copy>
+                        <from>$MultiplyResponse//result</from>
+                        <to>$SequenceAResult</to>
+                    </copy>
+                    <copy>
+                        <from>$MultiplyResponse//operationId</from>
+                        <to part="key" variable="AddEntryRequest" />
+                    </copy>
+                    <copy>
+                        <from>$MultiplyResponse//result</from>
+                        <to part="value" variable="AddEntryRequest" />
+                    </copy>
+                </assign>
+                <invoke name="InvokeCSVFile" partnerLink="CSVFilePL" operation="AddEntryRequest" portType="csv:CSVFileServiceImpl" inputVariable="AddEntryRequest" outputVariable="AddEntryResponse" />
+
+            </sequence>
+            <sequence name="SequenceB">
+                <invoke name="InvokeGeometricProgression" partnerLink="GeometricProgressionPL" operation="GeometricProgressionRequest" portType="geo:GeometricProgressionServiceImpl" inputVariable="GeometricProgressionRequest" outputVariable="GeometricProgressionResponse" />
+                <invoke name="InvokeExponential" partnerLink="ExponentialPL" operation="PowRequest" portType="exp:ExponentialServiceImpl" inputVariable="PowRequest2" outputVariable="PowResponse2" />
+                <assign validate="no">
+                    <copy>
+                        <from>$GeometricProgressionResponse//result</from>
+                        <to>$MultiplyRequest2.firstParam</to>
+                    </copy>
+                    <copy>
+                        <from>$PowResponse2//result</from>
+                        <to>$MultiplyRequest2.secondParam</to>
+                    </copy>
+                </assign>
+                <invoke name="InvokeMultiplication" partnerLink="MultiplicationPL" operation="MultiplyRequest" portType="mul:MultiplicationServiceImpl" inputVariable="MultiplyRequest2" outputVariable="MultiplyResponse2" />
+                <assign validate="no">
+                    <copy>
+                        <from>$MultiplyResponse2//result</from>
+                        <to>$SequenceBResult</to>
+                    </copy>
+                    <copy>
+                        <from>$MultiplyResponse2//operationId</from>
+                        <to part="key" variable="AddEntryRequest" />
+                    </copy>
+                    <copy>
+                        <from>$MultiplyResponse2//result</from>
+                        <to part="value" variable="AddEntryRequest" />
+                    </copy>
+                </assign>
+                <invoke name="InvokeCSVFile" partnerLink="CSVFilePL" operation="AddEntryRequest" portType="csv:CSVFileServiceImpl" inputVariable="AddEntryRequest" outputVariable="AddEntryResponse" />
+            </sequence>
+            <sequence name="SequenceC">
+                <invoke name="InvokeExponential" partnerLink="ExponentialPL" operation="LogRequest" portType="exp:ExponentialServiceImpl" inputVariable="LogRequest" outputVariable="LogResponse" />
+                <assign validate="no">
+                    <copy>
+                        <from>$LogResponse//result</from>
+                        <to part="firstParam" variable="MultiplyRequest3" />
+                    </copy>
+                </assign>
+                <invoke name="InvokeMultiplication" partnerLink="MultiplicationPL" operation="MultiplyRequest" portType="mul:MultiplicationServiceImpl" inputVariable="MultiplyRequest3" outputVariable="MultiplyResponse3" />
+                <assign validate="no">
+                    <copy>
+                        <from>$MultiplyResponse3//result</from>
+                        <to>$SequenceCResult</to>
+                    </copy>
+                    <copy>
+                        <from>$MultiplyResponse3//operationId</from>
+                        <to part="key" variable="AddEntryRequest" />
+                    </copy>
+                    <copy>
+                        <from>$MultiplyResponse3//result</from>
+                        <to part="value" variable="AddEntryRequest" />
+                    </copy>
+                </assign>
+                <invoke name="InvokeCSVFile" partnerLink="CSVFilePL" operation="AddEntryRequest" portType="csv:CSVFileServiceImpl" inputVariable="AddEntryRequest" outputVariable="AddEntryResponse" />
+            </sequence>
+        </flow>
+        <sequence name="Final Sequence">
+            <assign validate="no">
+                <copy>
+                    <from>$SequenceAResult</from>
+                    <to part="firstParam" variable="AdditionRequest" />
+                </copy>
+                <copy>
+                    <from>$SequenceBResult</from>
+                    <to part="secondParam" variable="AdditionRequest" />
+                </copy>
+            </assign>
+            <invoke name="InvokeAddition" partnerLink="AdditionPL" operation="AddRequest" portType="add:AdditionServiceImpl" inputVariable="AdditionRequest" outputVariable="AdditionResponse" />
+            <assign validate="no">
+                <copy>
+                    <from>$AdditionResponse//result</from>
+                    <to part="firstParam" variable="SubstractRequest" />
+                </copy>
+                <copy>
+                    <from>$SequenceCResult</from>
+                    <to part="secondParam" variable="SubstractRequest" />
+                </copy>
+            </assign>
+            <invoke name="InvokeAddition" partnerLink="AdditionPL" operation="SubstractRequest" portType="add:AdditionServiceImpl" inputVariable="SubstractRequest" outputVariable="SubstractResponse" />
+            <assign validate="no">
+                <copy>
+                    <from>$SubstractResponse//result</from>
+                    <to>$ExpressionOutput.ExpressionResponse</to>
+                </copy>
+            </assign>
+        </sequence>
+        <invoke name="InvokeCSVFile" partnerLink="CSVFilePL" operation="CleanupRequest" portType="csv:CSVFileServiceImpl" inputVariable="CleanupRequest" outputVariable="CleanupResponse" />
+        <!-- Final bpel process reply -->
+        <reply name="ReplyOutput" partnerLink="ExpressionClient" portType="tns:Expression" operation="getResult" variable="ExpressionOutput" />
+    </sequence>
 </process>

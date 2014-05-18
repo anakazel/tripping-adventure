@@ -18,7 +18,7 @@ public final class GeometricProgressionServiceImpl {
                                                 @WebParam(name = "r", partName = "r") Integer r,
                                                 @WebParam(name = "a", partName = "a") Integer a){
         final long start = System.nanoTime();
-        final Double result = a * (1 - Math.pow(r, n)) / (1 - r);
+        final Double result = a * (1 - Math.pow(r, n + 1)) / (1 - r);
         final String elapsedTime = System.nanoTime() - start + "";
         final GeometricProgressionResponse response = new GeometricProgressionResponse();
         response.setElapsedTime(elapsedTime);

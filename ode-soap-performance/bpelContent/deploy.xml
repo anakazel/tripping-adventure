@@ -1,16 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03" 
-   xmlns:expression="http://expression" 
-   xmlns:add="http://www.wscomposition.org/Addition/">
-   <process name="expression:Expression">
-      <active>true</active>
-      <retired>false</retired>
-      <process-events generate="all" />
-      <provide partnerLink="ExpressionClient">
-         <service name="expression:ExpressionService" port="ExpressionPort" />
-      </provide>
-      <invoke partnerLink="AdditionPL">
-         <service name="add:Addition" port="AdditionSOAP" />
-      </invoke>
-   </process>
+<deploy xmlns="http://www.apache.org/ode/schemas/dd/2007/03"
+        xmlns:expression="http://expression"
+        xmlns:add="http://www.wscomposition.org/Addition/"
+        xmlns:ari="http://www.wscomposition.org/ArithmeticProgression/"
+        xmlns:csv="http://www.wscomposition.org/CSVFile/"
+        xmlns:exp="http://www.wscomposition.org/Exponential/"
+        xmlns:geo="http://www.wscomposition.org/GeometricProgression/"
+        xmlns:mul="http://www.wscomposition.org/Multiplication/"
+        xmlns:tri="http://www.wscomposition.org/Trigonometrical/">
+    <process name="expression:Expression">
+        <active>true</active>
+        <retired>false</retired>
+        <process-events generate="all" />
+        <provide partnerLink="ExpressionClient">
+            <service name="expression:ExpressionService" port="ExpressionPort" />
+        </provide>
+        <invoke partnerLink="AdditionPL">
+            <service name="add:Addition" port="AdditionSOAP" />
+        </invoke>
+        <invoke partnerLink="ArithmeticProgressionPL">
+            <service name="ari:ArithmeticProgression" port="ArithmeticProgressionSOAP" />
+        </invoke>
+        <invoke partnerLink="CSVFilePL">
+            <service name="csv:CSVFile" port="CSVFileSOAP" />
+        </invoke>
+        <invoke partnerLink="ExponentialPL">
+            <service name="exp:Exponential" port="ExponentialSOAP" />
+        </invoke>
+        <invoke partnerLink="GeometricProgressionPL">
+            <service name="geo:GeometricProgression" port="GeometricProgressionSOAP" />
+        </invoke>
+        <invoke partnerLink="MultiplicationPL">
+            <service name="mul:Multiplication" port="MultiplicationSOAP" />
+        </invoke>
+        <invoke partnerLink="TrigonometricalPL">
+            <service name="tri:Trigonometrical" port="TrigonometricalSOAP" />
+        </invoke>
+    </process>
 </deploy>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="main"  >
+<target name="main">
+  <copy todir="/home/alexg/Tools/TomcatMule/webapps" file="./target/mule-esb-rest-1.0.0-SNAPSHOT.war"/>
+</target>
+</project>
