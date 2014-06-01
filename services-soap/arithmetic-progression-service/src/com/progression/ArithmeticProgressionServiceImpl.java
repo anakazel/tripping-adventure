@@ -15,7 +15,7 @@ public final class ArithmeticProgressionServiceImpl {
     @WebMethod(operationName = "ArithmeticProgressionRequest")
     @WebResult
     public ArithmeticProgressionResponse compute(@WebParam(name = "n", partName = "n") Integer n,
-                                                 @WebParam(name = "a", partName =  "a") Integer a,
+                                                 @WebParam(name = "a", partName = "a") Integer a,
                                                  @WebParam(name = "d", partName = "d") Integer d){
         final long start = System.nanoTime();
         final Integer result = (n / 2) * (2 * a + (n - 1) * d);

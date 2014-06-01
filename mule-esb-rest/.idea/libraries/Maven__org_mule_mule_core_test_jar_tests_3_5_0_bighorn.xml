@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.mule:mule-core:test-jar:tests:3.5.0-bighorn">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mule/mule-core/3.5.0-bighorn/mule-core-3.5.0-bighorn-tests.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mule/mule-core/3.5.0-bighorn/mule-core-3.5.0-bighorn-test-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mule/mule-core/3.5.0-bighorn/mule-core-3.5.0-bighorn-test-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/addition-service/addition-service.iml" filepath="$PROJECT_DIR$/addition-service/addition-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/arithmetic-progression-service/arithmetic-progression-service.iml" filepath="$PROJECT_DIR$/arithmetic-progression-service/arithmetic-progression-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/csv-file-service/csv-file-service.iml" filepath="$PROJECT_DIR$/csv-file-service/csv-file-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/exponential-service/exponential-service.iml" filepath="$PROJECT_DIR$/exponential-service/exponential-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/geometric-progression-service/geometric-progression-service.iml" filepath="$PROJECT_DIR$/geometric-progression-service/geometric-progression-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/multiplication-service/multiplication-service.iml" filepath="$PROJECT_DIR$/multiplication-service/multiplication-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/trigonometrical-service/trigonometrical-service.iml" filepath="$PROJECT_DIR$/trigonometrical-service/trigonometrical-service.iml" />
+    </modules>
+  </component>
+</project>
+

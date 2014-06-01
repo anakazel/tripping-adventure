@@ -1,8 +1,10 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="addition-service:jar">
+  <artifact name="addition-service:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/addition_service_jar</output-path>
-    <root id="archive" name="addition-service.jar">
-      <element id="module-output" name="addition-service" />
+    <root id="root">
+      <element id="archive" name="addition-service.jar">
+        <element id="module-output" name="addition-service" />
+      </element>
     </root>
   </artifact>
 </component>

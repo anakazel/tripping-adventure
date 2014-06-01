@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Class-Path: simple-5.1.5.jar asm-all-3.3.1.jar jackson-core-2.2.3.jar 
+ jersey-bundle-1.18.jar jackson-databind-2.2.3.jar javax.servlet-api-3
+ .1.0.jar jackson-annotations-2.2.3.jar jersey-simple-server-1.18.1.ja
+ r
+Main-Class: com.progression.ArithmeticProgressionPublisher
+

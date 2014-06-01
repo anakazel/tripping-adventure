@@ -1,0 +1,6 @@
+----------------------------------------------------------------
+2014-05-25 16:48:47.333 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance a816c00e-0146-3448-d0d1-000008b81b80
+on database directory /home/alexg/Tools/TomcatOde/webapps/ode/WEB-INF/derby-jpadb  
+
+Database Class Loader started - derby.database.classpath=''

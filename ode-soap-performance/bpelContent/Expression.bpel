@@ -146,8 +146,8 @@
             </copy>
         </assign>
 
-        <flow name="SequencesFlow">
-            <sequence name="SequenceA">
+        <!--<sequence name="SequencesFlow">-->
+            <!--<sequence name="SequenceA">-->
                 <invoke name="InvokeTrigonometrical1" partnerLink="TrigonometricalPL" operation="SinRequest" portType="tri:TrigonometricalServiceImpl" inputVariable="SinRequest" outputVariable="SinResponse" />
                 <invoke name="InvokeTrigonometrical2" partnerLink="TrigonometricalPL" operation="CosRequest" portType="tri:TrigonometricalServiceImpl" inputVariable="CosRequest" outputVariable="CosResponse" />
 
@@ -194,7 +194,7 @@
                         <to>$SequenceAResult</to>
                     </copy>
                     <copy>
-                        <from>$MultiplyResponse//operationId</from>
+                        <from>'resultA'</from>
                         <to part="key" variable="AddEntryRequest" />
                     </copy>
                     <copy>
@@ -204,8 +204,9 @@
                 </assign>
                 <invoke name="InvokeCSVFile" partnerLink="CSVFilePL" operation="AddEntryRequest" portType="csv:CSVFileServiceImpl" inputVariable="AddEntryRequest" outputVariable="AddEntryResponse" />
 
-            </sequence>
-            <sequence name="SequenceB">
+            <!--</sequence>-->
+
+            <!--<sequence name="SequenceB">-->
                 <invoke name="InvokeGeometricProgression" partnerLink="GeometricProgressionPL" operation="GeometricProgressionRequest" portType="geo:GeometricProgressionServiceImpl" inputVariable="GeometricProgressionRequest" outputVariable="GeometricProgressionResponse" />
                 <invoke name="InvokeExponential" partnerLink="ExponentialPL" operation="PowRequest" portType="exp:ExponentialServiceImpl" inputVariable="PowRequest2" outputVariable="PowResponse2" />
                 <assign validate="no">
@@ -225,7 +226,7 @@
                         <to>$SequenceBResult</to>
                     </copy>
                     <copy>
-                        <from>$MultiplyResponse2//operationId</from>
+                        <from>'resultB'</from>
                         <to part="key" variable="AddEntryRequest" />
                     </copy>
                     <copy>
@@ -234,8 +235,8 @@
                     </copy>
                 </assign>
                 <invoke name="InvokeCSVFile" partnerLink="CSVFilePL" operation="AddEntryRequest" portType="csv:CSVFileServiceImpl" inputVariable="AddEntryRequest" outputVariable="AddEntryResponse" />
-            </sequence>
-            <sequence name="SequenceC">
+            <!-- </sequence> -->
+            <!-- <sequence name="SequenceC"> -->
                 <invoke name="InvokeExponential" partnerLink="ExponentialPL" operation="LogRequest" portType="exp:ExponentialServiceImpl" inputVariable="LogRequest" outputVariable="LogResponse" />
                 <assign validate="no">
                     <copy>
@@ -250,7 +251,7 @@
                         <to>$SequenceCResult</to>
                     </copy>
                     <copy>
-                        <from>$MultiplyResponse3//operationId</from>
+                        <from>'resultC'</from>
                         <to part="key" variable="AddEntryRequest" />
                     </copy>
                     <copy>
@@ -259,9 +260,9 @@
                     </copy>
                 </assign>
                 <invoke name="InvokeCSVFile" partnerLink="CSVFilePL" operation="AddEntryRequest" portType="csv:CSVFileServiceImpl" inputVariable="AddEntryRequest" outputVariable="AddEntryResponse" />
-            </sequence>
-        </flow>
-        <sequence name="Final Sequence">
+
+            <!--</sequence>-->
+
             <assign validate="no">
                 <copy>
                     <from>$SequenceAResult</from>
@@ -290,7 +291,6 @@
                     <to>$ExpressionOutput.ExpressionResponse</to>
                 </copy>
             </assign>
-        </sequence>
         <invoke name="InvokeCSVFile" partnerLink="CSVFilePL" operation="CleanupRequest" portType="csv:CSVFileServiceImpl" inputVariable="CleanupRequest" outputVariable="CleanupResponse" />
         <!-- Final bpel process reply -->
         <reply name="ReplyOutput" partnerLink="ExpressionClient" portType="tns:Expression" operation="getResult" variable="ExpressionOutput" />

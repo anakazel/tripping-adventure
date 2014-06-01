@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:add="http://www.wscomposition.org/Addition/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <add:AddRequest>
+         <firstParam></firstParam>
+         <secondParam></secondParam>
+      </add:AddRequest>
+   </soapenv:Body>
+</soapenv:Envelope>

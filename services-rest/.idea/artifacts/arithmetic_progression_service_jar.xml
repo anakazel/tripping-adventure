@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact name="arithmetic-progression-service:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/arithmetic_progression_service_jar</output-path>
+    <root id="root">
+      <element id="archive" name="arithmetic-progression-service.jar">
+        <element id="module-output" name="arithmetic-progression-service" />
+      </element>
+      <element id="library" level="project" name="lib" />
+    </root>
+  </artifact>
+</component>

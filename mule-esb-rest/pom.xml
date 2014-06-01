@@ -11,7 +11,7 @@
     <description>mule-esb-rest</description>
 
     <properties>
-        <mule.version>3.4.0</mule.version>
+        <mule.version>3.5.0-bighorn</mule.version>
     </properties>
 
     <build>
