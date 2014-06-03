@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.wscomposition.org/Composer/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Composer" targetNamespace="http://www.wscomposition.org/Composer/">
+   <wsdl:documentation>WSDL 1.1 Proxy for web services</wsdl:documentation>
+   <wsdl:message name="Request">
+      <wsdl:part name="requestString" type="xsd:string" />
+   </wsdl:message>
+   <wsdl:message name="Response">
+      <wsdl:part name="responseString" type="xsd:string" />
+   </wsdl:message>
+   <wsdl:portType name="AdditionPortType">
+      <wsdl:documentation>Interface for the 2 operations: addition and substract</wsdl:documentation>
+      <wsdl:operation name="addOperation_PUT">
+         <wsdl:input message="tns:Request" name="jsonRequest" />
+         <wsdl:output message="tns:Response" name="jsonResponse" />
+      </wsdl:operation>
+      <wsdl:operation name="substractOperation_PUT">
+         <wsdl:input message="tns:Request" name="jsonRequest" />
+         <wsdl:output message="tns:Response" name="jsonResponse" />
+      </wsdl:operation>
+   </wsdl:portType>
+   <wsdl:binding name="AdditionHTTP" type="tns:AdditionPortType">
+      <http:binding verb="POST" />
+      <wsdl:operation name="addOperation_PUT">
+         <http:operation location="add" />
+         <wsdl:input name="requestString">
+            <mime:content type="application/x-www-form-urlencoded"/>
+         </wsdl:input>
+         <wsdl:output name="responseString">
+            <mime:content type="text/xml" part="Response" />
+         </wsdl:output>
+      </wsdl:operation>
+      <wsdl:operation name="substractOperation_PUT">
+         <http:operation location="substract" />
+         <wsdl:input name="requestString">
+            <mime:content type="application/x-www-form-urlencoded"/>
+         </wsdl:input>
+         <wsdl:output name="responseString">
+            <mime:content type="text/xml" part="Response" />
+         </wsdl:output>
+      </wsdl:operation>
+   </wsdl:binding>
+   <wsdl:service name="Composer">
+      <wsdl:port binding="tns:AdditionHTTP" name="AdditionHTTP">
+         <http:address location="http://localhost:9090/rest2wsdl/Addition" />
+      </wsdl:port>
+   </wsdl:service>
+</wsdl:definitions>
