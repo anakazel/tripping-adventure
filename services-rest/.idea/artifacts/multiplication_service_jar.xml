@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact name="multiplication-service:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/multiplication_service_jar</output-path>
+    <root id="root">
+      <element id="archive" name="multiplication-service.jar">
+        <element id="module-output" name="multiplication-service" />
+      </element>
+      <element id="library" level="project" name="lib" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact name="trigonometrical-service:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/trigonometrical_service_jar</output-path>
+    <root id="root">
+      <element id="archive" name="trigonometrical-service.jar">
+        <element id="module-output" name="trigonometrical-service" />
+      </element>
+      <element id="library" level="project" name="lib" />
+    </root>
+  </artifact>
+</component>

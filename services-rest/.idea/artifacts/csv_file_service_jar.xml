@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact name="csv-file-service:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/csv_file_service_jar</output-path>
+    <root id="root">
+      <element id="archive" name="csv-file-service.jar">
+        <element id="module-output" name="csv-file-service" />
+      </element>
+      <element id="library" level="project" name="lib" />
+    </root>
+  </artifact>
+</component>

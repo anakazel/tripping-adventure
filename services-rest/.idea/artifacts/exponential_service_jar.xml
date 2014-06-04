@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact name="exponential-service:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/exponential_service_jar</output-path>
+    <root id="root">
+      <element id="archive" name="exponential-service.jar">
+        <element id="module-output" name="exponential-service" />
+      </element>
+      <element id="library" level="project" name="lib" />
+    </root>
+  </artifact>
+</component>
