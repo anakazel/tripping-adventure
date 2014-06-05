@@ -1,0 +1,11 @@
+<project name="ode-rest-performance" basedir=".">
+    <!-- set global properties for this build -->
+    <property name="ODE_HOME" value="/home/alexg/Tools/TomcatOde/webapps/ode"/>
+    <target name="deploy" description="Deploy to ODE">
+        <delete dir="${ODE_HOME}/WEB-INF/processes/ode-rest-performance"/>
+        <sleep seconds="3"/>
+        <copy todir="${ODE_HOME}/WEB-INF/processes/ode-rest-performance">
+            <fileset dir="." includes="**"/>
+        </copy>
+    </target>
+</project>

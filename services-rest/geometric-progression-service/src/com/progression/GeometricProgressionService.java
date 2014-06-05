@@ -13,6 +13,7 @@ import java.io.IOException;
 @Path("GeometricProgression")
 public class GeometricProgressionService {
 
+    @Path("/compute")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

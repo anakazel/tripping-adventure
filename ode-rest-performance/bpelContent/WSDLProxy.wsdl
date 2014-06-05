@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+                  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+                  xmlns:tns="http://www.wscomposition.org/WSDLProxy/"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  name="WSDLProxy"
+                  targetNamespace="http://www.wscomposition.org/WSDLProxy/">
+    <wsdl:documentation>WSDL 1.1 Proxy for REST Web Services</wsdl:documentation>
+
+    <wsdl:message name="Request">
+        <wsdl:part name="requestString" type="xsd:string" />
+    </wsdl:message>
+    <wsdl:message name="Response">
+        <wsdl:part name="responseString" type="xsd:string" />
+    </wsdl:message>
+
+    <wsdl:portType name="Addition">
+        <wsdl:documentation>Interface for the 2 operations: addition and substract</wsdl:documentation>
+        <wsdl:operation name="addOperation_PUT">
+            <wsdl:input message="tns:Request" name="jsonRequest" />
+            <wsdl:output message="tns:Response" name="jsonResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="substractOperation_PUT">
+            <wsdl:input message="tns:Request" name="jsonRequest" />
+            <wsdl:output message="tns:Response" name="jsonResponse" />
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:portType name="Multiplication">
+        <wsdl:documentation>Interface for the 1 operations: addition and substract</wsdl:documentation>
+        <wsdl:operation name="multiplyOperation_PUT">
+            <wsdl:input message="tns:Request" name="jsonRequest" />
+            <wsdl:output message="tns:Response" name="jsonResponse" />
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:portType name="Exponential">
+        <wsdl:documentation>Interface for the 2 operations: pow and log</wsdl:documentation>
+        <wsdl:operation name="powOperation_PUT">
+            <wsdl:input message="tns:Request" name="jsonRequest" />
+            <wsdl:output message="tns:Response" name="jsonResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="logOperation_PUT">
+            <wsdl:input message="tns:Request" name="jsonRequest" />
+            <wsdl:output message="tns:Response" name="jsonResponse" />
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:portType name="ArithmeticProgression">
+        <wsdl:documentation>Interface for the single operation: compute</wsdl:documentation>
+        <wsdl:operation name="computeOperation_POST">
+            <wsdl:input message="tns:Request" name="jsonRequest" />
+            <wsdl:output message="tns:Response" name="jsonResponse" />
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:portType name="GeometricProgression">
+        <wsdl:documentation>Interface for the single operation: compute</wsdl:documentation>
+        <wsdl:operation name="computeOperation_POST">
+            <wsdl:input message="tns:Request" name="jsonRequest" />
+            <wsdl:output message="tns:Response" name="jsonResponse" />
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:portType name="Trigonometrical">
+        <wsdl:documentation>Interface for the 2 operations: sin and cos</wsdl:documentation>
+        <wsdl:operation name="sinOperation_PUT">
+            <wsdl:input message="tns:Request" name="jsonRequest" />
+            <wsdl:output message="tns:Response" name="jsonResponse" />
+        </wsdl:operation>
+        <wsdl:operation name="cosOperation_PUT">
+            <wsdl:input message="tns:Request" name="jsonRequest" />
+            <wsdl:output message="tns:Response" name="jsonResponse" />
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:portType name="CSVFile">
+        <wsdl:documentation>Interface for the 2 operations: addEntry and delete</wsdl:documentation>
+        <wsdl:operation name="addEntryOperation_PUT">
+            <wsdl:input message="tns:Request" name="jsonRequest" />
+            <wsdl:output message="tns:Response" name="jsonResponse" />
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="AdditionHTTP" type="tns:Addition">
+        <http:binding verb="POST" />
+        <wsdl:operation name="addOperation_PUT">
+            <http:operation location="add" />
+            <wsdl:input name="jsonRequest">
+                <mime:content type="application/x-www-form-urlencoded" part="requestString"/>
+            </wsdl:input>
+            <wsdl:output name="jsonResponse">
+                <mime:content type="text/xml" part="responseString" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="substractOperation_PUT">
+            <http:operation location="substract" />
+            <wsdl:input name="jsonRequest">
+                <mime:content type="application/x-www-form-urlencoded"/>
+            </wsdl:input>
+            <wsdl:output name="jsonResponse">
+                <mime:content type="text/xml" part="responseString" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="MultiplicationHTTP" type="tns:Multiplication">
+        <http:binding verb="POST" />
+        <wsdl:operation name="multiplyOperation_PUT">
+            <http:operation location="multiply" />
+            <wsdl:input name="jsonRequest">
+                <mime:content type="application/x-www-form-urlencoded" part="requestString"/>
+            </wsdl:input>
+            <wsdl:output name="jsonResponse">
+                <mime:content type="text/xml" part="responseString" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="ExponentialHTTP" type="tns:Exponential">
+        <http:binding verb="POST" />
+        <wsdl:operation name="powOperation_PUT">
+            <http:operation location="pow" />
+            <wsdl:input name="jsonRequest">
+                <mime:content type="application/x-www-form-urlencoded" part="requestString"/>
+            </wsdl:input>
+            <wsdl:output name="jsonResponse">
+                <mime:content type="text/xml" part="responseString" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="logOperation_PUT">
+            <http:operation location="log" />
+            <wsdl:input name="jsonRequest">
+                <mime:content type="application/x-www-form-urlencoded" part="requestString"/>
+            </wsdl:input>
+            <wsdl:output name="jsonResponse">
+                <mime:content type="text/xml" part="responseString" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="ArithmeticProgressionHTTP" type="tns:ArithmeticProgression">
+        <http:binding verb="POST" />
+        <wsdl:operation name="computeOperation_POST">
+            <http:operation location="compute" />
+            <wsdl:input name="jsonRequest">
+                <mime:content type="application/x-www-form-urlencoded" part="requestString"/>
+            </wsdl:input>
+            <wsdl:output name="jsonResponse">
+                <mime:content type="text/xml" part="responseString" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="GeometricProgressionHTTP" type="tns:GeometricProgression">
+        <http:binding verb="POST" />
+        <wsdl:operation name="computeOperation_POST">
+            <http:operation location="compute" />
+            <wsdl:input name="jsonRequest">
+                <mime:content type="application/x-www-form-urlencoded" part="requestString"/>
+            </wsdl:input>
+            <wsdl:output name="jsonResponse">
+                <mime:content type="text/xml" part="responseString" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="TrigonometricalHTTP" type="tns:Trigonometrical">
+        <http:binding verb="POST" />
+        <wsdl:operation name="sinOperation_PUT">
+            <http:operation location="sin" />
+            <wsdl:input name="jsonRequest">
+                <mime:content type="application/x-www-form-urlencoded" part="requestString"/>
+            </wsdl:input>
+            <wsdl:output name="jsonResponse">
+                <mime:content type="text/xml" part="responseString" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="cosOperation_PUT">
+            <http:operation location="cos" />
+            <wsdl:input name="jsonRequest">
+                <mime:content type="application/x-www-form-urlencoded" part="requestString"/>
+            </wsdl:input>
+            <wsdl:output name="jsonResponse">
+                <mime:content type="text/xml" part="responseString" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="CSVFileHTTP" type="tns:CSVFile">
+        <http:binding verb="POST" />
+        <wsdl:operation name="addEntryOperation_PUT">
+            <http:operation location="addEntry" />
+            <wsdl:input name="jsonRequest">
+                <mime:content type="application/x-www-form-urlencoded" part="requestString"/>
+            </wsdl:input>
+            <wsdl:output name="jsonResponse">
+                <mime:content type="text/xml" part="responseString" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="cosOperation_PUT">
+            <http:operation location="cos" />
+            <wsdl:input name="jsonRequest">
+                <mime:content type="application/x-www-form-urlencoded" part="requestString"/>
+            </wsdl:input>
+            <wsdl:output name="jsonResponse">
+                <mime:content type="text/xml" part="responseString" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="WSDLProxy">
+        <!-- Addition Web Service -->
+        <wsdl:port binding="tns:AdditionHTTP" name="AdditionHTTP">
+            <http:address location="http://localhost:9090/rest2wsdl/Addition" />
+        </wsdl:port>
+        <!-- Multiplication Web Service -->
+        <wsdl:port binding="tns:MultiplicationHTTP" name="MultiplicationHTTP">
+            <http:address location="http://localhost:9090/rest2wsdl/Multiplication" />
+        </wsdl:port>
+        <!-- Exponential Web Service -->
+        <wsdl:port binding="tns:ExponentialHTTP" name="ExponentialHTTP">
+            <http:address location="http://localhost:9090/rest2wsdl/Exponential" />
+        </wsdl:port>
+        <!--Arithmetic Progression Web Service -->
+        <wsdl:port binding="tns:ArithmeticProgressionHTTP" name="ArithmeticProgressionHTTP">
+            <http:address location="http://localhost:9090/rest2wsdl/ArithmeticProgression" />
+        </wsdl:port>
+        <!-- Geometric Progression Web Service -->
+        <wsdl:port binding="tns:GeometricProgressionHTTP" name="GeometricProgressionHTTP">
+            <http:address location="http://localhost:9090/rest2wsdl/GeometricProgression" />
+        </wsdl:port>
+        <!-- Trigonometrical Web Service -->
+        <wsdl:port binding="tns:TrigonometricalHTTP" name="TrigonometricalHTTP">
+            <http:address location="http://localhost:9090/rest2wsdl/Trigonometrical" />
+        </wsdl:port>
+        <!-- CSVFile Web Service -->
+        <wsdl:port binding="tns:CSVFileHTTP" name="CSVFileHTTP">
+            <http:address location="http://localhost:9090/rest2wsdl/CSVFile" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

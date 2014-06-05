@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:proxy="http://www.wscomposition.org/WSDLProxy/"
+         xmlns:fn="http://www.w3.org/2005/xpath-functions"
+         xmlns:ode="http://www.apache.org/ode/type/extension"
+         xmlns:tns="http://composer"
+         xmlns:types="http://ode/bpel/types"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         name="Composer"
+         targetNamespace="http://composer"
+         suppressJoinFailure="yes"
+         queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"
+         expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0">
+    <import location="ComposerArtifacts.wsdl" namespace="http://composer" importType="http://schemas.xmlsoap.org/wsdl/" />
+    <partnerLinks>
+        <!-- The 'client' role represents the requester of this service. -->
+        <partnerLink name="ComposerClient" partnerLinkType="tns:Composer" myRole="ComposerProvider" />
+        <partnerLink name="AdditionPL" partnerLinkType="tns:AdditionPLT" partnerRole="AdditionRole" />
+        <partnerLink name="MultiplicationPL" partnerLinkType="tns:MultiplicationPLT" partnerRole="MultiplicationRole" />
+        <partnerLink name="ExponentialPL" partnerLinkType="tns:ExponentialPLT" partnerRole="ExponentialRole" />
+        <partnerLink name="ArithmeticProgressionPL" partnerLinkType="tns:ArithmeticProgressionPLT" partnerRole="ArithmeticProgressionRole" />
+        <partnerLink name="GeometricProgressionPL" partnerLinkType="tns:GeometricProgressionPLT" partnerRole="GeometricProgressionRole" />
+        <partnerLink name="TrigonometricalPL" partnerLinkType="tns:TrigonometricalPLT" partnerRole="TrigonometricalRole" />
+    </partnerLinks>
+    <variables>
+        <variable name="ComposerInput" messageType="tns:ComposerRequestMessage" />
+        <variable name="ComposerOutput" messageType="tns:ComposerResponseMessage" />
+        <variable name="ProxyRequest" messageType="proxy:Request" />
+        <variable name="ProxyResponse" messageType="proxy:Response" />
+    </variables>
+    <sequence name="MainSequence">
+        <receive name="InputReceive" partnerLink="ComposerClient" portType="tns:Composer" operation="getResult" variable="ComposerInput" createInstance="yes" />
+        <assign validate="no" name="InitialAssign">
+            <copy>
+                <!--<from>-->
+                    <!--<literal>-->
+                        <!--<![CDATA[{"firstParam": "1.0","secondParam": "2.0"}]]>-->
+                    <!--</literal>-->
+                <!--</from>-->
+                <from>
+                    concat('{"firstParam": "', '1.0', '","secondParam": "', '2.0', '"}')
+                    <!--<literal>-->
+                        <!--<![CDATA[{"firstParam": "1.0","secondParam": "2.0"}]]>-->
+                    <!--</literal>-->
+                </from>
+
+                <!--<from part="requestString" variable="ComposerInput" />-->
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+
+        <!--<invoke name="InvokeAddition" partnerLink="AdditionPL" operation="addOperation_PUT" portType="proxy:Addition" inputVariable="AdditionRequest" outputVariable="AdditionResponse" />-->
+        <!--<assign validate="no">-->
+            <!--<copy>-->
+                <!--<from>substring-before(substring-after($AdditionResponse.responseString, 'result":"'), '"}')</from>-->
+                <!--<to part="responseString" variable="ComposerOutput"></to>-->
+            <!--</copy>-->
+        <!--</assign>-->
+
+        <invoke name="InvokeAddition2" partnerLink="MultiplicationPL" operation="multiplyOperation_PUT" portType="proxy:Multiplication" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign validate="no">
+            <copy>
+                <from>substring-before(substring-after($ProxyResponse.responseString, 'result":"'), '"}')</from>
+                <to part="responseString" variable="ComposerOutput"></to>
+            </copy>
+            <copy>
+                <from>
+                    concat('{"firstParam": "', $ComposerOutput.responseString, '","secondParam": "', '100.0', '"}')
+                </from>
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+
+        <invoke name="InvokeAddition3" partnerLink="AdditionPL" operation="substractOperation_PUT" portType="proxy:Addition" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign validate="no">
+            <copy>
+                <from>substring-before(substring-after($ProxyResponse.responseString, 'result":"'), '"}')</from>
+                <to part="responseString" variable="ComposerOutput"></to>
+            </copy>
+            <copy>
+                <from>
+                    concat('{"firstParam": "', $ComposerOutput.responseString, '","secondParam": "', '100.0', '"}')
+                </from>
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+        <invoke partnerLink="ExponentialPL" operation="powOperation_PUT" portType="proxy:Exponential" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign validate="no">
+            <copy>
+                <from>substring-before(substring-after($ProxyResponse.responseString, 'result":"'), '"}')</from>
+                <to part="responseString" variable="ComposerOutput"></to>
+            </copy>
+            <copy>
+                <from>
+                    concat('{"n": "', '100', '","a": "', '2' , '","d":"', '3', '"}')
+                </from>
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+
+        </assign>
+
+        <invoke partnerLink="ArithmeticProgressionPL" operation="computeOperation_POST" portType="proxy:ArithmeticProgression" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign validate="no">
+            <copy>
+                <from>substring-before(substring-after($ProxyResponse.responseString, 'result":"'), '"}')</from>
+                <to part="responseString" variable="ComposerOutput"></to>
+            </copy>
+            <copy>
+                <from>
+                    concat('{"n": "', '10', '","r": "', '2' , '","a":"', '2', '"}')
+                </from>
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+        <invoke partnerLink="GeometricProgressionPL" operation="computeOperation_POST" portType="proxy:GeometricProgression" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign validate="no">
+            <copy>
+                <from>substring-before(substring-after($ProxyResponse.responseString, 'result":"'), '"}')</from>
+                <to part="responseString" variable="ComposerOutput"></to>
+            </copy>
+            <copy>
+                <from>
+                    concat('{"angle": "', '30', '"}')
+                </from>
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+        <invoke partnerLink="TrigonometricalPL" operation="sinOperation_PUT" portType="proxy:Trigonometrical" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign validate="no">
+            <copy>
+                <from>substring-before(substring-after($ProxyResponse.responseString, 'result":"'), '"}')</from>
+                <to part="responseString" variable="ComposerOutput"></to>
+            </copy>
+        </assign>
+        <!-- Final bpel process reply -->
+        <reply name="ReplyOutput" partnerLink="ComposerClient" portType="tns:Composer" operation="getResult" variable="ComposerOutput" />
+    </sequence>
+</process>

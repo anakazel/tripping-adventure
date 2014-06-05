@@ -16,39 +16,240 @@ public class BaseServlet extends HttpServlet {
 
     @Override
     public void doGet (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        throw new RuntimeException("Not yet implemented!");
     }
 
     @Override
     public void doPost (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PrintWriter pw = resp.getWriter();
-        String response;
-        String requestBody = getBody(req);
-        System.out.println(requestBody);
-        requestBody = URLDecoder.decode(requestBody, "UTF-8");
-        requestBody = requestBody.replace("requestString=", "");
-        final URL url = new URL("http://localhost:9000/Addition/add");
-        final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("PUT");
-        connection.setRequestProperty("Accept", "application/json");
-        // write to the body
-        connection.setDoOutput(true);
+        //http://localhost:9090/rest2wsdl/Multiplication/multiply
+        if(req.getRequestURL().toString().equals("http://localhost:9090/rest2wsdl/Multiplication/multiply")){
+            PrintWriter pw = resp.getWriter();
+            String response;
+            String requestBody = getBody(req);
+            System.out.println(requestBody);
+            requestBody = URLDecoder.decode(requestBody, "UTF-8");
+            requestBody = requestBody.replace("requestString=", "");
+            final URL url = new URL("http://localhost:9005/Multiplication/multiply");
+            final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("PUT");
+            connection.setRequestProperty("Accept", "application/json");
+            // write to the body
+            connection.setDoOutput(true);
 
-        connection.getOutputStream().write(requestBody.getBytes());
+            connection.getOutputStream().write(requestBody.getBytes());
 
-        final BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        System.out.println("URL: " + url);
-        final StringBuilder output = new StringBuilder();
-        String out;
-        resp.setContentType("application/json");
-        while((out = br.readLine()) != null){
-            pw.append(out);
-            output.append(out);
+            final BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            System.out.println("URL: " + url);
+            final StringBuilder output = new StringBuilder();
+            String out;
+            resp.setContentType("text/xml");
+            pw.append("<response><![CDATA[");
+            while((out = br.readLine()) != null){
+                pw.append(out);
+                output.append(out);
+            }
+            pw.append("]]></response>");
+            connection.disconnect();
+            response = output.toString();
+            System.out.println("RESPONSE: " + response);
+            //TODO use json string in CDATA?
+            pw.close();
+        }else if(req.getRequestURL().toString().equals("http://localhost:9090/rest2wsdl/Addition/add")){
+            PrintWriter pw = resp.getWriter();
+            String response;
+            String requestBody = getBody(req);
+            System.out.println(requestBody);
+            requestBody = URLDecoder.decode(requestBody, "UTF-8");
+            requestBody = requestBody.replace("requestString=", "");
+            final URL url = new URL("http://localhost:9000/Addition/add");
+            final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("PUT");
+            connection.setRequestProperty("Accept", "application/json");
+            // write to the body
+            connection.setDoOutput(true);
+
+            connection.getOutputStream().write(requestBody.getBytes());
+
+            final BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            System.out.println("URL: " + url);
+            final StringBuilder output = new StringBuilder();
+            String out;
+            resp.setContentType("text/xml");
+            pw.append("<response><![CDATA[");
+            while((out = br.readLine()) != null){
+                pw.append(out);
+                output.append(out);
+            }
+            pw.append("]]></response>");
+            connection.disconnect();
+            response = output.toString();
+            System.out.println("RESPONSE: " + response);
+            //TODO use json string in CDATA?
+            pw.close();
+        }else if(req.getRequestURL().toString().equals("http://localhost:9090/rest2wsdl/Addition/substract")){
+            PrintWriter pw = resp.getWriter();
+            String response;
+            String requestBody = getBody(req);
+            System.out.println(requestBody);
+            requestBody = URLDecoder.decode(requestBody, "UTF-8");
+            requestBody = requestBody.replace("requestString=", "");
+            final URL url = new URL("http://localhost:9000/Addition/substract");
+            final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("PUT");
+            connection.setRequestProperty("Accept", "application/json");
+            // write to the body
+            connection.setDoOutput(true);
+
+            connection.getOutputStream().write(requestBody.getBytes());
+
+            final BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            System.out.println("URL: " + url);
+            final StringBuilder output = new StringBuilder();
+            String out;
+            resp.setContentType("text/xml");
+            pw.append("<response><![CDATA[");
+            while((out = br.readLine()) != null){
+                pw.append(out);
+                output.append(out);
+            }
+            pw.append("]]></response>");
+            connection.disconnect();
+            response = output.toString();
+            System.out.println("RESPONSE: " + response);
+            //TODO use json string in CDATA?
+            pw.close();
+        }else if(req.getRequestURL().toString().equals("http://localhost:9090/rest2wsdl/Exponential/pow")){
+            PrintWriter pw = resp.getWriter();
+            String response;
+            String requestBody = getBody(req);
+            System.out.println(requestBody);
+            requestBody = URLDecoder.decode(requestBody, "UTF-8");
+            requestBody = requestBody.replace("requestString=", "");
+            final URL url = new URL("http://localhost:9003/Exponential/pow");
+            final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("PUT");
+            connection.setRequestProperty("Accept", "application/json");
+            // write to the body
+            connection.setDoOutput(true);
+
+            connection.getOutputStream().write(requestBody.getBytes());
+
+            final BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            System.out.println("URL: " + url);
+            final StringBuilder output = new StringBuilder();
+            String out;
+            resp.setContentType("text/xml");
+            pw.append("<response><![CDATA[");
+            while((out = br.readLine()) != null){
+                pw.append(out);
+                output.append(out);
+            }
+            pw.append("]]></response>");
+            connection.disconnect();
+            response = output.toString();
+            System.out.println("RESPONSE: " + response);
+            //TODO use json string in CDATA?
+        }else if(req.getRequestURL().toString().equals("http://localhost:9090/rest2wsdl/ArithmeticProgression/compute")){
+            PrintWriter pw = resp.getWriter();
+            String response;
+            String requestBody = getBody(req);
+            System.out.println(requestBody);
+            requestBody = URLDecoder.decode(requestBody, "UTF-8");
+            requestBody = requestBody.replace("requestString=", "");
+            final URL url = new URL("http://localhost:9001/ArithmeticProgression/compute");
+            final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Accept", "application/json");
+            // TODO ? why did i need this one on POST request ??
+            connection.setRequestProperty("Content-Type", "application/json");
+            // write to the body
+            connection.setDoOutput(true);
+
+            connection.getOutputStream().write(requestBody.getBytes());
+
+            final BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            System.out.println("URL: " + url);
+            final StringBuilder output = new StringBuilder();
+            String out;
+            resp.setContentType("text/xml");
+            pw.append("<response><![CDATA[");
+            while((out = br.readLine()) != null){
+                pw.append(out);
+                output.append(out);
+            }
+            pw.append("]]></response>");
+            connection.disconnect();
+            response = output.toString();
+            System.out.println("RESPONSE: " + response);
+            //TODO use json string in CDATA?
+        }else if(req.getRequestURL().toString().equals("http://localhost:9090/rest2wsdl/GeometricProgression/compute")) {
+            PrintWriter pw = resp.getWriter();
+            String response;
+            String requestBody = getBody(req);
+            System.out.println(requestBody);
+            requestBody = URLDecoder.decode(requestBody, "UTF-8");
+            requestBody = requestBody.replace("requestString=", "");
+            final URL url = new URL("http://localhost:9004/GeometricProgression/compute");
+            final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Accept", "application/json");
+            // TODO ? why did i need this one on POST request ??
+            connection.setRequestProperty("Content-Type", "application/json");
+            // write to the body
+            connection.setDoOutput(true);
+
+            connection.getOutputStream().write(requestBody.getBytes());
+
+            final BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            System.out.println("URL: " + url);
+            final StringBuilder output = new StringBuilder();
+            String out;
+            resp.setContentType("text/xml");
+            pw.append("<response><![CDATA[");
+            while((out = br.readLine()) != null){
+                pw.append(out);
+                output.append(out);
+            }
+            pw.append("]]></response>");
+            connection.disconnect();
+            response = output.toString();
+            System.out.println("RESPONSE: " + response);
+            //TODO use json string in CDATA?
+        }else if(req.getRequestURL().toString().equals("http://localhost:9090/rest2wsdl/Trigonometrical/sin")) {
+            PrintWriter pw = resp.getWriter();
+            String response;
+            String requestBody = getBody(req);
+            System.out.println(requestBody);
+            requestBody = URLDecoder.decode(requestBody, "UTF-8");
+            requestBody = requestBody.replace("requestString=", "");
+            final URL url = new URL("http://localhost:9006/Trigonometrical/sin");
+            final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("PUT");
+            connection.setRequestProperty("Accept", "application/json");
+            // TODO ? why did i need this one on POST request ??
+            connection.setRequestProperty("Content-Type", "application/json");
+            // write to the body
+            connection.setDoOutput(true);
+
+            connection.getOutputStream().write(requestBody.getBytes());
+
+            final BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            System.out.println("URL: " + url);
+            final StringBuilder output = new StringBuilder();
+            String out;
+            resp.setContentType("text/xml");
+            pw.append("<response><![CDATA[");
+            while((out = br.readLine()) != null){
+                pw.append(out);
+                output.append(out);
+            }
+            pw.append("]]></response>");
+            connection.disconnect();
+            response = output.toString();
+            System.out.println("RESPONSE: " + response);
+            //TODO use json string in CDATA?
         }
-        connection.disconnect();
-        response = output.toString();
-        System.out.println("RESPONSE: " + response);
-        pw.close();
+
     }
 
     public static String getBody(HttpServletRequest request) throws IOException {

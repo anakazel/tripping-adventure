@@ -14,7 +14,7 @@ import java.nio.file.StandardOpenOption;
 /**
  * Created by alexg on 01.06.2014.
  */
-@Path("CSVFile")
+@Path("/CSVFile")
 public class CSVFileService {
 
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
