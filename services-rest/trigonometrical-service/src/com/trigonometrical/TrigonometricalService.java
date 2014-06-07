@@ -35,7 +35,7 @@ public class TrigonometricalService {
     public TrigonometricalResponse cos(final String json) throws IOException {
         final TrigonometricalRequest request = new ObjectMapper().readValue(json, TrigonometricalRequest.class);
         final long start = System.nanoTime();
-        final Double result = Math.sin(Math.toRadians(request.getAngle()));
+        final Double result = Math.cos(Math.toRadians(request.getAngle()));
         final String elapsedTime = System.nanoTime() - start + "";
         final TrigonometricalResponse response = new TrigonometricalResponse();
         response.setElapsedTime(elapsedTime);

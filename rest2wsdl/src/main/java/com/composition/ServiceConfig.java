@@ -14,4 +14,9 @@ public class ServiceConfig {
     // url: operation name
 
     private String contentType;
+
+    public static void main(String[] args) {
+        System.out.println(Math.sin(Math.toRadians(30.0)) / Math.cos(Math.toRadians(30.0)));
+        System.out.println(Math.sqrt(3)/ 2);
+    }
 }

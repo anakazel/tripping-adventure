@@ -7,27 +7,32 @@ import org.apache.catalina.startup.Tomcat;
 import java.io.File;
 import java.util.concurrent.CountDownLatch;
 
-public class Main {
-    // basic singleton
-    private Main() {}
+/**
+ * Main entry point of the rest2wsdl application
+ */
+public class Deployer {
 
-    private static Main instance = new Main();
+    private Deployer() {}
 
-    public static Main getInstance() {
+    private static Deployer instance = new Deployer();
+
+    public static Deployer getInstance() {
         return instance;
     }
 
     public CountDownLatch shutDownSignal = new CountDownLatch(1);
 
     private int run() throws LifecycleException, InterruptedException {
-        Tomcat tomcat = new Tomcat();
+        System.out.println("Starting embedded Tomcat...");
+        final Tomcat tomcat = new Tomcat();
         tomcat.setPort(9090);
-        File base = new File(System.getProperty("java.io.tmpdir"));
-        Context rootCtx = tomcat.addContext("/rest2wsdl", base.getAbsolutePath());
-        BaseServlet servlet = new BaseServlet();
+        final File base = new File(System.getProperty("java.io.tmpdir"));
+        final Context rootCtx = tomcat.addContext("/rest2wsdl", base.getAbsolutePath());
+        final BaseServlet servlet = new BaseServlet();
         Tomcat.addServlet(rootCtx, "BaseServlet", servlet);
         rootCtx.addServletMapping("/*", "BaseServlet");
         tomcat.start();
+        System.out.println("Done.");
         shutDownSignal.await();
         return 0;
     }
