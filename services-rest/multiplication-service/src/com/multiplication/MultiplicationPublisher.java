@@ -12,7 +12,7 @@ public class MultiplicationPublisher {
         int port;
         try {
             port = Integer.valueOf(args[0]);
-        } catch (Exception ex) {
+        } catch (Exception  ex) {
             port = 9005;
             System.out.println(ex);
         }

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:json="http://www.mulesoft.org/schema/mule/json"
+      xmlns:ws="http://www.mulesoft.org/schema/mule/ws" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.4.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ws http://www.mulesoft.org/schema/mule/ws/current/mule-ws.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/json/current/mule-json.xsd">
+    <spring:beans>
+        <spring:bean id="arithmeticProgressionRequestBean" class="java.lang.String">
+            <spring:constructor-arg>
+                <spring:bean class="org.springframework.util.FileCopyUtils"
+                             factory-method="copyToByteArray">
+                    <spring:constructor-arg
+                            value="classpath:ArithmeticProgressionRequest.json" type="java.io.InputStream"/>
+                </spring:bean>
+            </spring:constructor-arg>
+        </spring:bean>
+        <spring:bean id="geometricProgressionRequestBean" class="java.lang.String">
+            <spring:constructor-arg>
+                <spring:bean class="org.springframework.util.FileCopyUtils"
+                             factory-method="copyToByteArray">
+                    <spring:constructor-arg
+                            value="classpath:GeometricProgressionRequest.json" type="java.io.InputStream"/>
+                </spring:bean>
+            </spring:constructor-arg>
+        </spring:bean>
+        <spring:bean id="oneParamRequestBean" class="java.lang.String">
+            <spring:constructor-arg>
+                <spring:bean class="org.springframework.util.FileCopyUtils"
+                             factory-method="copyToByteArray">
+                    <spring:constructor-arg value="classpath:OneParamRequest.json"
+                                            type="java.io.InputStream"/>
+                </spring:bean>
+            </spring:constructor-arg>
+        </spring:bean>
+        <spring:bean id="twoParamsRequestBean" class="java.lang.String">
+            <spring:constructor-arg>
+                <spring:bean class="org.springframework.util.FileCopyUtils"
+                             factory-method="copyToByteArray">
+                    <spring:constructor-arg value="classpath:TwoParamsRequest.json"
+                                            type="java.io.InputStream"/>
+                </spring:bean>
+            </spring:constructor-arg>
+        </spring:bean>
+        <spring:bean id="trigonometricalRequestBean" class="java.lang.String">
+            <spring:constructor-arg>
+                <spring:bean class="org.springframework.util.FileCopyUtils"
+                             factory-method="copyToByteArray">
+                    <spring:constructor-arg value="classpath:TrigonometricalRequest.json"
+                                            type="java.io.InputStream"/>
+                </spring:bean>
+            </spring:constructor-arg>
+        </spring:bean>
+    </spring:beans>
+    <flow name="mule-rest-performanceFlow">
+        <http:inbound-endpoint exchange-pattern="request-response"
+                               host="localhost" port="8084"/>
+        <set-variable variableName="n"
+                      value="#[message.inboundProperties['n']]"/>
+        <set-variable variableName="m"
+                      value="#[message.inboundProperties['m']]"/>
+        <set-variable variableName="p"
+                      value="#[message.inboundProperties['p']]"/>
+        <set-variable variableName="arithmeticProgressionRequest"
+                      value="#[app.registry.arithmeticProgressionRequestBean]"/>
+        <set-variable variableName="geometricProgressionRequest"
+                      value="#[app.registry.geometricProgressionRequestBean]"/>
+        <set-variable variableName="oneParamRequest"
+                      value="#[app.registry.oneParamRequestBean]"/>
+        <set-variable variableName="twoParamsRequest"
+                      value="#[app.registry.twoParamsRequestBean]"/>
+        <set-variable variableName="trigonometricalRequest"
+                      value="#[app.registry.trigonometricalRequestBean]"/>
+        <!--<flow-ref name="flowA"/>-->
+        <!--<flow-ref name="flowB"/>-->
+        <!--<flow-ref name="flowC"/>-->
+        <set-payload mimeType="application/json"
+                     value="#[flowVars['trigonometricalRequest'].replace('dummyAngle', '30')]"/>
+        <http:outbound-endpoint exchange-pattern="request-response"
+                                method="PUT" address="http://localhost:9006/Trigonometrical/sin"/>
+        <json:json-to-object-transformer
+                returnClass="java.lang.Object"/>
+        <set-payload value="#[message.payload.result]"/>
+        <set-variable variableName="sinResponse" value="#[message.payload]"/>
+        <set-payload mimeType="application/json"
+                     value="#[flowVars['trigonometricalRequest'].replace('dummyAngle', '30')]"/>
+        <http:outbound-endpoint exchange-pattern="request-response"
+                                method="PUT" address="http://localhost:9006/Trigonometrical/cos"/>
+        <json:json-to-object-transformer
+                returnClass="java.lang.Object"/>
+        <set-payload value="#[message.payload.result]"/>
+        <set-variable variableName="cosResponse" value="#[message.payload]"/>
+        <set-payload mimeType="application/json"
+                     value="#[flowVars['twoParamsRequest'].replace('dummyFirstParam', flowVars['sinResponse']).replace('dummySecondParam', flowVars['cosResponse'])]"/>
+        <http:outbound-endpoint exchange-pattern="request-response"
+                                method="PUT" address="http://localhost:9005/Multiplication/divide"/>
+        <json:json-to-object-transformer
+                returnClass="java.lang.Object"/>
+        <set-payload value="#[message.payload.result]"/>
+        <set-variable variableName="divideResponse" value="#[message.payload]"
+                      doc:name="Variable"/>
+        <set-payload mimeType="application/json"
+                     value="#[flowVars['arithmeticProgressionRequest'].replace('dummyN', flowVars['n']).replace('dummyD', '1').replace('dummyA', '1')]"/>
+        <http:outbound-endpoint exchange-pattern="request-response"
+                                method="POST" address="http://localhost:9001/ArithmeticProgression/compute"/>
+        <json:json-to-object-transformer
+                returnClass="java.lang.Object"/>
+        <set-payload value="#[message.payload.result]"/>
+        <set-variable variableName="arithmeticProgressionResponse"
+                      value="#[message.payload]"/>
+        <set-payload mimeType="application/json"
+                     value="#[flowVars['twoParamsRequest'].replace('dummyFirstParam', flowVars['arithmeticProgressionResponse']).replace('dummySecondParam', '3')]"/>
+        <http:outbound-endpoint exchange-pattern="request-response"
+                                method="PUT" address="http://localhost:9003/Exponential/pow"/>
+        <json:json-to-object-transformer
+                returnClass="java.lang.Object"/>
+        <set-payload value="#[message.payload.result]"/>
+        <set-variable variableName="powResponse" value="#[message.payload]"/>
+        <set-payload mimeType="application/json"
+                     value="#[flowVars['twoParamsRequest'].replace('dummyFirstParam', flowVars['divideResponse']).replace('dummySecondParam', flowVars['powResponse'])]"/>
+        <http:outbound-endpoint exchange-pattern="request-response"
+                                method="PUT" address="http://localhost:9005/Multiplication/multiply"/>
+        <json:json-to-object-transformer
+                returnClass="java.lang.Object"/>
+        <set-payload value="#[message.payload.result]"/>
+        <set-variable variableName="sequenceA" value="#[message.payload]"/>
+
+
+
+        <set-payload mimeType="application/json"
+                     value="#[flowVars['geometricProgressionRequest'].replace('dummyN', flowVars['m']).replace('dummyR', '2').replace('dummyA', '1')]"/>
+        <http:outbound-endpoint exchange-pattern="request-response"
+                                method="POST" address="http://localhost:9004/GeometricProgression/compute"/>
+        <json:json-to-object-transformer
+                returnClass="java.lang.Object"/>
+        <set-payload value="#[message.payload.result]"/>
+        <set-variable variableName="geometricProgressionResponse"
+                      value="#[message.payload]"/>
+        <set-payload mimeType="application/json"
+                     value="#[flowVars['twoParamsRequest'].replace('dummyFirstParam', '3').replace('dummySecondParam', '0.5')]"/>
+        <http:outbound-endpoint exchange-pattern="request-response"
+                                method="PUT" address="http://localhost:9003/Exponential/pow"/>
+        <json:json-to-object-transformer
+                returnClass="java.lang.Object"/>
+        <set-payload value="#[message.payload.result]"/>
+        <set-variable variableName="sqrtResponse" value="#[message.payload]"/>
+        <set-payload mimeType="application/json"
+                     value="#[flowVars['twoParamsRequest'].replace('dummyFirstParam', flowVars['geometricProgressionResponse']).replace('dummySecondParam', flowVars['sqrtResponse'])]"/>
+        <http:outbound-endpoint exchange-pattern="request-response"
+                                method="PUT" address="http://localhost:9005/Multiplication/multiply"/>
+        <json:json-to-object-transformer
+                returnClass="java.lang.Object"/>
+        <set-payload value="#[message.payload.result]"/>
+        <set-variable variableName="sequenceB" value="#[message.payload]"/>
+
+        <set-payload mimeType="application/json"
+                     value="#[flowVars['oneParamRequest'].replace('dummyParam', '10')]"
+                     doc:name="Set Payload"/>
+        <http:outbound-endpoint exchange-pattern="request-response"
+                                method="PUT" address="http://localhost:9003/Exponential/log"/>
+        <json:json-to-object-transformer
+                returnClass="java.lang.Object"/>
+        <set-payload value="#[message.payload.result]"/>
+        <set-variable variableName="logResponse" value="#[message.payload]"/>
+        <set-payload mimeType="application/json"
+                     value="#[flowVars['twoParamsRequest'].replace('dummyFirstParam', flowVars['logResponse']).replace('dummySecondParam', flowVars['p'])]"/>
+        <http:outbound-endpoint exchange-pattern="request-response"
+                                method="PUT" address="http://localhost:9005/Multiplication/multiply"/>
+        <json:json-to-object-transformer
+                returnClass="java.lang.Object"/>
+        <set-payload value="#[message.payload.result]"/>
+        <set-variable variableName="sequenceC" value="#[message.payload]"/>
+
+
+        <!--final calculations-->
+
+        <set-payload mimeType="application/json"
+                     value="#[flowVars['twoParamsRequest'].replace('dummyFirstParam', flowVars['sequenceA']).replace('dummySecondParam', flowVars['sequenceB'])]"/>
+        <http:outbound-endpoint exchange-pattern="request-response"
+                                method="PUT" address="http://localhost:9000/Addition/add"/>
+        <json:json-to-object-transformer
+                returnClass="java.lang.Object"/>
+        <set-payload value="#[message.payload.result]"/>
+        <set-variable variableName="additionResponse" value="#[message.payload]"/>
+        <set-payload mimeType="application/json"
+                     value="#[flowVars['twoParamsRequest'].replace('dummyFirstParam', flowVars['additionResponse']).replace('dummySecondParam', flowVars['sequenceC'])]"/>
+        <http:outbound-endpoint exchange-pattern="request-response"
+                                method="PUT" address="http://localhost:9000/Addition/substract"/>
+        <json:json-to-object-transformer
+                returnClass="java.lang.Object"/>
+        <set-payload value="#[message.payload.result]"/>
+    </flow>
+    <!--<sub-flow name="flowA" doc:name="flowA">-->
+       <!---->
+    <!--</sub-flow>-->
+    <!--<sub-flow name="flowB">-->
+      <!---->
+    <!--</sub-flow>-->
+    <!--<sub-flow name="flowC">-->
+     <!---->
+    <!--</sub-flow>-->
+</mule>

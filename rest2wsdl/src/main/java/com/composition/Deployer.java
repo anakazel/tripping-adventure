@@ -28,7 +28,7 @@ public class Deployer {
         tomcat.setPort(9090);
         final File base = new File(System.getProperty("java.io.tmpdir"));
         final Context rootCtx = tomcat.addContext("/rest2wsdl", base.getAbsolutePath());
-        final BaseServlet servlet = new BaseServlet();
+        final ProxyServlet servlet = new ProxyServlet();
         Tomcat.addServlet(rootCtx, "BaseServlet", servlet);
         rootCtx.addServletMapping("/*", "BaseServlet");
         tomcat.start();
@@ -40,4 +40,6 @@ public class Deployer {
     public static void main(String[] args) throws LifecycleException, InterruptedException {
         System.exit(getInstance().run());
     }
+
+
 }

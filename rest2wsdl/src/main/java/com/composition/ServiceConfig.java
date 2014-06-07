@@ -18,5 +18,11 @@ public class ServiceConfig {
     public static void main(String[] args) {
         System.out.println(Math.sin(Math.toRadians(30.0)) / Math.cos(Math.toRadians(30.0)));
         System.out.println(Math.sqrt(3)/ 2);
+        String x = "{\n" +
+                "   \"elapsedTime\": \"5327\",\n" +
+                "   \"operationId\": \"8884170715976\",\n" +
+                "   \"result\": \"0.49999999999999994\"}";
+
+        System.out.println(x.substring(x.indexOf("result\": \""), x.length()));
     }
 }
