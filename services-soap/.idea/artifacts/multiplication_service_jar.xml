@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="multiplication-service:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/multiplication_service_jar</output-path>
-    <root id="archive" name="multiplication-service.jar">
-      <element id="module-output" name="multiplication-service" />
-    </root>
-  </artifact>
-</component>

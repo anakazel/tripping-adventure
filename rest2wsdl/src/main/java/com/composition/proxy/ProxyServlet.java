@@ -1,7 +1,6 @@
 package com.composition.proxy;
 
 import com.composition.model.Operation;
-import com.composition.utils.HttpUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,14 +10,17 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 
+import static com.composition.Deployer.*;
 import static com.composition.Deployer.OPERATIONS;
+import static com.composition.utils.HttpUtils.*;
 
 /**
- * @author alexg
  * A HTTP Servlet meant to route requests
+ * @author alexg
  */
-public class ProxyServlet extends HttpServlet {
+public final class ProxyServlet extends HttpServlet {
 
     @Override
     public void doGet (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,9 +29,9 @@ public class ProxyServlet extends HttpServlet {
 
     @Override
     public void doPost (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        final String requestUrl = req.getRequestURL().toString();
         for(int i = 0; i < OPERATIONS.size(); i++){
-            if(req.getRequestURL().toString().contains(OPERATIONS.get(i).getLocation())
+            if(requestUrl.contains(OPERATIONS.get(i).getLocation())
                     && (OPERATIONS.get(i).getHttpMethod().equals("POST") ||
                         OPERATIONS.get(i).getHttpMethod().equals("PUT") ||
                         OPERATIONS.get(i).getHttpMethod().equals("DELETE"))){
@@ -37,30 +39,41 @@ public class ProxyServlet extends HttpServlet {
                 final Operation operation = OPERATIONS.get(i);
                 final PrintWriter pw = resp.getWriter();
                 final String response;
-                String requestBody = HttpUtils.getBody(req);
+                HttpURLConnection connection = null;
+
+                String requestBody;
+                requestBody = getHttpBody(req);
                 requestBody = URLDecoder.decode(requestBody, "UTF-8");
                 requestBody = requestBody.replace("requestString=", "");
-                final URL url = new URL(operation.getUrl());
-                final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod(operation.getHttpMethod());
-                connection.setRequestProperty("Accept", operation.getResponseContentType());
-                // TODO ? why did i need this one on POST request ??
-                connection.setRequestProperty("Content-Type", operation.getRequestContentType());
-                // write to the body
-                connection.setDoOutput(true);
-                connection.getOutputStream().write(requestBody.getBytes());
-                final BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                final StringBuilder output = new StringBuilder();
-                String out;
-                resp.setContentType("text/xml");
-                pw.append("<response><![CDATA[");
-                while((out = br.readLine()) != null){
-                    pw.append(out);
-                    output.append(out);
+
+                URL url = new URL(operation.getUrl());
+                if(!operation.getHttpMethod().equals("DELETE")){
+                    connection = (HttpURLConnection) url.openConnection();
+
+                    connection.setRequestMethod(operation.getHttpMethod());
+                    connection.setRequestProperty("Accept", operation.getResponseContentType());
+                    connection.setRequestProperty("Content-Type", operation.getRequestContentType());
+                    connection.setDoOutput(true);
+                    connection.getOutputStream().write(requestBody.getBytes());
+
+                    final BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    response = getHttpResponse(br);
+                    br.close();
+                }else{
+                    final String param = requestBody.substring(0, requestBody.indexOf("="));
+                    final String value = requestBody.substring(requestBody.indexOf("=") + 1, requestBody.length());
+                    final String deleteUrl = operation.getUrl() + "?" + param + "=" + URLEncoder.encode(value);
+                    // see HttpUtils.doHttpDelete
+                    response = doHttpDelete(deleteUrl, operation.getResponseContentType());
                 }
-                pw.append("]]></response>");
-                connection.disconnect();
-                response = output.toString();
+
+                resp.setContentType("text/xml");
+                pw.append("<" + context + "><![CDATA[");
+                pw.append(response);
+                pw.append("]]></" + context + " >");
+                if(connection != null){
+                    connection.disconnect();
+                }
 
                 System.out.println("URL: " + url);
                 System.out.println("REQUEST: " + requestBody);

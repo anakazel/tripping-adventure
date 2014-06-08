@@ -17,6 +17,19 @@
       <profile default="true" name="Default" enabled="false">
         <processorPath useClasspath="true" />
       </profile>
+      <profile default="false" name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="addition-service" />
+        <module name="arithmetic-progression-service" />
+        <module name="csv-file-service" />
+        <module name="exponential-service" />
+        <module name="geometric-progression-service" />
+        <module name="multiplication-service" />
+        <module name="trigonometrical-service" />
+      </profile>
     </annotationProcessing>
   </component>
 </project>

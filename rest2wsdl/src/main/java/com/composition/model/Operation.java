@@ -1,13 +1,20 @@
 package com.composition.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Created by alexg on 05.06.2014.
+ * @author alexg
  */
 public final class Operation {
 
     private String baseUrl;
     private String location;
     private String httpMethod;
+    /**
+     * Used in GET & DELETE requests
+     */
+    private List<String> params = new ArrayList<>();
     private String requestContentType;
     private String responseContentType;
     private String url;
@@ -50,6 +57,14 @@ public final class Operation {
 
     public void setResponseContentType(String responseContentType) {
         this.responseContentType = responseContentType;
+    }
+
+    public List<String> getParams() {
+        return params;
+    }
+
+    public void setParams(List<String> params) {
+        this.params = params;
     }
 
     public String getUrl(){

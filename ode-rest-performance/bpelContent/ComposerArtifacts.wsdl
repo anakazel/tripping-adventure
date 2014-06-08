@@ -35,6 +35,10 @@
         <plnk:role name="TrigonometricalRole" portType="proxywsdl:Trigonometrical" />
     </plnk:partnerLinkType>
 
+    <plnk:partnerLinkType name="CSVFilePLT">
+        <plnk:role name="CSVFileRole" portType="proxywsdl:CSVFile" />
+    </plnk:partnerLinkType>
+
     <import location="WSDLProxy.wsdl" namespace="http://www.wscomposition.org/WSDLProxy/" />
 
     <message name="ComposerRequestMessage">

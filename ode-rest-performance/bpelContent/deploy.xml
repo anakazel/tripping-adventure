@@ -27,5 +27,8 @@
         <invoke partnerLink="TrigonometricalPL">
             <service name="proxy:WSDLProxy" port="TrigonometricalHTTP" />
         </invoke>
+        <invoke partnerLink="CSVFilePL">
+            <service name="proxy:WSDLProxy" port="CSVFileHTTP" />
+        </invoke>
     </process>
 </deploy>

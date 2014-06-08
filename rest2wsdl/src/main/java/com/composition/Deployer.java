@@ -15,10 +15,15 @@ import java.util.concurrent.CountDownLatch;
 /**
  * Main entry point of the rest2wsdl application
  */
-public class Deployer {
-
-    private static int port;
-    private static String context;
+public final class Deployer {
+    /**
+     * The port on which Tomcat is listening, default 9090
+     */
+    private static int port = 9090;
+    /**
+     * The web context name, default is rest2wsdl
+     */
+    public static String context = "rest2wsdl";
     public static List<Operation> OPERATIONS;
 
     private Deployer() {}
@@ -47,8 +52,8 @@ public class Deployer {
     }
 
     public static void main(String[] args) throws LifecycleException, InterruptedException {
-        port = Integer.parseInt(args[0]);//9090
-        context = args[1];//rest2wsdl
+        port = Integer.parseInt(args[0]);
+        context = args[1];
         final Properties propFile = new Properties();
         try {
             final InputStream input = new FileInputStream(args[2]);
@@ -62,6 +67,9 @@ public class Deployer {
                 o.setHttpMethod(propFile.getProperty("operation" + i + ".httpMethod"));
                 o.setRequestContentType(propFile.getProperty("operation" + i + ".request.contentType"));
                 o.setResponseContentType(propFile.getProperty("operation" + i + ".response.contentType"));
+                final List<String> params = new ArrayList<>();
+                params.add(propFile.getProperty("operation" + i + ".params"));
+                o.setParams(params);
                 OPERATIONS.add(o);
             }
         } catch (IOException e) {

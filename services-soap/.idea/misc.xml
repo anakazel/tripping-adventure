@@ -3,6 +3,19 @@
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
   </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/addition-service/pom.xml" />
+        <option value="$PROJECT_DIR$/arithmetic-progression-service/pom.xml" />
+        <option value="$PROJECT_DIR$/csv-file-service/pom.xml" />
+        <option value="$PROJECT_DIR$/exponential-service/pom.xml" />
+        <option value="$PROJECT_DIR$/geometric-progression-service/pom.xml" />
+        <option value="$PROJECT_DIR$/multiplication-service/pom.xml" />
+        <option value="$PROJECT_DIR$/trigonometrical-service/pom.xml" />
+      </list>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>

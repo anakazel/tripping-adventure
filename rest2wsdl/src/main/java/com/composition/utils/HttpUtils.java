@@ -1,5 +1,9 @@
 package com.composition.utils;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,14 +11,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 /**
- * @author alexg
  * Singleton containing utility methods focused on HTTP processing
+ * @author alexg
  */
 public enum HttpUtils {
 
     ;// singleton usage
 
-    public static final String getBody(final HttpServletRequest request) throws IOException {
+    public static final String getHttpBody(final HttpServletRequest request) throws IOException {
 
         final String body;
         final StringBuilder stringBuilder = new StringBuilder();
@@ -48,5 +52,32 @@ public enum HttpUtils {
         return body;
     }
 
+    public static final String getHttpResponse(final BufferedReader br) throws IOException {
+        final StringBuilder output = new StringBuilder();
+        String out;
+        while((out = br.readLine()) != null){
+            output.append(out);
+        }
+        return output.toString();
+    }
+    /**
+     * Not being able to do a DELETE request using Sun HTTP Client (source code not available to debug..), using Apache instead
+     * @return
+     */
+    public static final String doHttpDelete(final String url, final String responseContentType) throws IOException {
+        final DefaultHttpClient httpClient = new DefaultHttpClient();
+        final HttpDelete deleteRequest = new HttpDelete(url);
+        deleteRequest.addHeader("accept", responseContentType);
+        final HttpResponse response = httpClient.execute(deleteRequest);
+        final BufferedReader br = new BufferedReader(
+                new InputStreamReader((response.getEntity().getContent())));
 
+        final StringBuilder out = new StringBuilder();
+        String output;
+        while ((output = br.readLine()) != null) {
+            out.append(output);
+        }
+        httpClient.getConnectionManager().shutdown();
+        return out.toString();
+    }
 }

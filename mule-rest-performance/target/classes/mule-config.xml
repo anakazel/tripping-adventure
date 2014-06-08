@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mule xmlns:json="http://www.mulesoft.org/schema/mule/json"
       xmlns:ws="http://www.mulesoft.org/schema/mule/ws" xmlns:http="http://www.mulesoft.org/schema/mule/http"
-      xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-      xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.4.0"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:spring="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.mulesoft.org/schema/mule/core"
+      version="EE-3.4.0"
       xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ws http://www.mulesoft.org/schema/mule/ws/current/mule-ws.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
@@ -55,6 +56,15 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
                 </spring:bean>
             </spring:constructor-arg>
         </spring:bean>
+        <spring:bean id="csvFileRequestBean" class="java.lang.String">
+            <spring:constructor-arg>
+                <spring:bean class="org.springframework.util.FileCopyUtils"
+                             factory-method="copyToByteArray">
+                    <spring:constructor-arg value="classpath:CSVFileRequest.json"
+                                            type="java.io.InputStream"/>
+                </spring:bean>
+            </spring:constructor-arg>
+        </spring:bean>
     </spring:beans>
     <flow name="mule-rest-performanceFlow">
         <http:inbound-endpoint exchange-pattern="request-response"
@@ -75,6 +85,8 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
                       value="#[app.registry.twoParamsRequestBean]"/>
         <set-variable variableName="trigonometricalRequest"
                       value="#[app.registry.trigonometricalRequestBean]"/>
+        <set-variable variableName="csvFileRequest"
+                      value="#[app.registry.csvFileRequestBean]"/>
         <!--<flow-ref name="flowA"/>-->
         <!--<flow-ref name="flowB"/>-->
         <!--<flow-ref name="flowC"/>-->
@@ -126,11 +138,14 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
                                 method="PUT" address="http://localhost:9005/Multiplication/multiply"/>
         <json:json-to-object-transformer
                 returnClass="java.lang.Object"/>
+        <set-variable variableName="elapsedTime" value="#[message.payload.elapsedTime]"/>
         <set-payload value="#[message.payload.result]"/>
         <set-variable variableName="sequenceA" value="#[message.payload]"/>
 
-
-
+        <set-payload mimeType="application/json"
+                     value="#[flowVars['csvFileRequest'].replace('dummyPath', '/tmp/tmp.csv').replace('dummyKey', flowVars['elapsedTime']).replace('dummyValue', flowVars['sequenceA'])]"/>
+        <http:outbound-endpoint exchange-pattern="request-response"
+                                method="PUT" address="http://localhost:9002/CSVFile/addEntry"/>
         <set-payload mimeType="application/json"
                      value="#[flowVars['geometricProgressionRequest'].replace('dummyN', flowVars['m']).replace('dummyR', '2').replace('dummyA', '1')]"/>
         <http:outbound-endpoint exchange-pattern="request-response"
@@ -154,8 +169,16 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
                                 method="PUT" address="http://localhost:9005/Multiplication/multiply"/>
         <json:json-to-object-transformer
                 returnClass="java.lang.Object"/>
+
+
+        <set-variable variableName="elapsedTime" value="#[message.payload.elapsedTime]"/>
         <set-payload value="#[message.payload.result]"/>
         <set-variable variableName="sequenceB" value="#[message.payload]"/>
+
+        <set-payload mimeType="application/json"
+                     value="#[flowVars['csvFileRequest'].replace('dummyPath', '/tmp/tmp.csv').replace('dummyKey', flowVars['elapsedTime']).replace('dummyValue', flowVars['sequenceB'])]"/>
+        <http:outbound-endpoint exchange-pattern="request-response"
+                                method="PUT" address="http://localhost:9002/CSVFile/addEntry"/>
 
         <set-payload mimeType="application/json"
                      value="#[flowVars['oneParamRequest'].replace('dummyParam', '10')]"
@@ -172,8 +195,14 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
                                 method="PUT" address="http://localhost:9005/Multiplication/multiply"/>
         <json:json-to-object-transformer
                 returnClass="java.lang.Object"/>
+        <set-variable variableName="elapsedTime" value="#[message.payload.elapsedTime]"/>
         <set-payload value="#[message.payload.result]"/>
         <set-variable variableName="sequenceC" value="#[message.payload]"/>
+
+        <set-payload mimeType="application/json"
+                     value="#[flowVars['csvFileRequest'].replace('dummyPath', '/tmp/tmp.csv').replace('dummyKey', flowVars['elapsedTime']).replace('dummyValue', flowVars['sequenceC'])]"/>
+        <http:outbound-endpoint exchange-pattern="request-response"
+                                method="PUT" address="http://localhost:9002/CSVFile/addEntry"/>
 
 
         <!--final calculations-->
@@ -192,15 +221,19 @@ http://www.mulesoft.org/schema/mule/json http://www.mulesoft.org/schema/mule/jso
                                 method="PUT" address="http://localhost:9000/Addition/substract"/>
         <json:json-to-object-transformer
                 returnClass="java.lang.Object"/>
-        <set-payload value="#[message.payload.result]"/>
+
+        <set-variable variableName="finalResult" value="#[message.payload.result]"/>
+        <http:outbound-endpoint exchange-pattern="request-response"
+                                method="DELETE" address="http://localhost:9002/CSVFile/?path=%7Ctmp%7Ctmp.csv"/>
+        <set-payload value="#[flowVars['finalResult']]"/>
     </flow>
     <!--<sub-flow name="flowA" doc:name="flowA">-->
-       <!---->
+    <!---->
     <!--</sub-flow>-->
     <!--<sub-flow name="flowB">-->
-      <!---->
+    <!---->
     <!--</sub-flow>-->
     <!--<sub-flow name="flowC">-->
-     <!---->
+    <!---->
     <!--</sub-flow>-->
 </mule>

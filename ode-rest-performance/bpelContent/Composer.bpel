@@ -22,6 +22,7 @@
         <partnerLink name="ArithmeticProgressionPL" partnerLinkType="tns:ArithmeticProgressionPLT" partnerRole="ArithmeticProgressionRole" />
         <partnerLink name="GeometricProgressionPL" partnerLinkType="tns:GeometricProgressionPLT" partnerRole="GeometricProgressionRole" />
         <partnerLink name="TrigonometricalPL" partnerLinkType="tns:TrigonometricalPLT" partnerRole="TrigonometricalRole" />
+        <partnerLink name="CSVFilePL" partnerLinkType="tns:CSVFilePLT" partnerRole="CSVFileRole" />
     </partnerLinks>
     <variables>
         <variable name="ComposerInput" messageType="tns:ComposerRequestMessage" />
@@ -60,7 +61,7 @@
         <assign validate="no">
             <copy>
                 <from>substring-before(substring-after($ProxyResponse.responseString, 'result":"'), '"}')</from>
-                <to part="responseString" variable="ComposerOutput"></to>
+                <to part="responseString" variable="ComposerOutput"/>
             </copy>
             <copy>
                 <from>
@@ -117,6 +118,15 @@
                 <!--sequence A result-->
                 <to>$sequenceA</to>
             </copy>
+            <copy>
+                <from>concat('{"path": "', '/tmp/tmp.csv', '","key": "', substring-before(substring-after($ProxyResponse.responseString, 'elapsedTime":"'), '","operationId'), '","value":"', $sequenceA, '"}')</from>
+                <!--sequence A result-->
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+        <!--invoke csv-->
+        <invoke partnerLink="CSVFilePL" operation="addEntryOperation_PUT" portType="proxy:CSVFile" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign>
             <!--start sequence B calculus-->
             <copy>
                 <from>concat('{"a": "', '1', '","n": "', $ComposerInput.m , '","r":"', '2', '"}')</from>
@@ -157,6 +167,14 @@
                 <to>$sequenceB</to>
             </copy>
             <copy>
+                <from>concat('{"path": "', '/tmp/tmp.csv', '","key": "', substring-before(substring-after($ProxyResponse.responseString, 'elapsedTime":"'), '","operationId'), '","value":"', $sequenceB, '"}')</from>
+                <!--sequence A result-->
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+        <invoke partnerLink="CSVFilePL" operation="addEntryOperation_PUT" portType="proxy:CSVFile" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign>
+            <copy>
                 <from>
                     <literal>
                         {"param": "10"}
@@ -182,6 +200,13 @@
                 <to part="responseString" variable="ComposerOutput" />
             </copy>
             <copy>
+                <from>concat('{"path": "', '/tmp/tmp.csv', '","key": "', substring-before(substring-after($ProxyResponse.responseString, 'elapsedTime":"'), '","operationId'), '","value":"', $ComposerOutput.responseString, '"}')</from>
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+        <invoke partnerLink="CSVFilePL" operation="addEntryOperation_PUT" portType="proxy:CSVFile" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign>
+            <copy>
                 <from>concat('{"firstParam": "', $sequenceB, '","secondParam": "', $ComposerOutput.responseString, '"}')</from>
                 <to part="requestString" variable="ProxyRequest" />
             </copy>
@@ -204,8 +229,12 @@
                 <from>substring-before(substring-after($ProxyResponse.responseString, 'result":"'), '"}')</from>
                 <to part="responseString" variable="ComposerOutput" />
             </copy>
+            <copy>
+                <from>'path=|tmp|tmp.csv'</from>
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
         </assign>
-        <!--sequenceC result-->
+        <invoke partnerLink="CSVFilePL" operation="cleanupOperation_DELETE" portType="proxy:CSVFile" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
         <reply name="ReplyOutput" partnerLink="ComposerClient" portType="tns:Composer" operation="getResult" variable="ComposerOutput" />
     </sequence>
 </process>

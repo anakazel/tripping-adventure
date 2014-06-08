@@ -137,11 +137,11 @@
                 <to part="secondParam" variable="MultiplyRequest3" />
             </copy>
             <copy>
-                <from>'/tmp/csv.log'</from>
+                <from>'/tmp/tmp.csv'</from>
                 <to part="path" variable="AddEntryRequest" />
             </copy>
             <copy>
-                <from>'/tmp/csv.log'</from>
+                <from>'/tmp/tmp.csv'</from>
                 <to part="path" variable="CleanupRequest" />
             </copy>
         </assign>
