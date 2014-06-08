@@ -1,16 +1,25 @@
 package com.composition;
 
+import com.composition.model.Operation;
+import com.composition.proxy.ProxyServlet;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 
-import java.io.File;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
 /**
  * Main entry point of the rest2wsdl application
  */
 public class Deployer {
+
+    private static int port;
+    private static String context;
+    public static List<Operation> OPERATIONS;
 
     private Deployer() {}
 
@@ -20,14 +29,14 @@ public class Deployer {
         return instance;
     }
 
-    public CountDownLatch shutDownSignal = new CountDownLatch(1);
+    private CountDownLatch shutDownSignal = new CountDownLatch(1);
 
     private int run() throws LifecycleException, InterruptedException {
         System.out.println("Starting embedded Tomcat...");
         final Tomcat tomcat = new Tomcat();
-        tomcat.setPort(9090);
+        tomcat.setPort(port);
         final File base = new File(System.getProperty("java.io.tmpdir"));
-        final Context rootCtx = tomcat.addContext("/rest2wsdl", base.getAbsolutePath());
+        final Context rootCtx = tomcat.addContext("/" + context, base.getAbsolutePath());
         final ProxyServlet servlet = new ProxyServlet();
         Tomcat.addServlet(rootCtx, "BaseServlet", servlet);
         rootCtx.addServletMapping("/*", "BaseServlet");
@@ -38,8 +47,27 @@ public class Deployer {
     }
 
     public static void main(String[] args) throws LifecycleException, InterruptedException {
+        port = Integer.parseInt(args[0]);//9090
+        context = args[1];//rest2wsdl
+        final Properties propFile = new Properties();
+        try {
+            final InputStream input = new FileInputStream(args[2]);
+            propFile.load(input);
+            final int count = Integer.parseInt(propFile.getProperty("operations"));
+            OPERATIONS = new ArrayList<>();
+            for(int i = 1; i <= count; ++i){
+                final Operation o = new Operation();
+                o.setBaseUrl(propFile.getProperty("operation" + i + ".baseUrl"));
+                o.setLocation(propFile.getProperty("operation" + i + ".location"));
+                o.setHttpMethod(propFile.getProperty("operation" + i + ".httpMethod"));
+                o.setRequestContentType(propFile.getProperty("operation" + i + ".request.contentType"));
+                o.setResponseContentType(propFile.getProperty("operation" + i + ".response.contentType"));
+                OPERATIONS.add(o);
+            }
+        } catch (IOException e) {
+            System.out.println("I/O error.");
+        }
         System.exit(getInstance().run());
+        //TODO ADD USAGE [port] [context name] [path to config file]
     }
-
-
 }
