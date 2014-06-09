@@ -1,8 +1,10 @@
 <project name="ode-soap-performance" basedir=".">
     <!-- set global properties for this build -->
     <property name="ODE_HOME" value="/home/alexg/Tools/TomcatOde/webapps/ode"/>
-    <target name="deploy" description="Deploy to ODE">
+    <target name="undeploy" description="Undeploy from ODE">
         <delete dir="${ODE_HOME}/WEB-INF/processes/ode-soap-performance"/>
+    </target>
+    <target name="deploy" description="Deploy to ODE" depends="undeploy">
         <sleep seconds="3"/>
         <copy todir="${ODE_HOME}/WEB-INF/processes/ode-soap-performance">
             <fileset dir="." includes="**"/>

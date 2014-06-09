@@ -70,4 +70,17 @@ public final class Operation {
     public String getUrl(){
         return getBaseUrl() + getLocation();
     }
+
+    @Override
+    public String toString() {
+        return "Operation{" +
+                "baseUrl='" + baseUrl + '\'' +
+                ", location='" + location + '\'' +
+                ", httpMethod='" + httpMethod + '\'' +
+                ", params=" + params +
+                ", requestContentType='" + requestContentType + '\'' +
+                ", responseContentType='" + responseContentType + '\'' +
+                ", url='" + url + '\'' +
+                '}';
+    }
 }

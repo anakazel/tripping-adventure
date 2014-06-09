@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:tns="http://composer"
+             xmlns:types="http://ode/bpel/types"
+             xmlns:vprop="http://docs.oasis-open.org/wsbpel/2.0/varprop"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:proxywsdl="http://www.wscomposition.org/WSDLProxy/"
+             name="Composer"
+             targetNamespace="http://composer">
+    <documentation>WSDLProxy Web Service</documentation>
+
+    <plnk:partnerLinkType name="MultiplicationPLT">
+        <plnk:role name="MultiplicationRole" portType="proxywsdl:Multiplication" />
+    </plnk:partnerLinkType>
+
+    <plnk:partnerLinkType name="AdditionPLT">
+        <plnk:role name="AdditionRole" portType="proxywsdl:Addition" />
+    </plnk:partnerLinkType>
+
+    <plnk:partnerLinkType name="ExponentialPLT">
+        <plnk:role name="ExponentialRole" portType="proxywsdl:Exponential" />
+    </plnk:partnerLinkType>
+
+    <plnk:partnerLinkType name="ArithmeticProgressionPLT">
+        <plnk:role name="ArithmeticProgressionRole" portType="proxywsdl:ArithmeticProgression" />
+    </plnk:partnerLinkType>
+
+    <plnk:partnerLinkType name="GeometricProgressionPLT">
+        <plnk:role name="GeometricProgressionRole" portType="proxywsdl:GeometricProgression" />
+    </plnk:partnerLinkType>
+
+    <plnk:partnerLinkType name="TrigonometricalPLT">
+        <plnk:role name="TrigonometricalRole" portType="proxywsdl:Trigonometrical" />
+    </plnk:partnerLinkType>
+
+    <plnk:partnerLinkType name="CSVFilePLT">
+        <plnk:role name="CSVFileRole" portType="proxywsdl:CSVFile" />
+    </plnk:partnerLinkType>
+
+    <import location="WSDLProxy.wsdl" namespace="http://www.wscomposition.org/WSDLProxy/" />
+
+    <message name="ComposerRequestMessage">
+        <part name="n" type="xsd:string" />
+        <part name="m" type="xsd:string" />
+        <part name="p" type="xsd:string" />
+    </message>
+    <message name="ComposerResponseMessage">
+        <part name="responseString" type="xsd:string" />
+    </message>
+    <portType name="Composer">
+        <operation name="getResult">
+            <input message="tns:ComposerRequestMessage" />
+            <output message="tns:ComposerResponseMessage" />
+        </operation>
+    </portType>
+    <plnk:partnerLinkType name="Composer">
+        <plnk:role name="ComposerProvider" portType="tns:Composer" />
+    </plnk:partnerLinkType>
+    <!-- maybe switch to document literal -->
+    <binding name="ComposerBinding" type="tns:Composer">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+        <operation name="getResult">
+            <soap:operation soapAction="http://composer/getResult" />
+            <input>
+                <soap:body use="literal" namespace="http://composer" />
+            </input>
+            <output>
+                <soap:body use="literal" namespace="http://composer" />
+            </output>
+        </operation>
+    </binding>
+    <service name="ComposerService">
+        <port binding="tns:ComposerBinding" name="ComposerPort">
+            <soap:address location="http://localhost:8080/ode/processes/Composer" />
+        </port>
+    </service>
+</definitions>

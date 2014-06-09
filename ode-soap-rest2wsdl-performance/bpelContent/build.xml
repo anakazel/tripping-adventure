@@ -1,0 +1,13 @@
+<project name="ode-soap-rest2wsdl-performance" basedir=".">
+    <!-- set global properties for this build -->
+    <property name="ODE_HOME" value="/home/alexg/Tools/TomcatOde/webapps/ode"/>
+    <target name="undeploy" description="Undeploy">
+        <delete dir="${ODE_HOME}/WEB-INF/processes/ode-soap-rest2wsdl-performance"/>
+    </target>
+    <target name="deploy" description="Deploy to ODE" depends="undeploy">
+        <sleep seconds="5"/>
+        <copy todir="${ODE_HOME}/WEB-INF/processes/ode-soap-rest2wsdl-performance">
+            <fileset dir="." includes="**"/>
+        </copy>
+    </target>
+</project>

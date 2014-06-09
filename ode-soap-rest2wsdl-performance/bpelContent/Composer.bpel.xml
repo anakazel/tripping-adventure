@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:bpws="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:proxy="http://www.wscomposition.org/WSDLProxy/"
+         xmlns:fn="http://www.w3.org/2005/xpath-functions"
+         xmlns:ode="http://www.apache.org/ode/type/extension"
+         xmlns:tns="http://composer"
+         xmlns:types="http://ode/bpel/types"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         name="Composer"
+         targetNamespace="http://composer"
+         suppressJoinFailure="yes"
+         queryLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0"
+         expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath2.0">
+    <import location="ComposerArtifacts.wsdl" namespace="http://composer" importType="http://schemas.xmlsoap.org/wsdl/" />
+    <partnerLinks>
+        <!-- The 'client' role represents the requester of this service. -->
+        <partnerLink name="ComposerClient" partnerLinkType="tns:Composer" myRole="ComposerProvider" />
+        <partnerLink name="AdditionPL" partnerLinkType="tns:AdditionPLT" partnerRole="AdditionRole" />
+        <partnerLink name="MultiplicationPL" partnerLinkType="tns:MultiplicationPLT" partnerRole="MultiplicationRole" />
+        <partnerLink name="ExponentialPL" partnerLinkType="tns:ExponentialPLT" partnerRole="ExponentialRole" />
+        <partnerLink name="ArithmeticProgressionPL" partnerLinkType="tns:ArithmeticProgressionPLT" partnerRole="ArithmeticProgressionRole" />
+        <partnerLink name="GeometricProgressionPL" partnerLinkType="tns:GeometricProgressionPLT" partnerRole="GeometricProgressionRole" />
+        <partnerLink name="TrigonometricalPL" partnerLinkType="tns:TrigonometricalPLT" partnerRole="TrigonometricalRole" />
+        <partnerLink name="CSVFilePL" partnerLinkType="tns:CSVFilePLT" partnerRole="CSVFileRole" />
+    </partnerLinks>
+    <variables>
+        <variable name="ComposerInput" messageType="tns:ComposerRequestMessage" />
+        <variable name="ComposerOutput" messageType="tns:ComposerResponseMessage" />
+        <variable name="ProxyRequest" messageType="proxy:Request" />
+        <variable name="ProxyResponse" messageType="proxy:Response" />
+        <variable name="sinResponse" type="xsd:string" />
+        <variable name="divideResponse" type="xsd:string" />
+        <variable name="sqrtResponse" type="xsd:string" />
+        <variable name="sequenceA" type="xsd:string" />
+        <variable name="sequenceB" type="xsd:string" />
+    </variables>
+    <sequence name="MainSequence">
+        <receive partnerLink="ComposerClient" portType="tns:Composer" operation="getResult" variable="ComposerInput" createInstance="yes" />
+        <assign validate="no" name="InitialAssign">
+            <copy>
+                <from><literal><![CDATA[{"angle": "30"}]]></literal></from>
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+
+        <invoke partnerLink="TrigonometricalPL" operation="sinOperation_PUT" portType="proxy:Trigonometrical" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+
+        <assign validate="no">
+            <copy>
+                <from>substring-before(substring-after($ProxyResponse.responseString, 'result":"'), '"}')</from>
+                <to>$sinResponse</to>
+            </copy>
+            <copy>
+                <from><literal><![CDATA[{"angle": "30"}]]></literal></from>
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+
+        <invoke partnerLink="TrigonometricalPL" operation="cosOperation_PUT" portType="proxy:Trigonometrical" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign validate="no">
+            <copy>
+                <from>substring-before(substring-after($ProxyResponse.responseString, 'result":"'), '"}')</from>
+                <to part="responseString" variable="ComposerOutput"/>
+            </copy>
+            <copy>
+                <from>
+                    concat('{"firstParam": "', $sinResponse, '","secondParam": "', $ComposerOutput.responseString, '"}')
+                </from>
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+
+        <invoke partnerLink="MultiplicationPL" operation="divideOperation_PUT" portType="proxy:Multiplication" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign validate="no">
+            <copy>
+                <from>substring-before(substring-after($ProxyResponse.responseString, 'result":"'), '"}')</from>
+                <to>$divideResponse</to>
+            </copy>
+            <copy>
+                <from>
+                    concat('{"n": "', $ComposerInput.n, '","a": "', '1' , '","d":"', '1', '"}')
+                </from>
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+
+        <invoke partnerLink="ArithmeticProgressionPL" operation="computeOperation_POST" portType="proxy:ArithmeticProgression" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign validate="no">
+            <copy>
+                <from>substring-before(substring-after($ProxyResponse.responseString, 'result":"'), '"}')</from>
+                <to part="responseString" variable="ComposerOutput" />
+            </copy>
+            <copy>
+                <from>
+                    concat('{"firstParam": "', $ComposerOutput.responseString, '","secondParam": "', '3', '"}')
+                </from>
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+        <invoke partnerLink="ExponentialPL" operation="powOperation_PUT" portType="proxy:Exponential" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign validate="no">
+            <copy>
+                <from>substring-before(substring-after($ProxyResponse.responseString, 'result":"'), '"}')</from>
+                <to part="responseString" variable="ComposerOutput" />
+            </copy>
+            <copy>
+                <from>
+                    concat('{"firstParam": "', $ComposerOutput.responseString, '","secondParam": "', $divideResponse, '"}')
+                </from>
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+        <invoke partnerLink="MultiplicationPL" operation="multiplyOperation_PUT" portType="proxy:Multiplication" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign validate="no">
+            <copy>
+                <from>substring-before(substring-after($ProxyResponse.responseString, 'result":"'), '"}')</from>
+                <!--sequence A result-->
+                <to>$sequenceA</to>
+            </copy>
+            <copy>
+                <from>concat('{"path": "', '/tmp/tmp.csv', '","key": "', substring-before(substring-after($ProxyResponse.responseString, 'elapsedTime":"'), '","operationId'), '","value":"', $sequenceA, '"}')</from>
+                <!--sequence A result-->
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+        <!--invoke csv-->
+        <invoke partnerLink="CSVFilePL" operation="addEntryOperation_PUT" portType="proxy:CSVFile" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign>
+            <!--start sequence B calculus-->
+            <copy>
+                <from>concat('{"a": "', '1', '","n": "', $ComposerInput.m , '","r":"', '2', '"}')</from>
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+
+        <invoke partnerLink="GeometricProgressionPL" operation="computeOperation_POST" portType="proxy:GeometricProgression" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign validate="no">
+            <copy>
+                <from>substring-before(substring-after($ProxyResponse.responseString, 'result":"'), '"}')</from>
+                <to part="responseString" variable="ComposerOutput" />
+            </copy>
+            <copy>
+                <from>
+                    <literal>
+                        {"firstParam": "3","secondParam": "0.5"}
+                    </literal>
+                </from>
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+
+        <invoke partnerLink="ExponentialPL" operation="powOperation_PUT" portType="proxy:Exponential" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign validate="no">
+            <copy>
+                <from>
+                    concat('{"firstParam": "', $ComposerOutput.responseString, '","secondParam": "', substring-before(substring-after($ProxyResponse.responseString, 'result":"'), '"}'), '"}')
+                </from>
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+
+        <invoke partnerLink="MultiplicationPL" operation="multiplyOperation_PUT" portType="proxy:Multiplication" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign validate="no">
+            <copy>
+                <from>substring-before(substring-after($ProxyResponse.responseString, 'result":"'), '"}')</from>
+                <to>$sequenceB</to>
+            </copy>
+            <copy>
+                <from>concat('{"path": "', '/tmp/tmp.csv', '","key": "', substring-before(substring-after($ProxyResponse.responseString, 'elapsedTime":"'), '","operationId'), '","value":"', $sequenceB, '"}')</from>
+                <!--sequence A result-->
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+        <invoke partnerLink="CSVFilePL" operation="addEntryOperation_PUT" portType="proxy:CSVFile" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign>
+            <copy>
+                <from>
+                    <literal>
+                        {"param": "10"}
+                    </literal>
+                </from>
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+
+        <invoke partnerLink="ExponentialPL" operation="logOperation_PUT" portType="proxy:Exponential" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign validate="no">
+            <copy>
+                <from>
+                    concat('{"firstParam": "', $ComposerInput.p, '","secondParam": "', substring-before(substring-after($ProxyResponse.responseString, 'result":"'), '"}'), '"}')
+                </from>
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+        <invoke partnerLink="MultiplicationPL" operation="multiplyOperation_PUT" portType="proxy:Multiplication" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign validate="no">
+            <copy>
+                <from>substring-before(substring-after($ProxyResponse.responseString, 'result":"'), '"}')</from>
+                <to part="responseString" variable="ComposerOutput" />
+            </copy>
+            <copy>
+                <from>concat('{"path": "', '/tmp/tmp.csv', '","key": "', substring-before(substring-after($ProxyResponse.responseString, 'elapsedTime":"'), '","operationId'), '","value":"', $ComposerOutput.responseString, '"}')</from>
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+        <invoke partnerLink="CSVFilePL" operation="addEntryOperation_PUT" portType="proxy:CSVFile" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign>
+            <copy>
+                <from>concat('{"firstParam": "', $sequenceB, '","secondParam": "', $ComposerOutput.responseString, '"}')</from>
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+        <invoke partnerLink="AdditionPL" operation="substractOperation_PUT" portType="proxy:Addition" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign validate="no">
+            <copy>
+                <from>substring-before(substring-after($ProxyResponse.responseString, 'result":"'), '"}')</from>
+                <to part="responseString" variable="ComposerOutput" />
+            </copy>
+            <!--having seqB - seqC-->
+            <copy>
+                <from>concat('{"firstParam": "', $sequenceA, '","secondParam": "', $ComposerOutput.responseString, '"}')</from>
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+        <invoke partnerLink="AdditionPL" operation="addOperation_PUT" portType="proxy:Addition" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <assign>
+            <copy>
+                <from>substring-before(substring-after($ProxyResponse.responseString, 'result":"'), '"}')</from>
+                <to part="responseString" variable="ComposerOutput" />
+            </copy>
+            <copy>
+                <from>'path=|tmp|tmp.csv'</from>
+                <to part="requestString" variable="ProxyRequest" />
+            </copy>
+        </assign>
+        <invoke partnerLink="CSVFilePL" operation="cleanupOperation_DELETE" portType="proxy:CSVFile" inputVariable="ProxyRequest" outputVariable="ProxyResponse" />
+        <reply name="ReplyOutput" partnerLink="ComposerClient" portType="tns:Composer" operation="getResult" variable="ComposerOutput" />
+    </sequence>
+</process>

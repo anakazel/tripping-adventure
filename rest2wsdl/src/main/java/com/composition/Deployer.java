@@ -46,7 +46,6 @@ public final class Deployer {
         Tomcat.addServlet(rootCtx, "BaseServlet", servlet);
         rootCtx.addServletMapping("/*", "BaseServlet");
         tomcat.start();
-        System.out.println("Done.");
         shutDownSignal.await();
         return 0;
     }
@@ -56,10 +55,13 @@ public final class Deployer {
         context = args[1];
         final Properties propFile = new Properties();
         try {
-            final InputStream input = new FileInputStream(args[2]);
+//            final InputStream input = new FileInputStream(args[2]);
+            ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+            final InputStream input = classloader.getResourceAsStream("soap.operations.properties");
             propFile.load(input);
             final int count = Integer.parseInt(propFile.getProperty("operations"));
             OPERATIONS = new ArrayList<>();
+            System.out.println("Loading operations...");
             for(int i = 1; i <= count; ++i){
                 final Operation o = new Operation();
                 o.setBaseUrl(propFile.getProperty("operation" + i + ".baseUrl"));
@@ -71,6 +73,7 @@ public final class Deployer {
                 params.add(propFile.getProperty("operation" + i + ".params"));
                 o.setParams(params);
                 OPERATIONS.add(o);
+                System.out.println(o);
             }
         } catch (IOException e) {
             System.out.println("I/O error.");

@@ -67,10 +67,16 @@ public final class ProxyServlet extends HttpServlet {
                     response = doHttpDelete(deleteUrl, operation.getResponseContentType());
                 }
 
+                // will use always xml content type on the response, because of BPEL
                 resp.setContentType("text/xml");
-                pw.append("<" + context + "><![CDATA[");
-                pw.append(response);
-                pw.append("]]></" + context + " >");
+                if(operation.getResponseContentType().equals("application/json")){
+                    pw.append("<" + context + "><![CDATA[");
+                    pw.append(response);
+                    pw.append("]]></" + context + " >");
+                }else{
+                    pw.append(response);
+                }
+
                 if(connection != null){
                     connection.disconnect();
                 }
