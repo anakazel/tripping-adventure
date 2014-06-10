@@ -40,112 +40,110 @@ http://www.mulesoft.org/schema/mule/xml http://www.mulesoft.org/schema/mule/xml/
 		</spring:bean>
 	</spring:beans>
 	
-	<flow name="mainFlow" doc:name="mainFlow">
-		<http:inbound-endpoint host="localhost" port="8084" exchange-pattern="request-response" doc:name="HTTP"/>
+	<flow name="mainFlow">
+		<http:inbound-endpoint host="localhost" port="8084" exchange-pattern="request-response"/>
 		<!-- Read beans -->
-		<set-variable variableName="directionsRequest" value="#[app.registry.directionsRequestBean]" doc:name="Variable"/>
-		<set-variable variableName="placesRequest" value="#[app.registry.placesRequestBean]" doc:name="Variable"/>
-		<set-variable variableName="forecastRequest" value="#[app.registry.forecastRequestBean]" doc:name="Variable"/>
-		<set-variable variableName="searchRequest" value="#[app.registry.searchRequestBean]" doc:name="Variable"/>
+		<set-variable variableName="directionsRequest" value="#[app.registry.directionsRequestBean]"/>
+		<set-variable variableName="placesRequest" value="#[app.registry.placesRequestBean]"/>
+		<set-variable variableName="forecastRequest" value="#[app.registry.forecastRequestBean]"/>
+		<set-variable variableName="searchRequest" value="#[app.registry.searchRequestBean]"/>
 		
-		<set-variable variableName="originElement" value="#['&lt;origin&gt;' + message.inboundProperties['origin']]" doc:name="Variable"/>
-		<set-variable variableName="destinationElement" value="#['&lt;destination&gt;' + message.inboundProperties['destination']]" doc:name="Variable"/>
-		<set-variable variableName="travelModeElement" value="#['&lt;mode&gt;' + message.inboundProperties['travelMode']]" doc:name="Variable"/>
-		<set-variable variableName="objectiveRadiusElement" value="#['&lt;radius&gt;' + message.inboundProperties['objectiveRadius']]" doc:name="Variable"/>
-		<set-variable variableName="objectiveTypesElement" value="#['&lt;types&gt;' + message.inboundProperties['objectiveTypes']]" doc:name="Variable"/>
-		<set-variable variableName="forecastUnitsElement" value="#['&lt;units&gt;' + message.inboundProperties['forecastUnits']]" doc:name="Variable"/>
-		<set-variable variableName="forecastDaysElement" value="#['&lt;cnt&gt;' + message.inboundProperties['forecastDays']]" doc:name="Variable"/>
-		<set-variable variableName="forecastQueryElement" value="#['&lt;q&gt;' + message.inboundProperties['destination']]" doc:name="Variable"/>
-		<set-variable variableName="imagesElement" value="#['&lt;num&gt;' + message.inboundProperties['images']]" doc:name="Variable"/>
-		<set-variable variableName="imagesQueryElement" value="#['&lt;q&gt;' + message.inboundProperties['destination']]" doc:name="Variable"/>
+		<set-variable variableName="originElement" value="#['&lt;origin&gt;' + message.inboundProperties['origin']]"/>
+		<set-variable variableName="destinationElement" value="#['&lt;destination&gt;' + message.inboundProperties['destination']]"/>
+		<set-variable variableName="travelModeElement" value="#['&lt;mode&gt;' + message.inboundProperties['travelMode']]"/>
+		<set-variable variableName="objectiveRadiusElement" value="#['&lt;radius&gt;' + message.inboundProperties['objectiveRadius']]"/>
+		<set-variable variableName="objectiveTypesElement" value="#['&lt;types&gt;' + message.inboundProperties['objectiveTypes']]"/>
+		<set-variable variableName="forecastUnitsElement" value="#['&lt;units&gt;' + message.inboundProperties['forecastUnits']]"/>
+		<set-variable variableName="forecastDaysElement" value="#['&lt;cnt&gt;' + message.inboundProperties['forecastDays']]"/>
+		<set-variable variableName="forecastQueryElement" value="#['&lt;q&gt;' + message.inboundProperties['destination']]"/>
+		<set-variable variableName="imagesElement" value="#['&lt;num&gt;' + message.inboundProperties['images']]"/>
+		<set-variable variableName="imagesQueryElement" value="#['&lt;q&gt;' + message.inboundProperties['destination']]"/>
 		
-    	<flow-ref name="directionsFlow" doc:name="Flow Reference"/>
-    	<flow-ref name="forecastFlow" doc:name="Flow Reference"/>
-    	<flow-ref name="searchFlow" doc:name="Flow Reference"/>
+    	<flow-ref name="directionsFlow"/>
+    	<flow-ref name="forecastFlow"/>
+    	<flow-ref name="searchFlow"/>
     	
     	<set-payload value="#[flowVars['searchResponse']]" />
         <set-payload value="#[xpath('//SearchResponse')]"/>
-        <mulexml:dom-to-xml-transformer doc:name="DOM to XML"/>
-        <object-to-string-transformer doc:name="Object to String"/>
+        <mulexml:dom-to-xml-transformer/>
+        <object-to-string-transformer/>
         <set-payload mimeType="text/xml" value="#[message.payload]"/>
-        <set-variable variableName="searchResponseXMLString" value="#[message.payload]"  doc:name="Variable"/>    
+        <set-variable variableName="searchResponseXMLString" value="#[message.payload]"/>
      	
      	<set-payload value="#[flowVars['placesResponse']]" />
      	<set-payload value="#[xpath('//PlacesResponse')]"/>
-     	<mulexml:dom-to-xml-transformer doc:name="DOM to XML"/>
-        <object-to-string-transformer doc:name="Object to String"/>
+     	<mulexml:dom-to-xml-transformer/>
+        <object-to-string-transformer/>
         <set-payload mimeType="text/xml" value="#[message.payload]"/>
-        <set-variable variableName="placesResponseXMLString" value="#[message.payload]"  doc:name="Variable"/>
+        <set-variable variableName="placesResponseXMLString" value="#[message.payload]"/>
         
         <set-payload value="#[flowVars['forecastResponse']]" />
      	<set-payload value="#[xpath('//ForecastResponse')]"/>
-     	<mulexml:dom-to-xml-transformer doc:name="DOM to XML"/>
-        <object-to-string-transformer doc:name="Object to String"/>
+     	<mulexml:dom-to-xml-transformer/>
+        <object-to-string-transformer/>
         <set-payload mimeType="text/xml" value="#[message.payload]"/>
-        <set-variable variableName="forecastResponseXMLString" value="#[message.payload]"  doc:name="Variable"/>
+        <set-variable variableName="forecastResponseXMLString" value="#[message.payload]"/>
         
         <set-payload value="#[flowVars['directionsResponse']]" />
      	<set-payload value="#[xpath('//DirectionsResponse/DirectionsResponse')]"/>
-     	<mulexml:dom-to-xml-transformer doc:name="DOM to XML"/>
-        <object-to-string-transformer doc:name="Object to String"/>
+     	<mulexml:dom-to-xml-transformer/>
+        <object-to-string-transformer/>
         <set-payload mimeType="text/xml" value="#[message.payload]"/>
-        <set-variable variableName="directionsResponseXMLString" value="#[message.payload]"  doc:name="Variable"/>
+        <set-variable variableName="directionsResponseXMLString" value="#[message.payload]"/>
         
      	<set-payload mimeType="text/xml" value="&lt;TravelResponse&gt;#[flowVars['directionsResponseXMLString']]#[flowVars['placesResponseXMLString']]
      		#[flowVars['searchResponseXMLString']]#[flowVars['forecastResponseXMLString']]&lt;/TravelResponse&gt;"/> 
 	</flow>
 
-	<sub-flow name="forecastFlow" doc:name="forecastFlow">
+	<sub-flow name="forecastFlow">
 		<!-- Set Forecast SOAP Payload -->
 		<set-payload mimeType="text/xml" value="#[flowVars['forecastRequest']
 			.replace('&lt;q&gt;', flowVars['forecastQueryElement'])
 			.replace('&lt;cnt&gt;', flowVars['forecastDaysElement'])
-			.replace('&lt;units&gt;', flowVars['forecastUnitsElement'])]" doc:name="Set Payload"/>
+			.replace('&lt;units&gt;', flowVars['forecastUnitsElement'])]"/>
 		<http:outbound-endpoint exchange-pattern="request-response" method="POST" 
-        	address="http://localhost:9003/soapwrapper/Forecast" doc:name="HTTP"/>
-        <object-to-byte-array-transformer doc:name="Object to Byte Array"/>
-        <byte-array-to-object-transformer doc:name="Byte Array to Object"/>
-        <set-variable variableName="forecastResponse" value="#[message.payload]" doc:name="Variable"/>
+        	address="http://localhost:9003/soapwrapper/Forecast"/>
+        <object-to-byte-array-transformer/>
+        <byte-array-to-object-transformer/>
+        <set-variable variableName="forecastResponse" value="#[message.payload]"/>
 
 	</sub-flow>
 	
-	<sub-flow name="directionsFlow" doc:name="directionsFlow">
+	<sub-flow name="directionsFlow">
 		<!-- Set Directions SOAP Payload -->
 		<set-payload mimeType="text/xml" value="#[flowVars['directionsRequest']
 			.replace('&lt;origin&gt;', flowVars['originElement'])
 			.replace('&lt;destination&gt;', flowVars['destinationElement'])
-			.replace('&lt;mode&gt;', flowVars['travelModeElement'])]" doc:name="Set Payload"/>
+			.replace('&lt;mode&gt;', flowVars['travelModeElement'])]"/>
 	
-		<http:outbound-endpoint address="http://localhost:9000/soapwrapper/Directions" exchange-pattern="request-response" method="POST" doc:name="HTTP"/>
-		<object-to-byte-array-transformer doc:name="Object to Byte Array"/> 
-		<byte-array-to-object-transformer doc:name="Byte Array to Object"/>
+		<http:outbound-endpoint address="http://localhost:9000/soapwrapper/Directions" exchange-pattern="request-response" method="POST"/>
+		<object-to-byte-array-transformer/>
+		<byte-array-to-object-transformer/>
 
-		<set-variable variableName="directionsResponse" value="#[message.payload]" doc:name="Variable"/>
-		<set-variable variableName="latitude" value="#[xpath('string(//leg/end_location/lat)')]" doc:name="Variable"/>
-        <set-variable variableName="longitude" value="#[xpath('string(//leg/end_location/lng)')]" doc:name="Variable"/>
+		<set-variable variableName="directionsResponse" value="#[message.payload]"/>
+		<set-variable variableName="latitude" value="#[xpath('string(//leg/end_location/lat)')]"/>
+        <set-variable variableName="longitude" value="#[xpath('string(//leg/end_location/lng)')]"/>
 		
-		<set-variable variableName="locationElement" value="#['&lt;location&gt;' + flowVars['latitude'] + ',' + flowVars['longitude']]" doc:name="Variable"/>
+		<set-variable variableName="locationElement" value="#['&lt;location&gt;' + flowVars['latitude'] + ',' + flowVars['longitude']]"/>
 			
 		<!-- Set Places SOAP Payload -->
 		<set-payload mimeType="text/xml" value="#[flowVars['placesRequest']
 			.replace('&lt;location&gt;', flowVars['locationElement'])
 			.replace('&lt;radius&gt;', flowVars['objectiveRadiusElement'])
-			.replace('&lt;types&gt;', flowVars['objectiveTypesElement'])]" doc:name="Set Payload"/>
-		<http:outbound-endpoint exchange-pattern="request-response" method="POST" 
-        	address="http://localhost:9001/soapwrapper/Places" doc:name="HTTP"/>
-        <object-to-byte-array-transformer doc:name="Object to Byte Array"/> 
-		<byte-array-to-object-transformer doc:name="Byte Array to Object"/>
-		<set-variable variableName="placesResponse" value="#[message.payload]" doc:name="Variable"/>
+			.replace('&lt;types&gt;', flowVars['objectiveTypesElement'])]"/>
+		<http:outbound-endpoint exchange-pattern="request-response" method="POST" address="http://localhost:9001/soapwrapper/Places"/>
+        <object-to-byte-array-transformer/>
+		<byte-array-to-object-transformer/>
+		<set-variable variableName="placesResponse" value="#[message.payload]"/>
 	</sub-flow>
 	
-	<sub-flow name="searchFlow" doc:name="searchFlow">
+	<sub-flow name="searchFlow">
 		<set-payload mimeType="text/xml" value="#[flowVars['searchRequest']
 			.replace('&lt;q&gt;', flowVars['imagesQueryElement'])
-			.replace('&lt;num&gt;', flowVars['imagesElement'])]" doc:name="Set Payload"/>
-		<http:outbound-endpoint exchange-pattern="request-response" method="POST" 
-        	address="http://localhost:9002/soapwrapper/Search" doc:name="HTTP"/>
-        <object-to-byte-array-transformer doc:name="Object to Byte Array"/>
-        <byte-array-to-object-transformer doc:name="Byte Array to Object"/>
-        <set-variable variableName="searchResponse" value="#[message.payload]" doc:name="Variable"/>
+			.replace('&lt;num&gt;', flowVars['imagesElement'])]"/>
+		<http:outbound-endpoint exchange-pattern="request-response" method="POST" address="http://localhost:9002/soapwrapper/Search"/>
+        <object-to-byte-array-transformer/>
+        <byte-array-to-object-transformer/>
+        <set-variable variableName="searchResponse" value="#[message.payload]"/>
 	</sub-flow>
 </mule>

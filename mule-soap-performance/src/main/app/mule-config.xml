@@ -93,16 +93,16 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
             </spring:constructor-arg>
         </spring:bean>
     </spring:beans>
-    <flow name="mule-soap-performanceFlow1" doc:name="mule-soap-performanceFlow1">
-        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8084" doc:name="HTTP"/>
+    <flow name="mule-soap-performanceFlow1">
+        <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="8084"/>
         <!-- Read beans -->
 
-        <set-variable variableName="n" value="#[message.inboundProperties['n']]" doc:name="Variable"/>
-        <set-variable variableName="m" value="#[message.inboundProperties['m']]" doc:name="Variable"/>
-        <set-variable variableName="p" value="#[message.inboundProperties['p']]" doc:name="Variable"/>
+        <set-variable variableName="n" value="#[message.inboundProperties['n']]"/>
+        <set-variable variableName="m" value="#[message.inboundProperties['m']]"/>
+        <set-variable variableName="p" value="#[message.inboundProperties['p']]"/>
 
-        <set-variable variableName="sinParam" value="30" doc:name="Variable"/>
-        <set-variable variableName="cosParam" value="30" doc:name="Variable"/>
+        <set-variable variableName="sinParam" value="30"/>
+        <set-variable variableName="cosParam" value="30"/>
         <set-variable variableName="powSecondParam1" value="3"/>
 
         <set-variable variableName="powFirstParam1" value="3"/>
@@ -111,188 +111,178 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
         <set-variable variableName="logParam" value="10"/>
         <set-variable variableName="tempFile" value="/tmp/csv.log"/>
 
-        <set-variable variableName="addEntryRequest" value="#[app.registry.addEntryRequestBean]" doc:name="Variable"/>
-        <set-variable variableName="addRequest" value="#[app.registry.addRequestBean]" doc:name="Variable"/>
-        <set-variable variableName="arithmeticProgressionRequest" value="#[app.registry.arithmeticProgressionRequestBean]" doc:name="Variable"/>
-        <set-variable variableName="cleanupRequest" value="#[app.registry.cleanupRequestBean]" doc:name="Variable"/>
-        <set-variable variableName="cosRequest" value="#[app.registry.cosRequestBean]" doc:name="Variable"/>
-        <set-variable variableName="divideRequest" value="#[app.registry.divideRequestBean]" doc:name="Variable"/>
-        <set-variable variableName="geometricProgressionRequest" value="#[app.registry.geometricProgressionRequestBean]" doc:name="Variable"/>
-        <set-variable variableName="logRequest" value="#[app.registry.logRequestBean]" doc:name="Variable"/>
-        <set-variable variableName="multiplyRequest" value="#[app.registry.multiplyRequestBean]" doc:name="Variable"/>
-        <set-variable variableName="powRequest" value="#[app.registry.powRequestBean]" doc:name="Variable"/>
-        <set-variable variableName="sinRequest" value="#[app.registry.sinRequestBean]" doc:name="Variable"/>
-        <set-variable variableName="substractRequest" value="#[app.registry.substractRequestBean]" doc:name="Variable"/>
+        <set-variable variableName="addEntryRequest" value="#[app.registry.addEntryRequestBean]"/>
+        <set-variable variableName="addRequest" value="#[app.registry.addRequestBean]"/>
+        <set-variable variableName="arithmeticProgressionRequest" value="#[app.registry.arithmeticProgressionRequestBean]"/>
+        <set-variable variableName="cleanupRequest" value="#[app.registry.cleanupRequestBean]"/>
+        <set-variable variableName="cosRequest" value="#[app.registry.cosRequestBean]"/>
+        <set-variable variableName="divideRequest" value="#[app.registry.divideRequestBean]"/>
+        <set-variable variableName="geometricProgressionRequest" value="#[app.registry.geometricProgressionRequestBean]"/>
+        <set-variable variableName="logRequest" value="#[app.registry.logRequestBean]"/>
+        <set-variable variableName="multiplyRequest" value="#[app.registry.multiplyRequestBean]"/>
+        <set-variable variableName="powRequest" value="#[app.registry.powRequestBean]"/>
+        <set-variable variableName="sinRequest" value="#[app.registry.sinRequestBean]"/>
+        <set-variable variableName="substractRequest" value="#[app.registry.substractRequestBean]"/>
 
-        <flow-ref name="flowA" doc:name="Flow Reference"/>
-        <flow-ref name="flowB" doc:name="Flow Reference"/>
-        <flow-ref name="flowC" doc:name="Flow Reference"/>
+        <flow-ref name="flowA"/>
+        <flow-ref name="flowB"/>
+        <flow-ref name="flowC"/>
 
-        <set-variable variableName="addRequestFirstParamElement" value="#['&lt;firstParam&gt;' + flowVars['resultA']]" doc:name="Variable"/>
-        <set-variable variableName="addRequestSecondParamElement" value="#['&lt;secondParam&gt;' + flowVars['resultB']]" doc:name="Variable"/>
+        <set-variable variableName="addRequestFirstParamElement" value="#['&lt;firstParam&gt;' + flowVars['resultA']]"/>
+        <set-variable variableName="addRequestSecondParamElement" value="#['&lt;secondParam&gt;' + flowVars['resultB']]"/>
         <set-payload mimeType="text/xml" value="#[flowVars['addRequest'].replace('&lt;firstParam&gt;', flowVars['addRequestFirstParamElement']).replace('&lt;secondParam&gt;', flowVars['addRequestSecondParamElement'])]"/>
-        <http:outbound-endpoint exchange-pattern="request-response" method="POST"
-                                address="http://localhost:9000/Addition" doc:name="HTTP"/>
-        <object-to-byte-array-transformer doc:name="Object to Byte Array"/>
-        <byte-array-to-object-transformer doc:name="Byte Array to Object"/>
+        <http:outbound-endpoint exchange-pattern="request-response" method="POST" address="http://localhost:9000/Addition"/>
+        <object-to-byte-array-transformer/>
+        <byte-array-to-object-transformer/>
         <set-payload value="#[xpath('//result').text]"/>
-        <set-variable variableName="addResponse" value="#[message.payload]" doc:name="Variable"/>
+        <set-variable variableName="addResponse" value="#[message.payload]"/>
 
-        <set-variable variableName="substractRequestFirstParamElement" value="#['&lt;firstParam&gt;' + flowVars['addResponse']]" doc:name="Variable"/>
-        <set-variable variableName="substractRequestSecondParamElement" value="#['&lt;secondParam&gt;' + flowVars['resultC']]" doc:name="Variable"/>
+        <set-variable variableName="substractRequestFirstParamElement" value="#['&lt;firstParam&gt;' + flowVars['addResponse']]"/>
+        <set-variable variableName="substractRequestSecondParamElement" value="#['&lt;secondParam&gt;' + flowVars['resultC']]"/>
         <set-payload mimeType="text/xml" value="#[flowVars['substractRequest'].replace('&lt;firstParam&gt;', flowVars['substractRequestFirstParamElement']).replace('&lt;secondParam&gt;', flowVars['addRequestSecondParamElement'])]"/>
-        <http:outbound-endpoint exchange-pattern="request-response" method="POST"
-                                address="http://localhost:9000/Addition" doc:name="HTTP"/>
-        <object-to-byte-array-transformer doc:name="Object to Byte Array"/>
-        <byte-array-to-object-transformer doc:name="Byte Array to Object"/>
+        <http:outbound-endpoint exchange-pattern="request-response" method="POST" address="http://localhost:9000/Addition"/>
+        <object-to-byte-array-transformer/>
+        <byte-array-to-object-transformer/>
         <set-payload value="#[xpath('//result').text]"/>
-        <set-variable variableName="finalResponse" value="#[message.payload]" doc:name="Variable"/>
+        <set-variable variableName="finalResponse" value="#[message.payload]"/>
         <!-- FINAL RESPONSE -->
-        <set-variable variableName="substractResponse" value="#[message.payload]" doc:name="Variable"/>
+        <set-variable variableName="substractResponse" value="#[message.payload]"/>
         <set-variable variableName="cleanupRequestPathElement" value="#['&lt;path&gt;' + flowVars['tempFile']]"/>
         <set-payload mimeType="text/xml" value="#[flowVars['cleanupRequest'].replace('&lt;path&gt;', flowVars['cleanupRequestPathElement'])]"/>
-        <http:outbound-endpoint exchange-pattern="request-response" method="POST"
-                                address="http://localhost:9002/CSVFile" doc:name="HTTP"/>
+        <http:outbound-endpoint exchange-pattern="request-response" method="POST" address="http://localhost:9002/CSVFile"/>
         <set-payload value="#[flowVars['finalResponse']]"/>
     </flow>
 
     <sub-flow name="flowA">
         <!-- sin30, cos30, sin30/cos30 -->
-        <set-variable variableName="sinRequestParamElement" value="#['&lt;angle&gt;' + flowVars['sinParam']]" doc:name="Variable"/>
+        <set-variable variableName="sinRequestParamElement" value="#['&lt;angle&gt;' + flowVars['sinParam']]"/>
         <set-payload mimeType="text/xml" value="#[flowVars['sinRequest'].replace('&lt;angle&gt;', flowVars['sinRequestParamElement'])]"/>
-        <http:outbound-endpoint exchange-pattern="request-response" method="POST"
-                                address="http://localhost:9006/Trigonometrical" doc:name="HTTP"/>
-        <object-to-byte-array-transformer doc:name="Object to Byte Array"/>
-        <byte-array-to-object-transformer doc:name="Byte Array to Object"/>
+        <http:outbound-endpoint exchange-pattern="request-response" method="POST" address="http://localhost:9006/Trigonometrical"/>
+        <object-to-byte-array-transformer/>
+        <byte-array-to-object-transformer/>
         <set-payload value="#[xpath('//result').text]"/>
-        <set-variable variableName="sinResponse" value="#[message.payload]" doc:name="Variable"/>
+        <set-variable variableName="sinResponse" value="#[message.payload]"/>
 
-        <set-variable variableName="cosRequestParamElement" value="#['&lt;angle&gt;' + flowVars['cosParam']]" doc:name="Variable"/>
+        <set-variable variableName="cosRequestParamElement" value="#['&lt;angle&gt;' + flowVars['cosParam']]"/>
         <set-payload mimeType="text/xml" value="#[flowVars['cosRequest'].replace('&lt;angle&gt;', flowVars['cosRequestParamElement'])]"/>
-        <http:outbound-endpoint exchange-pattern="request-response" method="POST"
-                                address="http://localhost:9006/Trigonometrical" doc:name="HTTP"/>
-        <object-to-byte-array-transformer doc:name="Object to Byte Array"/>
-        <byte-array-to-object-transformer doc:name="Byte Array to Object"/>
+        <http:outbound-endpoint exchange-pattern="request-response" method="POST" address="http://localhost:9006/Trigonometrical"/>
+        <object-to-byte-array-transformer/>
+        <byte-array-to-object-transformer/>
         <set-payload value="#[xpath('//result').text]"/>
-        <set-variable variableName="cosResponse" value="#[message.payload]" doc:name="Variable"/>
+        <set-variable variableName="cosResponse" value="#[message.payload]"/>
 
-        <set-variable variableName="divideRequestFirstParamElement" value="#['&lt;firstParam&gt;' + flowVars['sinResponse']]" doc:name="Variable"/>
-        <set-variable variableName="divideRequestSecondParamElement" value="#['&lt;secondParam&gt;' + flowVars['cosResponse']]" doc:name="Variable"/>
+        <set-variable variableName="divideRequestFirstParamElement" value="#['&lt;firstParam&gt;' + flowVars['sinResponse']]"/>
+        <set-variable variableName="divideRequestSecondParamElement" value="#['&lt;secondParam&gt;' + flowVars['cosResponse']]"/>
         <set-payload mimeType="text/xml" value="#[flowVars['divideRequest'].replace('&lt;firstParam&gt;', flowVars['divideRequestFirstParamElement'])
         .replace('&lt;secondParam&gt;', flowVars['divideRequestSecondParamElement'])]"/>
         <http:outbound-endpoint exchange-pattern="request-response" method="POST"
-                                address="http://localhost:9005/Multiplication" doc:name="HTTP"/>
-        <object-to-byte-array-transformer doc:name="Object to Byte Array"/>
-        <byte-array-to-object-transformer doc:name="Byte Array to Object"/>
+                                address="http://localhost:9005/Multiplication"/>
+        <object-to-byte-array-transformer/>
+        <byte-array-to-object-transformer/>
         <set-payload value="#[xpath('//result').text]"/>
-        <set-variable variableName="divideResponse" value="#[message.payload]" doc:name="Variable"/>
+        <set-variable variableName="divideResponse" value="#[message.payload]"/>
 
-        <set-variable variableName="arithmeticProgressionRequestNElement" value="#['&lt;n&gt;' + flowVars['n']]" doc:name="Variable"/>
-        <set-variable variableName="arithmeticProgressionRequestDElement" value="#['&lt;d&gt;' + '1']" doc:name="Variable"/>
-        <set-variable variableName="arithmeticProgressionRequestAElement" value="#['&lt;a&gt;' + '1']" doc:name="Variable"/>
+        <set-variable variableName="arithmeticProgressionRequestNElement" value="#['&lt;n&gt;' + flowVars['n']]"/>
+        <set-variable variableName="arithmeticProgressionRequestDElement" value="#['&lt;d&gt;' + '1']"/>
+        <set-variable variableName="arithmeticProgressionRequestAElement" value="#['&lt;a&gt;' + '1']"/>
         <set-payload mimeType="text/xml" value="#[flowVars['arithmeticProgressionRequest'].replace('&lt;n&gt;', flowVars['arithmeticProgressionRequestNElement'])
         .replace('&lt;d&gt;', flowVars['arithmeticProgressionRequestDElement']).replace('&lt;a&gt;', flowVars['arithmeticProgressionRequestAElement'])]"/>
         <http:outbound-endpoint exchange-pattern="request-response" method="POST"
-                                address="http://localhost:9001/ArithmeticProgression" doc:name="HTTP"/>
-        <object-to-byte-array-transformer doc:name="Object to Byte Array"/>
-        <byte-array-to-object-transformer doc:name="Byte Array to Object"/>
+                                address="http://localhost:9001/ArithmeticProgression"/>
+        <object-to-byte-array-transformer/>
+        <byte-array-to-object-transformer/>
         <set-payload value="#[xpath('//result').text]"/>
-        <set-variable variableName="arithmeticProgressionResponse" value="#[message.payload]" doc:name="Variable"/>
+        <set-variable variableName="arithmeticProgressionResponse" value="#[message.payload]"/>
 
         <set-variable variableName="powRequestFirstParamElement" value="#['&lt;firstParam&gt;' + flowVars['arithmeticProgressionResponse']]"/>
         <set-variable variableName="powRequestSecondParamElement" value="#['&lt;secondParam&gt;' + flowVars['powSecondParam1']]"/>
         <set-payload mimeType="text/xml" value="#[flowVars['powRequest'].replace('&lt;firstParam&gt;', flowVars['powRequestFirstParamElement'])
         .replace('&lt;secondParam&gt;', flowVars['powRequestSecondParamElement'])]"/>
         <http:outbound-endpoint exchange-pattern="request-response" method="POST"
-                                address="http://localhost:9003/Exponential" doc:name="HTTP"/>
-        <object-to-byte-array-transformer doc:name="Object to Byte Array"/>
-        <byte-array-to-object-transformer doc:name="Byte Array to Object"/>
+                                address="http://localhost:9003/Exponential"/>
+        <object-to-byte-array-transformer/>
+        <byte-array-to-object-transformer/>
         <set-payload value="#[xpath('//result').text]"/>
-        <set-variable variableName="powResponse" value="#[message.payload]" doc:name="Variable"/>
+        <set-variable variableName="powResponse" value="#[message.payload]"/>
 
         <set-variable variableName="multiplyRequestFirstParamElement" value="#['&lt;firstParam&gt;' + flowVars['divideResponse']]"/>
         <set-variable variableName="multiplyRequestSecondParamElement" value="#['&lt;secondParam&gt;' + flowVars['powResponse']]"/>
         <set-payload mimeType="text/xml" value="#[flowVars['multiplyRequest'].replace('&lt;firstParam&gt;', flowVars['multiplyRequestFirstParamElement'])
         .replace('&lt;secondParam&gt;', flowVars['multiplyRequestSecondParamElement'])]"/>
         <http:outbound-endpoint exchange-pattern="request-response" method="POST"
-                                address="http://localhost:9005/Multiplication" doc:name="HTTP"/>
+                                address="http://localhost:9005/Multiplication"/>
         <set-payload value="#[xpath('//result').text]"/>
-        <set-variable variableName="resultA" value="#[message.payload]" doc:name="Variable"/>
+        <set-variable variableName="resultA" value="#[message.payload]"/>
 
         <set-variable variableName="addEntryRequestKeyElement" value="#['&lt;key&gt;' + 'resultA']"/>
         <set-variable variableName="addEntryRequestValueElement" value="#['&lt;value&gt;' + flowVars['resultA']]"/>
         <set-variable variableName="addEntryRequestPathElement" value="#['&lt;path&gt;' + flowVars['tempFile']]"/>
         <set-payload mimeType="text/xml" value="#[flowVars['addEntryRequest'].replace('&lt;key&gt;', flowVars['addEntryRequestKeyElement'])
         .replace('&lt;value&gt;', flowVars['addEntryRequestValueElement']).replace('&lt;path&gt;', flowVars['addEntryRequestPathElement'])]"/>
-        <http:outbound-endpoint exchange-pattern="request-response" method="POST"
-                                address="http://localhost:9002/CSVFile" doc:name="HTTP"/>
+        <http:outbound-endpoint exchange-pattern="request-response" method="POST" address="http://localhost:9002/CSVFile"/>
     </sub-flow>
-
     <sub-flow name="flowB">
-        <set-variable variableName="geometricProgressionRequestNElement" value="#['&lt;n&gt;' + flowVars['m']]" doc:name="Variable"/>
-        <set-variable variableName="geometricProgressionRequestRElement" value="#['&lt;r&gt;' + '2']" doc:name="Variable"/>
-        <set-variable variableName="geometricProgressionRequestAElement" value="#['&lt;a&gt;' + '1']" doc:name="Variable"/>
+        <set-variable variableName="geometricProgressionRequestNElement" value="#['&lt;n&gt;' + flowVars['m']]"/>
+        <set-variable variableName="geometricProgressionRequestRElement" value="#['&lt;r&gt;' + '2']"/>
+        <set-variable variableName="geometricProgressionRequestAElement" value="#['&lt;a&gt;' + '1']"/>
         <set-payload mimeType="text/xml" value="#[flowVars['geometricProgressionRequest'].replace('&lt;n&gt;', flowVars['geometricProgressionRequestNElement'])
         .replace('&lt;r&gt;', flowVars['geometricProgressionRequestRElement']).replace('&lt;a&gt;', flowVars['geometricProgressionRequestAElement'])]"/>
         <http:outbound-endpoint exchange-pattern="request-response" method="POST"
-                                address="http://localhost:9004/GeometricProgression" doc:name="HTTP"/>
-        <object-to-byte-array-transformer doc:name="Object to Byte Array"/>
-        <byte-array-to-object-transformer doc:name="Byte Array to Object"/>
+                                address="http://localhost:9004/GeometricProgression"/>
+        <object-to-byte-array-transformer/>
+        <byte-array-to-object-transformer/>
         <set-payload value="#[xpath('//result').text]"/>
-        <set-variable variableName="geometricProgressionResponse" value="#[message.payload]" doc:name="Variable"/>
+        <set-variable variableName="geometricProgressionResponse" value="#[message.payload]"/>
 
         <set-variable variableName="powRequestFirstParamElement" value="#['&lt;firstParam&gt;' + flowVars['powFirstParam1']]"/>
         <set-variable variableName="powRequestSecondParamElement" value="#['&lt;secondParam&gt;' + flowVars['powSecondParam2']]"/>
         <set-payload mimeType="text/xml" value="#[flowVars['powRequest'].replace('&lt;firstParam&gt;', flowVars['powRequestFirstParamElement'])
         .replace('&lt;secondParam&gt;', flowVars['powRequestSecondParamElement'])]"/>
         <http:outbound-endpoint exchange-pattern="request-response" method="POST"
-                                address="http://localhost:9003/Exponential" doc:name="HTTP"/>
-        <object-to-byte-array-transformer doc:name="Object to Byte Array"/>
-        <byte-array-to-object-transformer doc:name="Byte Array to Object"/>
+                                address="http://localhost:9003/Exponential"/>
+        <object-to-byte-array-transformer/>
+        <byte-array-to-object-transformer/>
         <set-payload value="#[xpath('//result').text]"/>
-        <set-variable variableName="powResponse2" value="#[message.payload]" doc:name="Variable"/>
+        <set-variable variableName="powResponse2" value="#[message.payload]"/>
 
         <set-variable variableName="multiplyRequestFirstParamElement" value="#['&lt;firstParam&gt;' + flowVars['geometricProgressionResponse']]"/>
         <set-variable variableName="multiplyRequestSecondParamElement" value="#['&lt;secondParam&gt;' + flowVars['powResponse2']]"/>
         <set-payload mimeType="text/xml" value="#[flowVars['multiplyRequest'].replace('&lt;firstParam&gt;', flowVars['multiplyRequestFirstParamElement'])
         .replace('&lt;secondParam&gt;', flowVars['multiplyRequestSecondParamElement'])]"/>
-        <http:outbound-endpoint exchange-pattern="request-response" method="POST"
-                                address="http://localhost:9005/Multiplication" doc:name="HTTP"/>
+        <http:outbound-endpoint exchange-pattern="request-response" method="POST" address="http://localhost:9005/Multiplication"/>
         <set-payload value="#[xpath('//result').text]"/>
-        <set-variable variableName="resultB" value="#[message.payload]" doc:name="Variable"/>
+        <set-variable variableName="resultB" value="#[message.payload]"/>
         <set-variable variableName="addEntryRequestKeyElement" value="#['&lt;key&gt;' + 'resultB']"/>
         <set-variable variableName="addEntryRequestValueElement" value="#['&lt;value&gt;' + flowVars['resultB']]"/>
         <set-variable variableName="addEntryRequestPathElement" value="#['&lt;path&gt;' + flowVars['tempFile']]"/>
         <set-payload mimeType="text/xml" value="#[flowVars['addEntryRequest'].replace('&lt;key&gt;', flowVars['addEntryRequestKeyElement'])
         .replace('&lt;value&gt;', flowVars['addEntryRequestValueElement']).replace('&lt;path&gt;', flowVars['addEntryRequestPathElement'])]"/>
-        <http:outbound-endpoint exchange-pattern="request-response" method="POST"
-                                address="http://localhost:9002/CSVFile" doc:name="HTTP"/>
+        <http:outbound-endpoint exchange-pattern="request-response" method="POST" address="http://localhost:9002/CSVFile"/>
     </sub-flow>
     <sub-flow name="flowC">
         <set-variable variableName="logRequestParamElement" value="#['&lt;param&gt;' + flowVars['logParam']]"/>
         <set-payload mimeType="text/xml" value="#[flowVars['logRequest'].replace('&lt;param&gt;', flowVars['logRequestParamElement'])]"/>
         <http:outbound-endpoint exchange-pattern="request-response" method="POST"
-                                address="http://localhost:9003/Exponential" doc:name="HTTP"/>
-        <object-to-byte-array-transformer doc:name="Object to Byte Array"/>
-        <byte-array-to-object-transformer doc:name="Byte Array to Object"/>
+                                address="http://localhost:9003/Exponential"/>
+        <object-to-byte-array-transformer/>
+        <byte-array-to-object-transformer/>
         <set-payload value="#[xpath('//result').text]"/>
-        <set-variable variableName="logResponse" value="#[message.payload]" doc:name="Variable"/>
+        <set-variable variableName="logResponse" value="#[message.payload]"/>
 
         <set-variable variableName="multiplyRequestFirstParamElement" value="#['&lt;firstParam&gt;' + flowVars['logResponse']]"/>
         <set-variable variableName="multiplyRequestSecondParamElement" value="#['&lt;secondParam&gt;' + flowVars['p']]"/>
         <set-payload mimeType="text/xml" value="#[flowVars['multiplyRequest'].replace('&lt;firstParam&gt;', flowVars['multiplyRequestFirstParamElement'])
         .replace('&lt;secondParam&gt;', flowVars['multiplyRequestSecondParamElement'])]"/>
         <http:outbound-endpoint exchange-pattern="request-response" method="POST"
-                                address="http://localhost:9005/Multiplication" doc:name="HTTP"/>
+                                address="http://localhost:9005/Multiplication"/>
         <set-payload value="#[xpath('//result').text]"/>
-        <set-variable variableName="resultC" value="#[message.payload]" doc:name="Variable"/>
+        <set-variable variableName="resultC" value="#[message.payload]"/>
 
         <set-variable variableName="addEntryRequestKeyElement" value="#['&lt;key&gt;' + 'resultC']"/>
         <set-variable variableName="addEntryRequestValueElement" value="#['&lt;value&gt;' + flowVars['resultC']]"/>
         <set-variable variableName="addEntryRequestPathElement" value="#['&lt;path&gt;' + flowVars['tempFile']]"/>
         <set-payload mimeType="text/xml" value="#[flowVars['addEntryRequest'].replace('&lt;key&gt;', flowVars['addEntryRequestKeyElement'])
         .replace('&lt;value&gt;', flowVars['addEntryRequestValueElement']).replace('&lt;path&gt;', flowVars['addEntryRequestPathElement'])]"/>
-        <http:outbound-endpoint exchange-pattern="request-response" method="POST"
-                                address="http://localhost:9002/CSVFile" doc:name="HTTP"/>
+        <http:outbound-endpoint exchange-pattern="request-response" method="POST" address="http://localhost:9002/CSVFile"/>
     </sub-flow>
 </mule>
