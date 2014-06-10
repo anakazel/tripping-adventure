@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:exp="http://www.wscomposition.org/Exponential/">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <exp:LogRequest>
-         <param></param>
-      </exp:LogRequest>
-   </soapenv:Body>
-</soapenv:Envelope>

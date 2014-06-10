@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:trig="http://www.wscomposition.org/Trigonometrical/">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <trig:SinRequest>
-         <angle></angle>
-      </trig:SinRequest>
-   </soapenv:Body>
-</soapenv:Envelope>

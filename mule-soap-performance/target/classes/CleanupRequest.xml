@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:csv="http://www.wscomposition.org/CSVFile/">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <csv:CleanupRequest>
-         <path></path>
-      </csv:CleanupRequest>
-   </soapenv:Body>
-</soapenv:Envelope>
