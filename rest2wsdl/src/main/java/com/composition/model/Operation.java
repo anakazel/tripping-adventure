@@ -14,7 +14,7 @@ public final class Operation {
     /**
      * Used in GET & DELETE requests
      */
-    private List<String> params = new ArrayList<>();
+    private List<String> params = new ArrayList<String>();
     private String requestContentType;
     private String responseContentType;
     private String url;

@@ -55,12 +55,12 @@ public final class Deployer {
         context = args[1];
         final Properties propFile = new Properties();
         try {
-//            final InputStream input = new FileInputStream(args[2]);
+            final InputStream input = new FileInputStream(args[2]);
             ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-            final InputStream input = classloader.getResourceAsStream("soap.operations.properties");
+//            final InputStream input = classloader.getResourceAsStream("soap.operations.properties");
             propFile.load(input);
             final int count = Integer.parseInt(propFile.getProperty("operations"));
-            OPERATIONS = new ArrayList<>();
+            OPERATIONS = new ArrayList<Operation>();
             System.out.println("Loading operations...");
             for(int i = 1; i <= count; ++i){
                 final Operation o = new Operation();
@@ -69,7 +69,7 @@ public final class Deployer {
                 o.setHttpMethod(propFile.getProperty("operation" + i + ".httpMethod"));
                 o.setRequestContentType(propFile.getProperty("operation" + i + ".request.contentType"));
                 o.setResponseContentType(propFile.getProperty("operation" + i + ".response.contentType"));
-                final List<String> params = new ArrayList<>();
+                final List<String> params = new ArrayList<String>();
                 params.add(propFile.getProperty("operation" + i + ".params"));
                 o.setParams(params);
                 OPERATIONS.add(o);

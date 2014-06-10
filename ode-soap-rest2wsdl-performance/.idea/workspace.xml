@@ -66,8 +66,8 @@
       <file leaf-file-name="Composer.bpel" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bpelContent/Composer.bpel">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6445498" vertical-offset="5502" max-vertical-offset="6165">
-              <caret line="394" column="30" selection-start-line="394" selection-start-column="30" selection-end-line="394" selection-end-column="30" />
+            <state vertical-scroll-proportion="0.3601896" vertical-offset="5502" max-vertical-offset="6165">
+              <caret line="382" column="19" selection-start-line="382" selection-start-column="19" selection-end-line="382" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -493,8 +493,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/bpelContent/Composer.bpel">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6445498" vertical-offset="5502" max-vertical-offset="6165">
-          <caret line="394" column="30" selection-start-line="394" selection-start-column="30" selection-end-line="394" selection-end-column="30" />
+        <state vertical-scroll-proportion="0.3601896" vertical-offset="5502" max-vertical-offset="6165">
+          <caret line="382" column="19" selection-start-line="382" selection-start-column="19" selection-end-line="382" selection-end-column="19" />
           <folding />
         </state>
       </provider>
