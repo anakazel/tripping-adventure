@@ -2,15 +2,13 @@ package com.composition;
 
 import com.composition.model.Operation;
 import com.composition.proxy.ProxyServlet;
-import org.apache.catalina.Context;
-import org.apache.catalina.LifecycleException;
-import org.apache.catalina.startup.Tomcat;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletHandler;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.CountDownLatch;
 
 /**
  * Main entry point of the rest2wsdl application
@@ -26,38 +24,12 @@ public final class Deployer {
     public static String context = "rest2wsdl";
     public static List<Operation> OPERATIONS;
 
-    private Deployer() {}
-
-    private static Deployer instance = new Deployer();
-
-    public static Deployer getInstance() {
-        return instance;
-    }
-
-    private CountDownLatch shutDownSignal = new CountDownLatch(1);
-
-    private int run() throws LifecycleException, InterruptedException {
-        System.out.println("Starting embedded Tomcat...");
-        final Tomcat tomcat = new Tomcat();
-        tomcat.setPort(port);
-        final File base = new File(System.getProperty("java.io.tmpdir"));
-        final Context rootCtx = tomcat.addContext("/" + context, base.getAbsolutePath());
-        final ProxyServlet servlet = new ProxyServlet();
-        Tomcat.addServlet(rootCtx, "BaseServlet", servlet);
-        rootCtx.addServletMapping("/*", "BaseServlet");
-        tomcat.start();
-        shutDownSignal.await();
-        return 0;
-    }
-
-    public static void main(String[] args) throws LifecycleException, InterruptedException {
+    public static void main(String[] args) throws  InterruptedException {
         port = Integer.parseInt(args[0]);
         context = args[1];
         final Properties propFile = new Properties();
         try {
             final InputStream input = new FileInputStream(args[2]);
-            ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-//            final InputStream input = classloader.getResourceAsStream("soap.operations.properties");
             propFile.load(input);
             final int count = Integer.parseInt(propFile.getProperty("operations"));
             OPERATIONS = new ArrayList<Operation>();
@@ -75,10 +47,16 @@ public final class Deployer {
                 OPERATIONS.add(o);
                 System.out.println(o);
             }
+            final Server server = new Server(port);
+            final ServletHandler handler = new ServletHandler();
+            server.setHandler(handler);
+            handler.addServletWithMapping(ProxyServlet.class, "/" + context + "/*");
+            server.start();
+            server.join();
         } catch (IOException e) {
             System.out.println("I/O error.");
+        } catch (Exception e) {
+            System.out.println("Error.");
         }
-        System.exit(getInstance().run());
-        //TODO ADD USAGE [port] [context name] [path to config file]
     }
 }
