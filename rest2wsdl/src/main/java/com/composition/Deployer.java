@@ -25,10 +25,10 @@ public final class Deployer {
     public static List<Operation> OPERATIONS;
 
     public static void main(String[] args) throws  InterruptedException {
-        port = Integer.parseInt(args[0]);
-        context = args[1];
-        final Properties propFile = new Properties();
         try {
+            port = Integer.parseInt(args[0]);
+            context = args[1];
+            final Properties propFile = new Properties();
             final InputStream input = new FileInputStream(args[2]);
             propFile.load(input);
             final int count = Integer.parseInt(propFile.getProperty("operations"));
@@ -53,10 +53,16 @@ public final class Deployer {
             handler.addServletWithMapping(ProxyServlet.class, "/" + context + "/*");
             server.start();
             server.join();
+        } catch (ArrayIndexOutOfBoundsException e) {
+            printUsage();
         } catch (IOException e) {
             System.out.println("I/O error.");
         } catch (Exception e) {
             System.out.println("Error.");
         }
+    }
+
+    private static final void printUsage(){
+        System.out.println("Usage: java -jar artifact.jar [port] [context-name] [path-to-config-file]");
     }
 }
