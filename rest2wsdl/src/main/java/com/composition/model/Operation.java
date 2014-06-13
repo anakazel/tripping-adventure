@@ -9,8 +9,11 @@ import java.util.List;
 public final class Operation {
 
     private String baseUrl;
+    private String serviceName;
     private String location;
     private String httpMethod;
+    private String name;
+
     /**
      * Used in GET & DELETE requests
      */
@@ -71,6 +74,22 @@ public final class Operation {
         return getBaseUrl() + getLocation();
     }
 
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "Operation{" +
@@ -83,4 +102,5 @@ public final class Operation {
                 ", url='" + url + '\'' +
                 '}';
     }
+
 }

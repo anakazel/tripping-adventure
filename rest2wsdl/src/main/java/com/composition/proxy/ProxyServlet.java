@@ -33,8 +33,8 @@ public final class ProxyServlet extends HttpServlet {
         for(int i = 0; i < OPERATIONS.size(); i++){
             if(requestUrl.contains(OPERATIONS.get(i).getLocation())
                     && (OPERATIONS.get(i).getHttpMethod().equals("POST") ||
-                        OPERATIONS.get(i).getHttpMethod().equals("PUT") ||
-                        OPERATIONS.get(i).getHttpMethod().equals("DELETE"))){
+                    OPERATIONS.get(i).getHttpMethod().equals("PUT") ||
+                    OPERATIONS.get(i).getHttpMethod().equals("DELETE"))){
 
                 final Operation operation = OPERATIONS.get(i);
                 final PrintWriter pw = resp.getWriter();
