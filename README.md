@@ -22,3 +22,6 @@ curl -X POST -d @request.xml http://localhost:8080/ode/processes/Travel?wsdl --h
 ```
 curl "http://localhost:8084/?origin=Iasi&destination=Bacau&travelMode=DRIVING&objectiveRadius=1000&objectiveTypes=food&forecastUnits=metric&forecastDays=3&images=3"
 ```
+
+#####rest2wsdl:
+This a tool that can map REST/JSON web services to a servlet loaded at runtime in an embedded servlet container. It also generates the WSDL 1.1 document corresponding to the functionality of the servlet.
