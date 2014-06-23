@@ -138,21 +138,25 @@ public enum WSDLUtils {
                 input.setName("jsonRequest");
                 operation.setInput(input);
 
-                final ContentType contentTypeRequest = new ContentType();
-                contentTypeRequest.setPart("requestString");
-                contentTypeRequest.setType("application/x-www-form-urlencoded");
-                final JAXBElement<ContentType> contentTypeReqJaxb = o.createContent(contentTypeRequest);
+                if(!operationNames.get(i).contains("GET")){
+                    final ContentType contentTypeRequest = new ContentType();
+                    contentTypeRequest.setPart("requestString");
+
+                    contentTypeRequest.setType("application/x-www-form-urlencoded");
+                    final JAXBElement<ContentType> contentTypeReqJaxb = o.createContent(contentTypeRequest);
+                    input.getAny().add(contentTypeReqJaxb);
+                }else{
+                    final UrlEncoded urlEncoded = new UrlEncoded();
+                    input.getAny().add(urlEncoded);
+                }
 
                 final ContentType contentTypeResponse = new ContentType();
                 contentTypeResponse.setPart("responseString");
                 contentTypeResponse.setType("text/xml");
                 final JAXBElement<ContentType> contentTypeRespJaxb = o.createContent(contentTypeResponse);
-
                 final TBindingOperationMessage output = new TBindingOperationMessage();
                 output.setName("jsonResponse");
                 operation.setOutput(output);
-
-                input.getAny().add(contentTypeReqJaxb);
                 output.getAny().add(contentTypeRespJaxb);
             }
         }

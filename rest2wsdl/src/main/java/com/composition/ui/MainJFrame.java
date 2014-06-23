@@ -49,6 +49,15 @@ public final class MainJFrame extends javax.swing.JFrame {
                 rowData.add(propFile.getProperty("operation" + i + ".request.contentType"));
                 rowData.add(propFile.getProperty("operation" + i + ".response.contentType"));
                 final List<String> params = new ArrayList<String>();
+                final String paramsProp = propFile.getProperty("operation" + i + ".params");
+                if(paramsProp.contains(",")){
+                    String[] split = paramsProp.split(",");
+                    for(int j = 0; j < split.length; ++j){
+                        params.add(split[j]);
+                    }
+                }else{
+                    params.add(paramsProp);
+                }
                 params.add(propFile.getProperty("operation" + i + ".params"));
                 rowData.add(params.get(0));
                 model.addRow(rowData);

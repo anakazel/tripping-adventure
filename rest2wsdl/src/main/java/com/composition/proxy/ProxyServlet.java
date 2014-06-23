@@ -24,7 +24,46 @@ public final class ProxyServlet extends HttpServlet {
 
     @Override
     public void doGet (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        throw new RuntimeException("Not yet implemented!");
+        String requestUrl = req.getRequestURL().toString();
+        final Operation operation;
+
+        for(int i = 0; i < OPERATIONS.size(); i++){
+            if(requestUrl.contains(OPERATIONS.get(i).getLocation()) && OPERATIONS.get(i).getHttpMethod().equals("GET")){
+
+                operation = OPERATIONS.get(i);
+                final PrintWriter pw = resp.getWriter();
+                final String response = "";
+                HttpURLConnection connection;
+                final String params = req.getParameter("requestString");
+                URL url;
+                url = new URL(operation.getUrl() + "?" + params);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod(operation.getHttpMethod());
+                connection.setRequestProperty("Accept", operation.getResponseContentType());
+                connection.setRequestProperty("Content-Type", operation.getRequestContentType());
+                connection.setDoOutput(true);
+
+                // will use always xml content type on the response, because of the BPEL limitations
+                resp.setContentType("text/xml");
+                if(operation.getResponseContentType().equals("application/json")){
+                    pw.append("<" + context + "><![CDATA[");
+                    pw.append(response);
+                    pw.append("]]></" + context + " >");
+                }else{
+                    pw.append(response);
+                }
+
+                if(connection != null){
+                    connection.disconnect();
+                }
+
+                System.out.println("URL: " + url);
+                System.out.println("REQUEST: " + operation.getUrl() + "?" + params);
+                System.out.println("RESPONSE: " + response);
+                return;
+            }
+        }
+
     }
 
     @Override
