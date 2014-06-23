@@ -4,6 +4,7 @@
         xmlns:proxy="http://www.wscomposition.org/WSDLProxy/">
     <process name="composer:Composer">
         <active>true</active>
+        <in-memory>true</in-memory>
         <retired>false</retired>
         <process-events generate="all" />
         <provide partnerLink="ComposerClient">

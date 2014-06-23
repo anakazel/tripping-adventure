@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Class holding the information about a REST operation
  * @author alexg
  */
 public final class Operation {

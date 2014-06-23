@@ -32,7 +32,7 @@
     </binding>
     <service name="ArithmeticProgression">
         <port name="ArithmeticProgressionSOAP" binding="tns:ArithmeticProgressionSOAPBinding">
-            <soap:address location="http://localhost:9001/ArithmeticProgression"></soap:address>
+            <soap:address location="http://192.168.243.82:8080/arithmeticprogression/ArithmeticProgression"></soap:address>
         </port>
     </service>
 </definitions>

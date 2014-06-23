@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AntConfiguration">
+    <buildFile url="file://$PROJECT_DIR$/addition-service/build.xml" />
+    <buildFile url="file://$PROJECT_DIR$/arithmetic-progression-service/build.xml" />
+    <buildFile url="file://$PROJECT_DIR$/csv-file-service/build.xml" />
+    <buildFile url="file://$PROJECT_DIR$/exponential-service/build.xml" />
+    <buildFile url="file://$PROJECT_DIR$/geometric-progression-service/build.xml" />
+    <buildFile url="file://$PROJECT_DIR$/multiplication-service/build.xml" />
+    <buildFile url="file://$PROJECT_DIR$/trigonometrical-service/build.xml" />
+  </component>
+</project>
+

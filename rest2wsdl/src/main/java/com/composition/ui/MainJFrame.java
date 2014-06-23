@@ -8,41 +8,55 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.xml.bind.JAXBException;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Vector;
 
 /**
- * Created by alexg on 16.06.2014.
+ * @author alexg
  */
-public class MainJFrame extends javax.swing.JFrame {
+public final class MainJFrame extends javax.swing.JFrame {
 
-    private static int demo = 0;
+    private static String configFilePath = null;
 
-    public MainJFrame() {
+    public MainJFrame() throws IOException {
         initComponents();
         customInit();
     }
 
-    private void checkDemo(){
-        if(demo == 1){
+    private void checkDemo() throws IOException {
+        if(configFilePath != null){
             // load demo data
-            DefaultTableModel model = (DefaultTableModel) tableOperations.getModel();
-            Vector rowData = new Vector();
-            rowData.add("Addition");
-            rowData.add("http://192.168.243.81:9000");
-            rowData.add("/Addition/add");
-            rowData.add("add");
-            rowData.add("PUT");
-            rowData.add("application/json");
-            rowData.add("application/json");
-            rowData.add("");
-            model.addRow(rowData);
+            final Properties propFile = new Properties();
+            final InputStream input = new FileInputStream(configFilePath);
+            propFile.load(input);
+
+            final int count = Integer.parseInt(propFile.getProperty("operations"));
+            final DefaultTableModel model = (DefaultTableModel) tableOperations.getModel();
+
+            for(int i = 1; i <= count; ++i){
+                final Vector rowData = new Vector();
+                rowData.add(propFile.getProperty("operation" + i + ".serviceName"));
+                rowData.add(propFile.getProperty("operation" + i + ".baseUrl"));
+                rowData.add(propFile.getProperty("operation" + i + ".location"));
+                rowData.add(propFile.getProperty("operation" + i + ".name"));
+                rowData.add(propFile.getProperty("operation" + i + ".httpMethod"));
+                rowData.add(propFile.getProperty("operation" + i + ".request.contentType"));
+                rowData.add(propFile.getProperty("operation" + i + ".response.contentType"));
+                final List<String> params = new ArrayList<String>();
+                params.add(propFile.getProperty("operation" + i + ".params"));
+                rowData.add(params.get(0));
+                model.addRow(rowData);
+            }
         }
     }
 
-    private void customInit(){
+    private void customInit() throws IOException {
         final TableColumn columnHttpMethod = tableOperations.getColumnModel().getColumn(UIConstants.HTTP_METHOD_COLUMN_IDX);
         columnHttpMethod.setCellEditor(new CustomTableCellEditor(UIConstants.HTTP_METHODS));
         final TableColumn columnRequestType1 = tableOperations.getColumnModel().getColumn(UIConstants.REQUEST_CONTENT_TYPE_COLUMN_IDX);
@@ -143,11 +157,8 @@ public class MainJFrame extends javax.swing.JFrame {
         });
 
         labelPort.setText("Server port:");
-
         textFieldPort.setText("9090");
-
         jLabel1.setText("Context name:");
-
         textFieldContextName.setText("rest2wsdl");
 
         org.jdesktop.layout.GroupLayout panelLayout = new org.jdesktop.layout.GroupLayout(panel);
@@ -208,13 +219,13 @@ public class MainJFrame extends javax.swing.JFrame {
     }
 
     private void buttonAddActionPerformed(java.awt.event.ActionEvent evt) {
-        Vector rowData = new Vector();
-        DefaultTableModel model = (DefaultTableModel) tableOperations.getModel();
+        final Vector rowData = new Vector();
+        final DefaultTableModel model = (DefaultTableModel) tableOperations.getModel();
         model.addRow(rowData);
     }
 
     private void buttonRemoveActionPerformed(java.awt.event.ActionEvent evt) {
-        DefaultTableModel model = (DefaultTableModel) tableOperations.getModel();
+        final DefaultTableModel model = (DefaultTableModel) tableOperations.getModel();
         if(model.getRowCount() != 0){
             model.removeRow(model.getRowCount() - 1);
         }
@@ -227,7 +238,7 @@ public class MainJFrame extends javax.swing.JFrame {
         final TableModel tableModel = tableOperations.getModel();
 
         for(int row = 0;row < tableModel.getRowCount();row++) {
-            Operation o = new Operation();
+            final Operation o = new Operation();
             for(int col = 0;col < tableModel.getColumnCount();col++) {
                 o.setServiceName((String) tableModel.getValueAt(row, UIConstants.SERVICE_NAME_COLUMN_IDX));
                 o.setBaseUrl((String) tableModel.getValueAt(row, UIConstants.BASE_URL_COLUMN_IDX));
@@ -256,16 +267,31 @@ public class MainJFrame extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
+        buttonStart.setEnabled(false);
+        buttonAdd.setEnabled(false);
+        buttonRemove.setEnabled(false);
+        textFieldContextName.setEnabled(false);
+        textFieldPort.setEnabled(false);
         JOptionPane.showMessageDialog(this, "WSDL document created at /tmp/wsdl.xml.", "Info", 1);
+
     }
 
     public static void main(String args[]) {
-        demo = 1;
-
+        try{
+            configFilePath = args[0];
+        }catch(Exception ex){
+            System.out.println("configFilePath is null.");
+            configFilePath = null;
+        }
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                final MainJFrame frame = new MainJFrame();
-                frame.setVisible(true);
+                final MainJFrame frame;
+                try {
+                    frame = new MainJFrame();
+                    frame.setVisible(true);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

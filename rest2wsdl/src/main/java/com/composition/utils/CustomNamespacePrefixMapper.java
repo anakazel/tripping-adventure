@@ -3,7 +3,8 @@ package com.composition.utils;
 import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 
 /**
- * Created by alexg on 12.06.2014.
+ * Custom namespace prefix mapper for preferred types
+ * @author alexg
  */
 public final class CustomNamespacePrefixMapper extends NamespacePrefixMapper{
     private static final String WSDL_NAMESPACE_URI = "http://schemas.xmlsoap.org/wsdl/";

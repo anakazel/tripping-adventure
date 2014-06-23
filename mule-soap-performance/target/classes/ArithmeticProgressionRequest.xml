@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:arit="http://www.wscomposition.org/ArithmeticProgression/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <arit:ArithmeticProgressionRequest>
+         <n></n>
+         <a></a>
+         <d></d>
+      </arit:ArithmeticProgressionRequest>
+   </soapenv:Body>
+</soapenv:Envelope>

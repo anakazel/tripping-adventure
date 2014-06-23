@@ -9,6 +9,7 @@
         xmlns:mul="http://www.wscomposition.org/Multiplication/"
         xmlns:tri="http://www.wscomposition.org/Trigonometrical/">
     <process name="expression:Expression">
+        <in-memory>true</in-memory>
         <active>true</active>
         <retired>false</retired>
         <process-events generate="all" />

@@ -32,7 +32,7 @@
     </binding>
     <service name="GeometricProgression">
         <port name="GeometricProgressionSOAP" binding="tns:GeometricProgressionSOAPBinding">
-            <soap:address location="http://localhost:9004/GeometricProgression"></soap:address>
+            <soap:address location="http://192.168.243.85:8080/geometricprogression/GeometricProgression"></soap:address>
         </port>
     </service>
 </definitions>

@@ -52,7 +52,7 @@
     </binding>
     <service name="Addition">
         <port name="AdditionSOAP" binding="tns:AdditionSOAPBinding">
-            <soap:address location="http://localhost:9000/Addition"></soap:address>
+            <soap:address location="http://192.168.243.81:8080/addition/Addition"></soap:address>
         </port>
     </service>
 </definitions>

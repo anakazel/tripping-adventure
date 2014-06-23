@@ -62,7 +62,7 @@
     </binding>
     <service name="CSVFile">
         <port name="CSVFileSOAP" binding="tns:CSVFileSOAPBinding">
-            <soap:address location="http://localhost:9002/CSVFile"></soap:address>
+            <soap:address location="http://192.168.243.83:8080/csvfile/CSVFile"></soap:address>
         </port>
     </service>
 </definitions>

@@ -47,6 +47,11 @@ public final class ProxyServlet extends HttpServlet {
                 requestBody = requestBody.replace("requestString=", "");
 
                 URL url = new URL(operation.getUrl());
+                // based on RFC 2616 specs
+                // 4.3 Message Body
+                // A server SHOULD read and forward a message-body on any request;
+                // if the request method does not include defined semantics for an entity-body,
+                // then the message-body SHOULD be ignored when handling the request.
                 if(!operation.getHttpMethod().equals("DELETE")){
                     connection = (HttpURLConnection) url.openConnection();
 

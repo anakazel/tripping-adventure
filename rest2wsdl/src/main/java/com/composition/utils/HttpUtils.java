@@ -18,6 +18,12 @@ public enum HttpUtils {
 
     ;// singleton usage
 
+    /**
+     * Get the HTTP body from a HttpServletRequest
+     * @param request the HTTP Servlet request
+     * @return the HTTP body
+     * @throws IOException
+     */
     public static final String getHttpBody(final HttpServletRequest request) throws IOException {
 
         final String body;
@@ -62,7 +68,7 @@ public enum HttpUtils {
     }
     /**
      * Not being able to do a DELETE request using Sun HTTP Client (source code not available to debug..), using Apache instead
-     * @return
+     * @return the HTTP body from the response
      */
     public static final String doHttpDelete(final String url, final String responseContentType) throws IOException {
         final DefaultHttpClient httpClient = new DefaultHttpClient();

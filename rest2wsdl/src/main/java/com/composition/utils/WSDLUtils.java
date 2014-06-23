@@ -15,7 +15,7 @@ import java.util.*;
 import static com.composition.Deployer.OPERATIONS;
 
 /**
- * Created by alexg on 12.06.2014.
+ * @author alexg
  */
 public enum WSDLUtils {
     ; //singleton
@@ -24,7 +24,7 @@ public enum WSDLUtils {
 
     public static final void generateWSDL() throws JAXBException {
 
-        ObjectFactory o = new ObjectFactory();
+        final ObjectFactory o = new ObjectFactory();
         final TDefinitions wsdl = new TDefinitions();
         final TDocumentation wsdlDocInfo = new TDocumentation();
         wsdlDocInfo.getContent().add("WSDL 1.1 Document for REST Web Services, generated using rest2wsdl, " + new Date());

@@ -51,7 +51,7 @@
     </binding>
     <service name="Multiplication">
         <port name="MultiplicationSOAP" binding="tns:MultiplicationSOAPBinding">
-            <soap:address location="http://localhost:9005/Multiplication"></soap:address>
+            <soap:address location="http://192.168.243.86:8080/multiplication/Multiplication"></soap:address>
         </port>
     </service>
 </definitions>

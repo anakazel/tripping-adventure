@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:mul="http://www.wscomposition.org/Multiplication/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <mul:MultiplyRequest>
+         <firstParam></firstParam>
+         <secondParam></secondParam>
+      </mul:MultiplyRequest>
+   </soapenv:Body>
+</soapenv:Envelope>
