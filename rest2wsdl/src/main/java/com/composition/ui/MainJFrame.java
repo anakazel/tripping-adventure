@@ -101,6 +101,9 @@ public final class MainJFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         textFieldContextName = new javax.swing.JTextField();
 
+        textFieldPort.setText(String.valueOf(Deployer.port));
+        textFieldContextName.setText(Deployer.context);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("REST2WSDL");
         setResizable(false);
@@ -166,9 +169,7 @@ public final class MainJFrame extends javax.swing.JFrame {
         });
 
         labelPort.setText("Server port:");
-        textFieldPort.setText("9090");
         jLabel1.setText("Context name:");
-        textFieldContextName.setText("rest2wsdl");
 
         org.jdesktop.layout.GroupLayout panelLayout = new org.jdesktop.layout.GroupLayout(panel);
         panel.setLayout(panelLayout);
@@ -287,7 +288,9 @@ public final class MainJFrame extends javax.swing.JFrame {
 
     public static void main(String args[]) {
         try{
-            configFilePath = args[0];
+            Deployer.port = Integer.parseInt(args[0]);
+            Deployer.context = args[1];
+            configFilePath = args[2];
         }catch(Exception ex){
             System.out.println("configFilePath is null.");
             configFilePath = null;
